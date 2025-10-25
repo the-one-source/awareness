@@ -3,214 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spectrum of Being Test</title>
+<title>Spectrum of Being</title>
 <style>
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0;
-  background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
-}
-h1 { text-align: center; margin-bottom: 30px; color: #1f2937; }
-#quiz-container {
-  background: #ffffffcc;
-  padding: 40px 30px;
-  border-radius: 20px;
-  text-align: center;
-  max-width: 600px;
-  width: 90%;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-#question-box { 
-  font-size: 1.2em; 
-  margin-bottom: 40px; /* more space below question */ 
-  color: #334155;
-}
-.slider-container {
-  position: relative;
-  width: 100%;
-  margin: 30px 0; /* more space above and below slider */
-}
-input[type=range] {
-  width: 100%;
-  -webkit-appearance: none;
-  height: 14px;
-  border-radius: 7px;
-  background: #cbd5e1;
-  outline: none;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #3b82f6;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-input[type=range]::-moz-range-thumb {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #3b82f6;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-.slider-label { 
-  display: flex; 
-  justify-content: space-between; 
-  font-size: 0.95em; 
-  margin-top: 15px; /* more space between slider and label */ 
-  color: #475569; 
-}
-#next-btn {
-  padding: 14px 35px;
-  font-size: 1em;
-  border-radius: 10px;
-  border: none;
-  background: #3b82f6;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-  margin-top: 30px; /* more space above button */
-}
-#next-btn:hover { background: #2563eb; }
-#progress {
-  margin-top: 15px;
-  font-size: 0.9em;
-  color: #64748b;
-}
-#result { 
-  margin-top: 30px; 
-  padding: 20px; 
-  border-radius: 15px; 
-  background: #e2e8f0; 
-  max-width: 600px; 
-}
+    body {
+        font-family: 'Helvetica', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: #f0f5f9;
+        height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 50px;
+        color: #5e2bff; /* Title color */
+    }
+
+    .question-container {
+        width: 90%;
+        max-width: 700px;
+        margin-bottom: 30px;
+        font-size: 1.5em;
+    }
+
+    input[type=range] {
+        width: 100%;
+        margin: 20px 0;
+        -webkit-appearance: none;
+        height: 12px;
+        border-radius: 6px;
+        background: #ddd;
+        outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #ff5eaa; /* Slider circle color */
+        cursor: pointer;
+        border: 2px solid #fff;
+        box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    input[type=range]::-moz-range-thumb {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #ff5eaa;
+        cursor: pointer;
+        border: 2px solid #fff;
+        box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    .labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1em;
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+
+    button {
+        padding: 15px 40px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(45deg, #ff5eaa, #ffcc5e);
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .result {
+        margin-top: 40px;
+        font-size: 1.3em;
+        max-width: 700px;
+    }
 </style>
 </head>
 <body>
 
-<h1>Spectrum of Being Test</h1>
-<div id="quiz-container">
-  <div id="question-box"></div>
-  <div class="slider-container">
-    <input type="range" id="answer-slider" min="1" max="5" value="3">
-    <div class="slider-label"><span>1 - Not at all</span><span>5 - Completely</span></div>
-  </div>
-  <div id="progress"></div>
-  <button id="next-btn">Next</button>
+<h1>Spectrum of Being</h1>
+<div class="question-container" id="question"></div>
+
+<input type="range" min="1" max="5" value="3" id="slider">
+<div class="labels">
+    <span>Completely Disagree</span>
+    <span>Completely Agree</span>
 </div>
-<div id="result"></div>
+
+<button id="nextBtn">Next</button>
+
+<div class="result" id="result"></div>
 
 <script>
-// All questions with integrated theme
 const questions = [
-  { text: "In the understanding of Existence, there is someone (something) out there.", stage: 1 },
-  { text: "In the understanding of Existence, is there anyone out there?", stage: 2 },
-  { text: "In the understanding of Existence, there is no one out there.", stage: 3 },
-  { text: "In the understanding of Life Orientation, life happens to me.", stage: 1 },
-  { text: "In the understanding of Life Orientation, life happens through me.", stage: 2 },
-  { text: "In the understanding of Life Orientation, life happens as me.", stage: 3 },
-  { text: "In the understanding of Life Position, I am the victim of life.", stage: 1 },
-  { text: "In the understanding of Life Position, I am connected to a source, a higher self, or god.", stage: 2 },
-  { text: "In the understanding of Life Position, I am the source; god is a concept within me.", stage: 3 },
-  { text: "In the understanding of The Wall / Reality, someone has built the wall.", stage: 1 },
-  { text: "In the understanding of The Wall / Reality, I am a brick in the wall.", stage: 2 },
-  { text: "In the understanding of The Wall / Reality, I am the wall, shaping the wall constantly.", stage: 3 },
-  { text: "In the understanding of Society, I blame society for everything I experience.", stage: 1 },
-  { text: "In the understanding of Society, I am part of society; therefore I blame myself.", stage: 2 },
-  { text: "In the understanding of Society, society arises from me; I blame no one.", stage: 3 },
-  { text: "In the understanding of Fairness, everything is unfair; this world must change.", stage: 1 },
-  { text: "In the understanding of Fairness, I must change the world and bring fairness into this.", stage: 2 },
-  { text: "In the understanding of Fairness, I radiate fairness; nothing needs to change.", stage: 3 },
-  { text: "In the understanding of Recognition, I need to be seen; the world must acknowledge me.", stage: 1 },
-  { text: "In the understanding of Recognition, I see myself; there is no need to be seen.", stage: 2 },
-  { text: "In the understanding of Recognition, let there be light — I am projecting the world.", stage: 3 },
-  { text: "In the understanding of Divinity, there is god.", stage: 1 },
-  { text: "In the understanding of Divinity, there is no god.", stage: 2 },
-  { text: "In the understanding of Divinity, god is a concept created by me.", stage: 3 },
-  { text: "In the understanding of Belonging, I need to belong to feel whole.", stage: 1 },
-  { text: "In the understanding of Belonging, I am not alone; I belong.", stage: 2 },
-  { text: "In the understanding of Belonging, I am alone — the only one.", stage: 3 },
-  { text: "In the understanding of Reality Creation, reality is co-created; I am within a hierarchy and powerless.", stage: 1 },
-  { text: "In the understanding of Reality Creation, reality is being projected by me.", stage: 2 },
-  { text: "In the understanding of Reality Creation, I am authoring reality; I am the power of all frequencies.", stage: 3 },
-  { text: "In the understanding of Creation, I was created.", stage: 1 },
-  { text: "In the understanding of Creation, I am questioning creation.", stage: 2 },
-  { text: "In the understanding of Creation, I am the creator.", stage: 3 },
-  { text: "In the understanding of Validation, I need validation to feel seen.", stage: 1 },
-  { text: "In the understanding of Validation, I am validated and seen.", stage: 2 },
-  { text: "In the understanding of Validation, I am validation.", stage: 3 },
-  { text: "In the understanding of Others, others exist.", stage: 1 },
-  { text: "In the understanding of Others, are others beings?", stage: 2 },
-  { text: "In the understanding of Others, others are not beings.", stage: 3 },
-  { text: "In the understanding of Heaven & Hell, there is hell and heaven.", stage: 1 },
-  { text: "In the understanding of Heaven & Hell, hell and heaven are states of being.", stage: 2 },
-  { text: "In the understanding of Heaven & Hell, there is no state — only being.", stage: 3 }
+"There is someone (something) out there.",
+"Is there anyone out there?",
+"There is no one out there.",
+"Life happens to me.",
+"Life happens through me.",
+"Life happens as me.",
+"I am the victim of life.",
+"I am connected to a source, a higher self, or god.",
+"I am the source; god is a concept within me.",
+"Someone has built the wall.",
+"I am a brick in the wall.",
+"I am the wall, shaping the wall constantly.",
+"I blame society for everything I experience.",
+"I am part of society; therefore I blame myself.",
+"Society arises from me; I blame no one.",
+"Everything is unfair; this world must change.",
+"I must change the world and bring fairness into this.",
+"I radiate fairness; nothing needs to change.",
+"I need to be seen; the world must acknowledge me.",
+"I see myself; there is no need to be seen.",
+"Let there be light — I am projecting the world.",
+"There is god.",
+"There is no god.",
+"God is a concept created by me.",
+"I need to belong to feel whole.",
+"I am not alone; I belong.",
+"I am alone — the only one.",
+"Reality is co-created; I am within a hierarchy and powerless.",
+"Reality is being projected by me.",
+"I am authoring reality; I am the power of all frequencies.",
+"I was created.",
+"I am questioning creation.",
+"I am the creator.",
+"I need validation to feel seen.",
+"I am validated and seen.",
+"I am validation.",
+"Others exist.",
+"Are others beings?",
+"Others are not beings.",
+"There is hell and heaven.",
+"Hell and heaven are states of being.",
+"There is no state — only being."
 ];
 
-// Shuffle questions
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-shuffle(questions);
+let currentIndex = 0;
+let scores = [];
 
-let current = 0;
-let answers = Array(questions.length).fill(3);
-const questionBox = document.getElementById("question-box");
-const slider = document.getElementById("answer-slider");
-const progress = document.getElementById("progress");
-const resultDiv = document.getElementById("result");
-const nextBtn = document.getElementById("next-btn");
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+const shuffledQuestions = shuffle([...questions]);
 
 function showQuestion() {
-  if(current >= questions.length) { calculateResult(); return; }
-  const q = questions[current];
-  questionBox.innerText = q.text;
-  slider.value = answers[current];
-  progress.innerText = "Question " + (current + 1) + " of " + questions.length;
+    if (currentIndex < shuffledQuestions.length) {
+        document.getElementById("question").textContent = shuffledQuestions[currentIndex];
+        document.getElementById("slider").value = 3;
+    } else {
+        showResult();
+    }
 }
 
-nextBtn.addEventListener("click", () => {
-  answers[current] = parseInt(slider.value);
-  current++;
-  showQuestion();
+document.getElementById("nextBtn").addEventListener("click", () => {
+    const value = document.getElementById("slider").value;
+    scores.push(parseInt(value));
+    currentIndex++;
+    showQuestion();
 });
 
-function calculateResult() {
-  document.getElementById("quiz-container").style.display = "none";
-  let stage1=0, stage2=0, stage3=0;
-  answers.forEach((val,i)=>{
-    if(questions[i].stage===1) stage1+=val;
-    else if(questions[i].stage===2) stage2+=val;
-    else stage3+=val;
-  });
-  const total = stage1+stage2+stage3;
-  const stage1Pct = Math.round(stage1/total*100);
-  const stage2Pct = Math.round(stage2/total*100);
-  const stage3Pct = Math.round(stage3/total*100);
-  let summary="";
-  if(stage3Pct>stage1Pct && stage3Pct>stage2Pct) summary="You are deeply aligned with Being and source awareness.";
-  else if(stage2Pct>stage1Pct && stage2Pct>stage3Pct) summary="You are in the process of realization and reflective awareness.";
-  else summary="You still resonate more with victimhood patterns; awareness may be limited.";
-  resultDiv.innerHTML = "<h2>Consciousness Analysis</h2>"+
-    "<p><b>Victimhood (Stage I):</b> "+stage1Pct+"%</p>"+
-    "<p><b>Realization (Stage II):</b> "+stage2Pct+"%</p>"+
-    "<p><b>Being (Stage III):</b> "+stage3Pct+"%</p>"+
-    "<hr><p>"+summary+"</p>";
+function showResult() {
+    const total = scores.reduce((a,b) => a+b,0);
+    const average = (total / scores.length).toFixed(2);
+    let message = "";
+    if(average < 2){
+        message = "You are primarily experiencing victimhood tendencies.";
+    } else if(average < 4){
+        message = "You are in realization, observing patterns and inner growth.";
+    } else {
+        message = "You are in being, aligned with consciousness and flow.";
+    }
+    document.getElementById("question").style.display = "none";
+    document.getElementById("slider").style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("result").innerHTML = `Average Score: ${average}<br>${message}`;
 }
 
 showQuestion();
 </script>
+
 </body>
 </html>
