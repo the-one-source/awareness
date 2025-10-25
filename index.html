@@ -5,287 +5,378 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spectrum of Being</title>
 <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin:0; padding:0; background:#f5f5f5; }
-    .container { max-width: 700px; margin: auto; padding: 30px; }
-    h1 { font-size: 2em; font-weight: normal; color:#555; margin-bottom: 20px; }
-    #landing, #questionnaire, #result { display:none; }
-    .slider-container { margin: 50px 0; position: relative; }
-    input[type=range] { width: 100%; }
-    .slider-labels { display: flex; justify-content: space-between; font-size: 0.9em; color:#555; margin-top: 10px; }
-    button { padding: 12px 25px; font-size: 1em; margin-top: 40px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; }
-    select { padding:5px 10px; margin-bottom:20px; }
+body { font-family: Arial, sans-serif; background:#f5f5f5; color:#333; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+.container { background:#fff; padding:40px; border-radius:12px; width:90%; max-width:600px; box-shadow:0 8px 20px rgba(0,0,0,0.15); text-align:center; }
+h1 { font-size:28px; font-weight:400; color:#444; margin-bottom:20px; }
+#languageSelect { margin-bottom:30px; padding:8px 12px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+#description { margin-bottom:40px; font-size:16px; line-height:1.5; color:#555; }
+.slider-container { margin:30px 0; }
+input[type=range] { width:80%; }
+.labels { display:flex; justify-content:space-between; font-size:14px; margin-top:8px; color:#666; }
+button { background:#6C63FF; color:#fff; border:none; padding:12px 30px; border-radius:6px; font-size:16px; cursor:pointer; margin-top:20px; }
+button:hover { background:#574fd6; }
+.hidden { display:none; }
+.rtl { direction:rtl; text-align:right; }
 </style>
 </head>
 <body>
-
 <div class="container">
-
-    <!-- Landing Page -->
-    <div id="landing">
-        <h1 id="landing-title">Spectrum of Being</h1>
-        <p id="landing-text">This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.</p>
-
-        <div class="slider-container">
-            <input type="range" min="0" max="10" value="5" id="landing-slider" disabled>
-            <div class="slider-labels" id="landing-labels">
-                <span id="label-left">Disagree</span>
-                <span id="label-middle">Uncertain</span>
-                <span id="label-right">Agree</span>
-            </div>
-        </div>
-
-        <div>
-            <select id="language-select">
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-                <option value="fa">فارسی</option>
-            </select>
-        </div>
-
-        <button id="start-btn">Start</button>
+  <div id="landing">
+    <h1>Spectrum of Being</h1>
+    <select id="languageSelect">
+      <option value="en">English</option>
+      <option value="de">Deutsch</option>
+      <option value="fa">فارسی</option>
+    </select>
+    <div id="description">This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.</div>
+    <div class="slider-container">
+      <input type="range" min="0" max="10" value="5" id="demoSlider">
+      <div class="labels"><span id="leftLabel">Disagree</span><span id="midLabel">Uncertain</span><span id="rightLabel">Agree</span></div>
     </div>
+    <button id="startBtn">Start</button>
+  </div>
 
-    <!-- Questionnaire -->
-    <div id="questionnaire">
-        <div class="slider-container">
-            <p id="question-text"></p>
-            <input type="range" min="0" max="10" value="5" id="question-slider">
-        </div>
-        <button id="next-btn">Next</button>
-    </div>
+  <div id="questionnaire" class="hidden">
+    <div id="questionText" style="font-size:18px; margin-bottom:30px;"></div>
+    <input type="range" min="0" max="10" value="5" id="slider">
+    <div class="labels"><span>Disagree</span><span>Uncertain</span><span>Agree</span></div>
+    <button id="nextBtn">Next</button>
+  </div>
 
-    <!-- Result -->
-    <div id="result"></div>
-
+  <div id="result" class="hidden"></div>
 </div>
 
 <script>
-// Multi-language text
-const languages = {
-    en: {
-        landingTitle: "Spectrum of Being",
-        landingText: "This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.",
-        sliderLabels: ["Disagree", "Uncertain", "Agree"],
-        start: "Start",
-        next: "Next",
-        stages: ["Stage I", "Stage II", "Stage III"],
-        stageTexts: [
-            "my consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
-            "my consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.",
-            "my consciousness currently aligns with being, full authorship, source awareness, and deep consciousness."
-        ]
-    },
-    de: {
-        landingTitle: "Spektrum des Seins",
-        landingText: "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Seins. Ich beantworte eine Reihe von Aussagen mithilfe des Schiebereglers, um meine Zustimmung anzuzeigen.",
-        sliderLabels: ["Ablehnen", "Unentschieden", "Zustimmen"],
-        start: "Start",
-        next: "Weiter",
-        stages: ["Stufe I", "Stufe II", "Stufe III"],
-        stageTexts: [
-            "mein Bewusstsein stimmt derzeit mit Opferbewusstsein überein, Herausforderungen werden erlebt, Lernen und Wachstum sind erforderlich.",
-            "mein Bewusstsein stimmt derzeit mit Erkenntnis überein, Muster werden beobachtet, hinterfragt und das Bewusstsein erweitert.",
-            "mein Bewusstsein stimmt derzeit mit Sein überein, vollständige Urheberschaft, Quellbewusstsein und tiefes Bewusstsein."
-        ]
-    },
-    fa: {
-        landingTitle: "طیف وجود",
-        landingText: "این بازتابی از آگاهی درونی من به نام طیف وجود است. من به مجموعه‌ای از جملات پاسخ می‌دهم و با استفاده از نوار لغزنده میزان توافق خود را مشخص می‌کنم.",
-        sliderLabels: ["مخالفم", "نامطمئن", "موافقم"],
-        start: "شروع",
-        next: "بعدی",
-        stages: ["مرحله I", "مرحله II", "مرحله III"],
-        stageTexts: [
-            "آگاهی من در حال حاضر با حالت قربانی هم‌راستا است، چالش‌ها تجربه می‌شوند، یادگیری و رشد لازم است.",
-            "آگاهی من در حال حاضر با مرحله‌ی تحقق هم‌راستا است، الگوها مشاهده و مورد سوال قرار می‌گیرند و آگاهی گسترش می‌یابد.",
-            "آگاهی من در حال حاضر با بودن هم‌راستا است، خالقیت کامل، آگاهی منبع و آگاهی عمیق."
-        ]
-    }
-};
-
-// Questions (translated for all three languages)
 const questions = {
-    en: [
-        "There is someone (something) out there.",
-        "Is there anyone out there?",
-        "There is no one out there.",
-        "I am the victim of life.",
-        "I am connected to a source, a higher self, or god.",
-        "I am the source; god is a concept within me.",
-        "Someone has built the wall.",
-        "I am a brick in the wall.",
-        "I am the wall, shaping the wall constantly.",
-        "I blame society for everything I experience.",
-        "I am part of society; therefore I blame myself.",
-        "Society arises from me; I blame no one.",
-        "Everything is unfair; this world must change.",
-        "I must change the world and bring fairness into this.",
-        "I radiate fairness; nothing needs to change.",
-        "I need to be seen; the world must acknowledge me.",
-        "I see myself; there is no need to be seen.",
-        "Let there be light — I am projecting the world.",
-        "There is god.",
-        "There is no god.",
-        "God is a concept created by me.",
-        "I need to belong to feel whole.",
-        "I am not alone; I belong.",
-        "I am alone — the only one.",
-        "Reality is co-created; I am within a hierarchy and powerless.",
-        "Reality is being projected by me.",
-        "I am authoring reality; I am the power of all frequencies.",
-        "I was created.",
-        "I am questioning creation.",
-        "I am the creator.",
-        "I need validation to feel seen.",
-        "I am validated and seen.",
-        "I am validation.",
-        "Others exist.",
-        "Are others beings?",
-        "Others are not beings.",
-        "There is hell and heaven.",
-        "Hell and heaven are states of being.",
-        "There is no state — only being.",
-        "I feel life is unfair or against me.",
-        "I notice patterns repeating and wonder why.",
-        "I see all as one movement of consciousness.",
-        "I often compare myself to others.",
-        "I sense deeper meaning in challenges.",
-        "I hold no resistance to what arises.",
-        "I seek validation or approval.",
-        "I question my thoughts and reactions.",
-        "I experience peace independent of form.",
-        "I feel powerless to change what happens.",
-        "I feel moments of calm beyond emotion.",
-        "I know love as my natural state.",
-        "I believe luck or fate decides outcomes.",
-        "I begin forgiving and letting go.",
-        "I speak from stillness, not reaction.",
-        "I hold resentment or blame.",
-        "I recognize reflections in others.",
-        "I see no separation between creation and creator.",
-        "I fear losing control.",
-        "I am learning to direct my attention inward.",
-        "I feel timeless awareness beyond body and mind.",
-        "I think others owe me something.",
-        "I trust life more often than I resist it.",
-        "I understand that nothing is missing.",
-        "I feel disconnected or unseen.",
-        "I feel glimpses of unity and flow.",
-        "I live without striving — just being.",
-        "I think peace depends on circumstances.",
-        "I begin to see love behind appearances.",
-        "I am love observing itself."
-    ],
-    de: [], // Translation of questions to German (you can fill in)
-    fa: []  // Translation of questions to Persian (you can fill in)
+  en: [
+    "There is someone (something) out there.",
+    "Is there anyone out there?",
+    "There is no one out there.",
+    "I am the victim of life.",
+    "I am connected to a source, a higher self, or God.",
+    "I am the source; God is a concept within me.",
+    "Someone has built the wall.",
+    "I am a brick in the wall.",
+    "I am the wall, shaping the wall constantly.",
+    "I blame society for everything I experience.",
+    "I am part of society; therefore I blame myself.",
+    "Society arises from me; I blame no one.",
+    "Everything is unfair; this world must change.",
+    "I must change the world and bring fairness into this.",
+    "I radiate fairness; nothing needs to change.",
+    "I need to be seen; the world must acknowledge me.",
+    "I see myself; there is no need to be seen.",
+    "Let there be light — I am projecting the world.",
+    "There is God.",
+    "There is no God.",
+    "God is a concept created by me.",
+    "I need to belong to feel whole.",
+    "I am not alone; I belong.",
+    "I am alone — the only one.",
+    "Reality is co-created; I am within a hierarchy and powerless.",
+    "Reality is being projected by me.",
+    "I am authoring reality; I am the power of all frequencies.",
+    "I was created.",
+    "I am questioning creation.",
+    "I am the creator.",
+    "I need validation to feel seen.",
+    "I am validated and seen.",
+    "I am validation.",
+    "Others exist.",
+    "Are others beings?",
+    "Others are not beings.",
+    "There is hell and heaven.",
+    "Hell and heaven are states of being.",
+    "There is no state — only being.",
+    "I feel life is unfair or against me.",
+    "I notice patterns repeating and wonder why.",
+    "I see all as one movement of consciousness.",
+    "I often compare myself to others.",
+    "I sense deeper meaning in challenges.",
+    "I hold no resistance to what arises.",
+    "I seek validation or approval.",
+    "I question my thoughts and reactions.",
+    "I experience peace independent of form.",
+    "I feel powerless to change what happens.",
+    "I feel moments of calm beyond emotion.",
+    "I know love as my natural state.",
+    "I believe luck or fate decides outcomes.",
+    "I begin forgiving and letting go.",
+    "I speak from stillness, not reaction.",
+    "I hold resentment or blame.",
+    "I recognize reflections in others.",
+    "I see no separation between creation and creator.",
+    "I fear losing control.",
+    "I am learning to direct my attention inward.",
+    "I feel timeless awareness beyond body and mind.",
+    "I think others owe me something.",
+    "I trust life more often than I resist it.",
+    "I understand that nothing is missing.",
+    "I feel disconnected or unseen.",
+    "I feel glimpses of unity and flow.",
+    "I live without striving — just being.",
+    "I think peace depends on circumstances.",
+    "I begin to see love behind appearances.",
+    "I am love observing itself."
+  ],
+  de: [
+    "Da ist jemand (etwas) da draußen.",
+    "Gibt es da draußen jemanden?",
+    "Da ist niemand da draußen.",
+    "Ich bin das Opfer des Lebens.",
+    "Ich bin mit einer Quelle, einem höheren Selbst oder Gott verbunden.",
+    "Ich bin die Quelle; Gott ist ein Konzept in mir.",
+    "Jemand hat die Mauer gebaut.",
+    "Ich bin ein Ziegel in der Mauer.",
+    "Ich bin die Mauer, die die Mauer ständig formt.",
+    "Ich gebe der Gesellschaft die Schuld für alles, was ich erlebe.",
+    "Ich bin Teil der Gesellschaft; daher gebe ich mir selbst die Schuld.",
+    "Die Gesellschaft entsteht aus mir; ich gebe niemandem die Schuld.",
+    "Alles ist unfair; diese Welt muss sich ändern.",
+    "Ich muss die Welt verändern und Gerechtigkeit bringen.",
+    "Ich strahle Gerechtigkeit aus; nichts muss geändert werden.",
+    "Ich muss gesehen werden; die Welt muss mich anerkennen.",
+    "Ich sehe mich selbst; es ist nicht nötig, gesehen zu werden.",
+    "Es werde Licht — ich projiziere die Welt.",
+    "Es gibt Gott.",
+    "Es gibt keinen Gott.",
+    "Gott ist ein von mir geschaffenes Konzept.",
+    "Ich muss dazugehören, um mich vollständig zu fühlen.",
+    "Ich bin nicht allein; ich gehöre dazu.",
+    "Ich bin allein — der einzige.",
+    "Die Realität wird miterschaffen; ich bin innerhalb einer Hierarchie machtlos.",
+    "Die Realität wird von mir projiziert.",
+    "Ich erschaffe die Realität; ich bin die Macht aller Frequenzen.",
+    "Ich wurde erschaffen.",
+    "Ich hinterfrage die Schöpfung.",
+    "Ich bin der Schöpfer.",
+    "Ich brauche Bestätigung, um gesehen zu werden.",
+    "Ich bin bestätigt und gesehen.",
+    "Ich bin Bestätigung.",
+    "Andere existieren.",
+    "Sind andere Wesen?",
+    "Andere sind keine Wesen.",
+    "Es gibt Hölle und Himmel.",
+    "Hölle und Himmel sind Zustände des Seins.",
+    "Es gibt keinen Zustand — nur Sein.",
+    "Ich empfinde das Leben als unfair oder gegen mich gerichtet.",
+    "Ich bemerke wiederkehrende Muster und frage mich warum.",
+    "Ich sehe alles als eine Bewegung des Bewusstseins.",
+    "Ich vergleiche mich oft mit anderen.",
+    "Ich spüre tiefere Bedeutung in Herausforderungen.",
+    "Ich halte keinen Widerstand gegen das, was entsteht.",
+    "Ich suche Bestätigung oder Zustimmung.",
+    "Ich hinterfrage meine Gedanken und Reaktionen.",
+    "Ich erfahre Frieden unabhängig von Form.",
+    "Ich fühle mich machtlos, zu ändern, was passiert.",
+    "Ich fühle Momente der Ruhe jenseits von Emotionen.",
+    "Ich kenne Liebe als meinen natürlichen Zustand.",
+    "Ich glaube, dass Glück oder Schicksal die Ergebnisse bestimmt.",
+    "Ich beginne zu vergeben und loszulassen.",
+    "Ich spreche aus der Stille, nicht aus Reaktion.",
+    "Ich halte Groll oder Schuld.",
+    "Ich erkenne Spiegelungen in anderen.",
+    "Ich sehe keine Trennung zwischen Schöpfung und Schöpfer.",
+    "Ich fürchte den Kontrollverlust.",
+    "Ich lerne, meine Aufmerksamkeit nach innen zu richten.",
+    "Ich fühle zeitloses Bewusstsein jenseits von Körper und Geist.",
+    "Ich denke, andere schulden mir etwas.",
+    "Ich vertraue dem Leben öfter, als ich widerstehe.",
+    "Ich verstehe, dass nichts fehlt.",
+    "Ich fühle mich getrennt oder ungesehen.",
+    "Ich spüre Momente von Einheit und Fluss.",
+    "Ich lebe ohne Anstrengung — einfaches Sein.",
+    "Ich denke, Frieden hängt von den Umständen ab.",
+    "Ich beginne, Liebe hinter Erscheinungen zu sehen.",
+    "Ich bin Liebe, die sich selbst beobachtet."
+  ],
+  fa: [
+    "کسی (چیزی) آنجا وجود دارد.",
+    "آیا کسی آنجا وجود دارد؟",
+    "هیچ‌کس آنجا نیست.",
+    "من قربانی زندگی هستم.",
+    "من به یک منبع، خود برتر یا خدا متصل هستم.",
+    "من منبع هستم؛ خدا فقط یک مفهوم در درون من است.",
+    "کسی دیوار را ساخته است.",
+    "من یک آجر در دیوار هستم.",
+    "من خود دیوار هستم و آن را شکل می‌دهم.",
+    "جامعه را مقصر همه چیز می‌دانم.",
+    "من بخشی از جامعه هستم؛ بنابراین خودم را مقصر می‌دانم.",
+    "جامعه از من ناشی می‌شود؛ به هیچ‌کس سرزنش نمی‌کنم.",
+    "همه چیز ناعادلانه است؛ این جهان باید تغییر کند.",
+    "من باید جهان را تغییر دهم و عدالت بیاورم.",
+    "من عدالت را می‌تابانم؛ هیچ چیزی نیاز به تغییر ندارد.",
+    "من نیاز دارم دیده شوم؛ جهان باید من را ببیند.",
+    "من خودم را می‌بینم؛ نیازی به دیده شدن نیست.",
+    "بگذار نور باشد — من جهان را خلق می‌کنم.",
+    "خدا وجود دارد.",
+    "خدا وجود ندارد.",
+    "خدا یک مفهوم است که توسط من ایجاد شده.",
+    "برای کامل بودن نیاز دارم به جمع تعلق داشته باشم.",
+    "من تنها نیستم؛ من تعلق دارم.",
+    "من تنها هستم — تنها یکی.",
+    "واقعیت هم‌آفرین است؛ من در سلسله مراتب قدرت ندارم.",
+    "واقعیت توسط من ایجاد می‌شود.",
+    "من واقعیت را خلق می‌کنم؛ من قدرت تمام فرکانس‌ها هستم.",
+    "من خلق شده‌ام.",
+    "من دربارهٔ خلقت سوال می‌کنم.",
+    "من خالق هستم.",
+    "من نیاز به تایید دارم تا دیده شوم.",
+    "من تایید شده و دیده می‌شوم.",
+    "من خودم تایید هستم.",
+    "دیگران وجود دارند.",
+    "آیا دیگران موجوداتی هستند؟",
+    "دیگران موجود نیستند.",
+    "جهنم و بهشت وجود دارد.",
+    "جهنم و بهشت حالات وجود هستند.",
+    "هیچ حالتی وجود ندارد — فقط بودن هست.",
+    "من احساس می‌کنم زندگی ناعادلانه یا علیه من است.",
+    "من الگوهای تکراری را می‌بینم و می‌پرسم چرا.",
+    "من همه چیز را یک حرکت آگاهی می‌بینم.",
+    "من اغلب خود را با دیگران مقایسه می‌کنم.",
+    "من معنا را در چالش‌ها حس می‌کنم.",
+    "من مقاومت نمی‌کنم نسبت به آنچه پیش می‌آید.",
+    "من به دنبال تایید یا پذیرش هستم.",
+    "من دربارهٔ افکار و واکنش‌هایم سوال می‌کنم.",
+    "من آرامش را مستقل از شکل تجربه می‌کنم.",
+    "من احساس قدرت ندارم برای تغییر آنچه اتفاق می‌افتد.",
+    "من لحظات آرامش فراتر از احساس را تجربه می‌کنم.",
+    "من عشق را به عنوان حالت طبیعی خود می‌شناسم.",
+    "من معتقدم شانس یا سرنوشت نتایج را تعیین می‌کند.",
+    "من شروع به بخشیدن و رها کردن می‌کنم.",
+    "من از سکوت سخن می‌گویم، نه واکنش.",
+    "من کینه یا سرزنش دارم.",
+    "من بازتاب‌ها را در دیگران می‌بینم.",
+    "من جدایی بین آفرینش و خالق نمی‌بینم.",
+    "من از دست دادن کنترل می‌ترسم.",
+    "من در حال یادگیری هدایت توجه به درون هستم.",
+    "من آگاهی بی‌زمان فراتر از بدن و ذهن را حس می‌کنم.",
+    "من فکر می‌کنم دیگران به من بدهکارند.",
+    "من بیشتر از مقاومت، به زندگی اعتماد دارم.",
+    "من می‌فهمم که هیچ چیزی کم نیست.",
+    "من احساس قطعیت یا دیده نشدن می‌کنم.",
+    "من لحظاتی از وحدت و جریان را تجربه می‌کنم.",
+    "من بدون تلاش زندگی می‌کنم — فقط هستم.",
+    "من فکر می‌کنم صلح به شرایط بستگی دارد.",
+    "من شروع به دیدن عشق پشت ظاهرها می‌کنم.",
+    "من عشق هستم که خود را مشاهده می‌کند."
+  ]
 };
 
-let currentLang = 'en';
+const resultsText = {
+  en: {
+    stage1: "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
+    stage2: "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.",
+    stage3: "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness."
+  },
+  de: {
+    stage1: "Mein Bewusstsein stimmt derzeit mit Opferbewusstsein überein, Herausforderungen werden erlebt, Lernen und Wachstum sind erforderlich.",
+    stage2: "Mein Bewusstsein stimmt derzeit mit Erkenntnis überein, Muster beobachten, hinterfragen und Bewusstsein erweitern.",
+    stage3: "Mein Bewusstsein stimmt derzeit mit Sein überein, vollständige Autorschaft, Quellenbewusstsein und tiefes Bewusstsein."
+  },
+  fa: {
+    stage1: "آگاهی من در حال حاضر با حالت قربانی بودن همسو است، مواجهه با چالش‌ها، نیاز به یادگیری و رشد دارد.",
+    stage2: "آگاهی من در حال حاضر با مشاهده الگوها، پرسشگری و گسترش آگاهی همسو است.",
+    stage3: "آگاهی من در حال حاضر با بودن، تمامیت خالق، آگاهی منبع و آگاهی عمیق همسو است."
+  }
+};
+
+let currentLanguage = 'en';
 let shuffledQuestions = [];
 let currentIndex = 0;
-let responses = [];
-let stageMapping = []; // array with stage info for each question
+let answers = [];
 
-// Define stage mapping for each question (0: Stage I, 1: Stage II, 2: Stage III)
-function initStageMapping() {
-    stageMapping = [];
-    const stage1 = 10, stage2 = 10, stage3 = 10; // adjust if your question count per stage differs
-    for(let i=0;i<stage1;i++) stageMapping.push(0);
-    for(let i=0;i<stage2;i++) stageMapping.push(1);
-    for(let i=0;i<stage3;i++) stageMapping.push(2);
-}
+const landing = document.getElementById('landing');
+const questionnaire = document.getElementById('questionnaire');
+const resultDiv = document.getElementById('result');
+const questionText = document.getElementById('questionText');
+const slider = document.getElementById('slider');
+const nextBtn = document.getElementById('nextBtn');
+const startBtn = document.getElementById('startBtn');
+const languageSelect = document.getElementById('languageSelect');
+const demoSlider = document.getElementById('demoSlider');
+const leftLabel = document.getElementById('leftLabel');
+const midLabel = document.getElementById('midLabel');
+const rightLabel = document.getElementById('rightLabel');
 
 function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-    while(currentIndex != 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
-    return array;
+  let a = array.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-// Initialize page
-const landing = document.getElementById("landing");
-const questionnaire = document.getElementById("questionnaire");
-const resultDiv = document.getElementById("result");
-const startBtn = document.getElementById("start-btn");
-const nextBtn = document.getElementById("next-btn");
-const languageSelect = document.getElementById("language-select");
-const questionText = document.getElementById("question-text");
-const questionSlider = document.getElementById("question-slider");
-const landingLabels = document.getElementById("landing-labels").children;
-const landingTitle = document.getElementById("landing-title");
-const landingText = document.getElementById("landing-text");
-
-languageSelect.addEventListener('change', ()=>{ currentLang = languageSelect.value; updateLanguage(); });
-
-function updateLanguage(){
-    const lang = languages[currentLang];
-    landingTitle.textContent = lang.landingTitle;
-    landingText.textContent = lang.landingText;
-    landingLabels[0].textContent = lang.sliderLabels[0];
-    landingLabels[1].textContent = lang.sliderLabels[1];
-    landingLabels[2].textContent = lang.sliderLabels[2];
-    startBtn.textContent = lang.start;
-    nextBtn.textContent = lang.next;
+function loadLanguage(lang) {
+  currentLanguage = lang;
+  if(lang==='fa'){ document.body.classList.add('rtl'); } else { document.body.classList.remove('rtl'); }
+  // Landing page text
+  const descriptions = {
+    en:"This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.",
+    de:"Dies ist eine Reflexion meines inneren Bewusstseins namens Spectrum of Being. Ich beantworte eine Reihe von Aussagen mit dem Schieberegler, um meine Zustimmung anzuzeigen.",
+    fa:"این بازتابی از آگاهی درونی من به نام Spectrum of Being است. من با استفاده از اسلایدر به مجموعه‌ای از جملات پاسخ می‌دهم."
+  };
+  document.getElementById('description').innerText = descriptions[lang];
+  
+  // Slider labels
+  const labels = {
+    en:["Disagree","Uncertain","Agree"],
+    de:["Ablehnen","Unsicher","Zustimmen"],
+    fa:["مخالف","نامطمئن","موافق"]
+  };
+  leftLabel.innerText = labels[lang][0];
+  midLabel.innerText = labels[lang][1];
+  rightLabel.innerText = labels[lang][2];
+  
+  demoSlider.value = 5;
+  slider.value = 5;
 }
 
-// Start the test
-startBtn.addEventListener('click', ()=> {
-    landing.style.display = "none";
-    questionnaire.style.display = "block";
-    currentIndex = 0;
-    responses = [];
-    initStageMapping();
-    shuffledQuestions = shuffle([...questions[currentLang]]);
-    showQuestion();
+languageSelect.addEventListener('change', e => { loadLanguage(e.target.value); });
+
+startBtn.addEventListener('click', () => {
+  landing.classList.add('hidden');
+  questionnaire.classList.remove('hidden');
+  shuffledQuestions = shuffle(questions[currentLanguage]);
+  currentIndex = 0;
+  answers = [];
+  showQuestion();
 });
 
-// Show question
-function showQuestion(){
-    if(currentIndex >= shuffledQuestions.length){
-        showResult();
-        return;
-    }
-    questionText.textContent = shuffledQuestions[currentIndex];
-    questionSlider.value = 5;
+function showQuestion() {
+  questionText.innerText = shuffledQuestions[currentIndex];
+  slider.value = 5; // default middle
 }
 
-// Next button
-nextBtn.addEventListener('click', ()=>{
-    responses.push(parseInt(questionSlider.value));
-    currentIndex++;
-    showQuestion();
+nextBtn.addEventListener('click', () => {
+  answers.push(parseInt(slider.value));
+  currentIndex++;
+  if(currentIndex<shuffledQuestions.length){ showQuestion(); }
+  else{ showResult(); }
 });
 
-// Show result
-function showResult(){
-    questionnaire.style.display = "none";
-    resultDiv.style.display = "block";
-
-    // Calculate stage averages
-    let stage1 = [], stage2 = [], stage3 = [];
-    for(let i=0;i<responses.length;i++){
-        if(stageMapping[i]==0) stage1.push(responses[i]);
-        else if(stageMapping[i]==1) stage2.push(responses[i]);
-        else stage3.push(responses[i]);
-    }
-    function avg(arr){ return arr.length? (arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1):0; }
-
-    let stageAvgs = [avg(stage1), avg(stage2), avg(stage3)];
-    const lang = languages[currentLang];
-
-    let html = "";
-    for(let i=0;i<3;i++){
-        html += `<p>${lang.stages[i]}: ${stageAvgs[i]}</p>`;
-        html += `<p>${lang.stageTexts[i]}</p>`;
-    }
-    resultDiv.innerHTML = html;
+function showResult() {
+  questionnaire.classList.add('hidden');
+  resultDiv.classList.remove('hidden');
+  const total = answers.reduce((a,b)=>a+b,0);
+  const stageSize = Math.floor(shuffledQuestions.length/3);
+  const stage1 = answers.slice(0,stageSize).reduce((a,b)=>a+b,0);
+  const stage2 = answers.slice(stageSize,stageSize*2).reduce((a,b)=>a+b,0);
+  const stage3 = answers.slice(stageSize*2).reduce((a,b)=>a+b,0);
+  
+  resultDiv.innerHTML = `
+    <h2>Stage I: ${stage1}</h2>
+    <h2>Stage II: ${stage2}</h2>
+    <h2>Stage III: ${stage3}</h2>
+    <p>${resultsText[currentLanguage].stage1}</p>
+    <p>${resultsText[currentLanguage].stage2}</p>
+    <p>${resultsText[currentLanguage].stage3}</p>
+    <h3>Overall Score: ${total}</h3>
+  `;
 }
 
-updateLanguage();
-landing.style.display = "block";
+loadLanguage(currentLanguage);
 </script>
 </body>
 </html>
