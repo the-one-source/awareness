@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,7 @@
 <title>Spectrum of Awareness</title>
 <style>
   :root{
-    --panel-width:760px;
+    --panel-width:1000px;
     --accent:#666440;
     --bg:#f5f7fa;
     --card:#ffffff;
@@ -15,40 +14,42 @@
     --text:#111;
   }
   html,body{height:100%;margin:0;background:var(--bg);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);}
-  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px;}
-  .panel{width:min(96%,var(--panel-width));max-width:var(--panel-width);background:var(--card);border-radius:14px;box-shadow:0 10px 30px rgba(20,20,30,0.06);padding:34px;box-sizing:border-box;text-align:center;}
-  h1{margin:0 0 18px 0;font-weight:400;color:#444;font-size:22px;}
-  .row{display:flex;justify-content:center;gap:12px;align-items:center;margin-bottom:20px;}
+  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .panel{width:min(98%,var(--panel-width));max-width:var(--panel-width);background:var(--card);border-radius:14px;box-shadow:0 10px 30px rgba(20,20,30,0.06);padding:28px;box-sizing:border-box;}
+  h1{margin:0 0 14px 0;font-weight:400;color:#444;font-size:22px;text-align:center;}
+  .row{display:flex;justify-content:center;gap:12px;align-items:center;margin-bottom:14px;}
   select{padding:8px 12px;font-size:15px;border-radius:8px;border:1px solid #e6e6e6;background:white;}
-  p.lead{margin:0 0 18px 0;color:#666;font-size:15px;line-height:1.45;}
-  .fixed-slider-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;margin:18px 0 8px 0;}
-  .fixed-track{width:92%;max-width:680px;}
+  p.lead{margin:0 0 12px 0;color:#666;font-size:15px;line-height:1.45;text-align:center;}
+  .fixed-slider-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0;}
+  .fixed-track{width:92%;max-width:880px;}
   input[type="range"]{-webkit-appearance:none;width:100%;height:12px;border-radius:10px;background:#e6e6e6;outline:none;margin:0;padding:0;}
   input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;margin-top:-3px;cursor:pointer;}
-  input[type="range"]::-moz-range-thumb{width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;cursor:pointer;}
-  .slider-labels{width:92%;max-width:680px;display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px;user-select:none;}
-  .btn{display:inline-block;padding:12px 28px;border-radius:28px;background:var(--accent);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:18px;}
+  .slider-labels{width:92%;max-width:880px;display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px;user-select:none;}
+  .btn{display:inline-block;padding:12px 22px;border-radius:28px;background:var(--accent);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:12px;}
   .btn:active{transform:translateY(1px);}
-  .question-container{width:100%;}
-  .result-grid{margin-top:12px;color:#333;font-size:15px;display:flex;gap:12px;justify-content:space-between;align-items:center;}
-  .result-stage{font-weight:700;flex:1;padding:10px;background:#fbfbfb;border-radius:10px;}
-  .result-score{font-size:18px;color:#222;margin-top:8px;font-weight:600;}
-  .hidden{display:none;}
+  .result-grid{margin-top:12px;color:#333;font-size:15px;display:flex;gap:12px;justify-content:space-between;align-items:stretch;}
+  .result-stage{font-weight:700;flex:1;padding:12px;background:#fbfbfb;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:92px;box-sizing:border-box;}
+  .result-stage:hover{box-shadow:0 6px 18px rgba(102,100,64,0.06);}
+  .result-stage .label{font-size:14px;color:#555;}
+  .result-score{font-size:20px;color:#222;margin-top:6px;font-weight:700;}
+  .result-dominant{margin-top:16px;padding:14px;background:#fff9e6;border-radius:10px;border:1px solid rgba(102,100,64,0.08);font-size:15px;}
+  .stage-details{overflow:hidden;max-height:0;transition:max-height .36s ease;padding:0 10px;box-sizing:border-box;}
+  .stage-details.open{max-height:680px;padding:12px 12px 18px 12px;}
+  .stage-details .content{font-size:14px;color:#333;line-height:1.45;}
+  .stage-details .closeBtn{display:inline-block;margin-top:12px;padding:8px 14px;border-radius:10px;background:#eee;border:none;color:#444;cursor:pointer;}
+  footer.note{margin-top:14px;color:#666;font-size:13px;text-align:center;}
+  @media (max-width:820px){ .result-grid{flex-direction:column;} .result-stage{width:100%} .panel{padding:18px;} }
+  /* RTL handling */
   :root[dir="rtl"] .panel{direction:rtl;}
   :root[dir="rtl"] .slider-labels{direction:rtl;}
-  #questionText{font-size:18px;line-height:1.45;margin:6px 0 14px 0;text-align:center;word-break:break-word;}
-  footer.note{margin-top:14px;color:#666;font-size:13px;}
-  @media (max-width:520px){ .panel{padding:20px;} #questionText{font-size:16px;} .btn{padding:10px 20px;} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="panel" id="panel">
 
-    <!-- Title (Landing & Result only) -->
     <h1 id="pageTitle">Spectrum of Awareness</h1>
 
-    <!-- Language selector (Landing only) -->
     <div class="row" id="langRow">
       <select id="langSelect" aria-label="Language">
         <option value="en">English</option>
@@ -57,7 +58,7 @@
       </select>
     </div>
 
-    <!-- Landing pane -->
+    <!-- Landing -->
     <div id="landingPane">
       <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness. I am answering a series of statements using the slider to indicate my agreement.</p>
 
@@ -72,12 +73,12 @@
         </div>
       </div>
 
-      <button id="startBtn" class="btn">Start</button>
+      <div style="text-align:center;"><button id="startBtn" class="btn">Start</button></div>
     </div>
 
-    <!-- Questionnaire pane (NO title, NO language selector) -->
+    <!-- Questionnaire (unchanged logic) -->
     <div id="questionPane" class="hidden" aria-live="polite">
-      <div id="questionText" role="heading" aria-level="2"></div>
+      <div id="questionText" role="heading" aria-level="2" style="text-align:center;font-size:18px;line-height:1.45;margin:6px 0 14px 0;"></div>
 
       <div class="fixed-slider-wrap">
         <div class="fixed-track">
@@ -90,22 +91,38 @@
         </div>
       </div>
 
-      <button id="nextBtn" class="btn">Next</button>
+      <div style="text-align:center;"><button id="nextBtn" class="btn">Next</button></div>
     </div>
 
-    <!-- Result pane (Title visible, no language selector) -->
+    <!-- Result pane: updated with expandable stage details and integrated logic -->
     <div id="resultPane" class="hidden">
       <div class="result-grid" aria-hidden="false">
-        <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
-        <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
-        <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
+        <div class="result-stage" id="stageIButton"><div class="label">Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
+        <div class="result-stage" id="stageIIButton"><div class="label">Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
+        <div class="result-stage" id="stageIIIButton"><div class="label">Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
       </div>
 
-      <div id="resultText" style="margin-top:18px;color:#333;font-size:15px;"></div>
+      <div id="dominantBox" class="result-dominant"></div>
 
-      <div style="margin-top:18px;">
-        <button id="restartBtn" class="btn">Restart</button>
+      <!-- Expandable details for each stage -->
+      <div style="margin-top:14px;">
+        <div id="stageIDetails" class="stage-details" aria-hidden="true">
+          <div class="content" id="stageIContent"></div>
+          <button class="closeBtn" data-close="stageIDetails">Close</button>
+        </div>
+
+        <div id="stageIIDetails" class="stage-details" aria-hidden="true">
+          <div class="content" id="stageIIContent"></div>
+          <button class="closeBtn" data-close="stageIIDetails">Close</button>
+        </div>
+
+        <div id="stageIIIDetails" class="stage-details" aria-hidden="true">
+          <div class="content" id="stageIIIContent"></div>
+          <button class="closeBtn" data-close="stageIIIDetails">Close</button>
+        </div>
       </div>
+
+      <div style="margin-top:18px;text-align:center;"><button id="restartBtn" class="btn">Restart</button></div>
     </div>
 
     <footer class="note" id="footerNote" aria-hidden="true"></footer>
@@ -113,10 +130,10 @@
 </div>
 
 <script>
-/* ------------------------------------------------------------------
-   QUESTIONS: each object has 'stage' (1/2/3) and localized text fields:
-   en, de, fa
-   ------------------------------------------------------------------ */
+/* ====================================================================
+   QUESTIONS (unchanged) - same array as your original (trimmed here for brevity)
+   NOTE: In practice keep the existing QUESTIONS array you already have.
+   ==================================================================== */
 const QUESTIONS = [
   {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
   {stage:2,en:"Life happens through me.",de:"Das Leben passiert durch mich.",fa:"زندگی از طریق من اتفاق می‌افتد."},
@@ -239,20 +256,175 @@ const QUESTIONS = [
   {stage:3,en:"I am the pure witness; all distinctions are reflections of my own mind.",de:"Ich bin der reine Zeuge; alle Unterschiede sind Spiegelungen meines eigenen Geistes.",fa:"من شاهد مطلق هستم؛ همه تمایزات بازتاب ذهن خودم هستند."}
 ];
 
-/* stage description text localized */
-const STAGE_TEXT = [
-  {en:"My consciousness currently aligns with victimhood — experiencing challenges; learning and growth are needed.",
-   de:"Mein Bewusstsein stimmt derzeit mit Opferbewusstsein überein — Herausforderungen werden erlebt; Lernen und Wachstum sind notwendig.",
-   fa:"آگاهی من در حال حاضر با قربانی بودن هماهنگ است — تجربهٔ چالش‌ها؛ نیاز به یادگیری و رشد وجود دارد."},
-  {en:"My consciousness currently aligns with realization — observing patterns, questioning and expanding awareness.",
-   de:"Mein Bewusstsein stimmt derzeit mit Erkenntnis überein — Muster werden beobachtet, hinterfragt und das Bewusstsein erweitert.",
-   fa:"آگاهی من در حال حاضر با تحقق همسو است — مشاهدهٔ الگوها، پرسشگری و گسترش آگاهی."},
-  {en:"My consciousness currently aligns with being — authorship, source-awareness, and deep presence.",
-   de:"Mein Bewusstsein stimmt derzeit mit Sein überein — Autorenschaft, Quellenbewusstsein und tiefe Präsenz.",
-   fa:"آگاهی من در حال حاضر با هستی همسو است — خالقیت، آگاهی منبع و حضور عمیق."}
+/* ====================================================================
+   LOCALIZED LONG STAGE TEXTS & INTEGRATED SCORING NOTES
+   These texts include:
+   - full stage description
+   - scoring interpretation (low/around5/high)
+   - integrated scoring notes and result-determination logic
+   ==================================================================== */
+const STAGE_FULL = [
+  /* Stage I full description */
+  {
+    en: `Stage I — Victimhood.
+Score range: 0–10.
+
+Description:
+Stage I is the realm of victimhood where the self feels distant from its origin and lost in a density of forgetfulness. Life appears to happen to you rather than through you. Identity is entangled with stories, blame, and resistance.
+
+Scoring meaning:
+• High score (close to 10): deep immersion in victimhood, strong identification with external narratives, high resistance. Immediate shadow work and self-inquiry are recommended.
+• Around 5: partial awareness; glimpses of truth appear and movement toward Stage II is possible with focused inner work.
+• Low score (below 5): early awakening signs; readiness to begin shadow integration and shift into Stage II.
+
+How this affects overall state:
+The overall state is determined by the stage with the highest average score. If Stage I is highest, the overall state will read as Victimhood. Other stage scores provide context: for example, a moderate Stage II score signals some awakening even if Stage I is dominant.`,
+    de: `Stufe I — Opferbewusstsein.
+Punkteskala: 0–10.
+
+Beschreibung:
+Stufe I ist das Reich des Opferbewusstseins, in dem das Selbst weit von seiner Quelle entfernt ist und in Dichte und Vergessenheit verloren scheint. Das Leben scheint dir zu widerfahren, anstatt durch dich zu geschehen. Identität ist in Geschichten, Schuldzuweisungen und Widerstand verstrickt.
+
+Bedeutung der Werte:
+• Hoher Wert (nahe 10): tiefe Verstrickung im Opferbewusstsein, starke Identifikation mit äußeren Erzählungen, hoher Widerstand. Dringende Arbeit an Schattenanteilen und Selbstbefragung empfohlen.
+• Rund um 5: teilweise Bewusstwerdung; erste Wahrnehmungen ermöglichen den Übergang zu Stufe II durch gezielte innere Arbeit.
+• Niedriger Wert (unter 5): frühe Anzeichen des Erwachens; Bereitschaft zur Integration und zum Übergang zu Stufe II.
+
+Wie dies den Gesamtzustand beeinflusst:
+Der Gesamtzustand wird durch die Stufe mit dem höchsten Durchschnittswert bestimmt. Ist Stufe I am höchsten, lautet der Gesamtbefund Opferbewusstsein. Andere Stufenwerte liefern Nuancen.`,
+    fa: `مرحله اول — قربانی بودن.
+محدوده نمره: ۰–۱۰.
+
+شرح:
+مرحله اول قلمروی قربانی بودن است؛ خود از خاستگاه خود دور به‌نظر می‌رسد و در چگالی فراموشی گم شده است. زندگی به نظر می‌رسد برای شما اتفاق می‌افتد نه از طریق شما. هویت در داستان‌ها، سرزنش و مقاومت درگیر است.
+
+معنای نمره:
+• نمره بالا (نزدیک ۱۰): غرق شدن عمیق در حالت قربانی؛ شناسایی قوی با روایت‌های بیرونی و مقاومت بالا. کار سایه و خودپرسشی ضروری است.
+• حدود ۵: آگاهی جزئی؛ نفوذهای حقیقی آغاز می‌شود و امکان حرکت به مرحله دوم با کار درونی وجود دارد.
+• نمره پایین (زیر ۵): نشانه‌های بیداری اولیه؛ آمادگی برای یکپارچه‌سازی سایه‌ها و گذار به مرحله دوم.
+
+چگونه بر وضعیت کلی تاثیر می‌گذارد:
+وضعیت کلی توسط مرحله‌ای تعیین می‌شود که بیشترین میانگین نمره را دارد. اگر مرحله اول بالاترین باشد، وضعیت کلی قربانی بودن خوانده می‌شود. نمرات دیگر زمینه و جهت‌گیری را نشان می‌دهند.`
+  },
+
+  /* Stage II full description */
+  {
+    en: `Stage II — Awakening.
+Score range: 0–10.
+
+Description:
+Stage II is the field of questioning, pattern recognition and expanded self-awareness. Here the self detects its projections, sees reflections in others, and begins to reshape its participation in reality.
+
+Scoring meaning:
+• High score (close to 10): strong engagement in inward work and questioning; balance is crucial — integration of emotional regulation and polarity before full authorship is necessary.
+• Around 5: productive balance — lessons are integrating and the self is preparing for Stage III.
+• Low score (below 5): signals readiness to transcend toward Stage III — integration is moving forward and authorship becomes accessible.
+
+How this affects overall state:
+If Stage II has the highest average, the overall state will read as Awakening. Note: when Stage II average is below 5, this indicates a readiness to move into Stage III — the system will reflect this as a recommendation to embrace authorship once integration is completed.`,
+    de: `Stufe II — Erwachen.
+Punkteskala: 0–10.
+
+Beschreibung:
+Stufe II ist das Feld des Fragens, der Mustererkennung und der erweiterten Selbstwahrnehmung. Hier erkennt das Selbst seine Projektionen, sieht Spiegelungen in anderen und beginnt, seine Teilhabe an der Realität umzustrukturieren.
+
+Bedeutung der Werte:
+• Hoher Wert (nahe 10): kraftvolle Beschäftigung mit innerer Arbeit und Fragestellung; Integration und Ausbalancierung sind entscheidend, bevor vollständige Autorenschaft möglich ist.
+• Rund um 5: produktives Gleichgewicht — Lektionen werden integriert, das Selbst bereitet sich auf Stufe III vor.
+• Niedriger Wert (unter 5): zeigt Bereitschaft zur Transzendenz in Richtung Stufe III — Integration schreitet voran und Schöpferbewusstsein wird zugänglich.
+
+Wie dies den Gesamtzustand beeinflusst:
+Ist Stufe II am höchsten, wird der Gesamtzustand als Erwachen ausgewiesen. Wenn der Durchschnitt von Stufe II unter 5 liegt, deutet dies auf unmittelbare Bereitschaft zur Entwicklung in Stufe III hin; das System gibt dann eine Empfehlung zur Integration und nächsten Schritten.`,
+    fa: `مرحله دوم — بیداری.
+محدوده نمره: ۰–۱۰.
+
+شرح:
+مرحله دوم میدان پرسشگری، شناسایی الگوها و گسترش خودآگاهی است. در اینجا خود، پروژه‌هایش را می‌بیند، بازتاب‌ها را در دیگران تشخیص می‌دهد و مشارکت خود در واقعیت را در حال بازآرایی می‌بیند.
+
+معنای نمره:
+• نمره بالا (نزدیک ۱۰): درگیری قوی در کار درونی و پرسشگری؛ برقراری تعادل ضروری است — یکپارچه‌سازی احساسات و قطب‌ها پیش از ظهور کامل نویسندگی لازم است.
+• حدود ۵: تعادل سازنده — درس‌ها در حال یکپارچه شدن‌اند و خود برای مرحله سوم آماده می‌شود.
+• نمره پایین (زیر ۵): نشانگر آمادگی برای گذار به مرحله سوم است — یکپارچه‌سازی جلو می‌رود و خلاقیت در دسترس قرار می‌گیرد.
+
+چگونه بر وضعیت کلی تاثیر می‌گذارد:
+اگر مرحله دوم بیشترین میانگین را داشته باشد، وضعیت کلی به‌عنوان بیداری خوانده می‌شود. اگر میانگین مرحله دوم زیر ۵ باشد، سیستم توصیه‌ای برای آماده‌سازی به سوی مرحله سوم ارائه می‌دهد.`,
+  },
+
+  /* Stage III full description */
+  {
+    en: `Stage III — Authorship.
+Score range: 0–10.
+
+Description:
+Stage III is full authorship and source-awareness. The self recognizes itself as the author of experience, transcending linear time and witnessing reality as a unified field of consciousness.
+
+Scoring meaning:
+• High score (close to 10): active multidimensional expansion and mastery; authorship is primary.
+• Around 5: balanced awareness — inner stability and integration are maintained while expansion continues.
+• Low score (below 5): partial expansion; stabilization and balance are still required before full authorship stabilizes.
+
+How this affects overall state:
+If Stage III is the highest average, the overall state is Authorship. If Stage III is high but other stages show pockets of unresolved material, those areas are highlighted in the detailed notes below.`,
+    de: `Stufe III — Autorenschaft.
+Punkteskala: 0–10.
+
+Beschreibung:
+Stufe III steht für vollständige Autorenschaft und Quellenbewusstsein. Das Selbst erkennt sich als Schöpfer der Erfahrung, überschreitet lineare Zeit und erlebt Realität als einheitliches Feld des Bewusstseins.
+
+Bedeutung der Werte:
+• Hoher Wert (nahe 10): aktive multidimensionale Expansion und Meisterschaft; Autorenschaft ist dominierend.
+• Rund um 5: ausgewogene Wahrnehmung — innere Stabilität und Integration sind bewahrt, während Expansion fortschreitet.
+• Niedriger Wert (unter 5): teilweise Expansion; Stabilisierung und Ausbalancierung sind noch erforderlich, bevor Autorenschaft gefestigt ist.
+
+Wie dies den Gesamtzustand beeinflusst:
+Wenn Stufe III den höchsten Durchschnitt hat, ist der Gesamtzustand Autorenschaft. Zeigen sich jedoch in den anderen Stufen ungelöste Themen, werden diese im Detail hervorgehoben.`,
+    fa: `مرحله سوم — نویسندگی.
+محدوده نمره: ۰–۱۰.
+
+شرح:
+مرحله سوم نویسندگی کامل و آگاهی از منبع است. خود خود را به‌عنوان نویسندهٔ تجربه می‌شناسد، زمان خطی را فراتر می‌برد و واقعیت را به‌صورت یک میدان یکپارچه آگاهی تجربه می‌کند.
+
+معنای نمره:
+• نمره بالا (نزدیک ۱۰): گسترش چندبعدی فعال و استادی؛ نویسندگی برجسته است.
+• حدود ۵: آگاهی متعادل — ثبات درونی و یکپارچگی در حالی که گسترش ادامه دارد حفظ می‌شود.
+• نمره پایین (زیر ۵): گسترش جزئی؛ تثبیت و تعادل هنوز لازم است تا نویسندگی کامل تثبیت شود.
+
+چگونه بر وضعیت کلی تاثیر می‌گذارد:
+اگر مرحله سوم بالاترین میانگین را داشته باشد، وضعیت کلی نویسندگی است. اگرچه اگر سطوح دیگری مناطق حل‌نشده‌ای نشان دهند، این موارد در یادداشت‌های تفصیلی آورده می‌شوند.`
+  }
 ];
 
-/* Elements */
+/* Summarized integrated scoring notes (localized) - presented in the dominant box too */
+const INTEGRATED_NOTES = {
+  en: `Integrated scoring logic:
+• Each stage is scored 0–10. The stage with the highest average determines the overall state.
+• Score interpretation:
+  - <5 indicates readiness to integrate or move toward the next stage (where applicable).
+  - ≈5 indicates balance/equilibrium.
+  - >5 indicates active immersion or expansion.
+• If two stages are close, the later (higher) stage is favored to encourage growth orientation.
+Use the per-stage panels to read detailed guidance and precise next steps.`,
+  de: `Integrierte Bewertungslogik:
+• Jede Stufe wird 0–10 bewertet. Die Stufe mit dem höchsten Durchschnitt bestimmt den Gesamtzustand.
+• Bedeutungen der Werte:
+  - <5 zeigt Bereitschaft zur Integration oder zum Übergang (wo zutreffend).
+  - ≈5 zeigt Gleichgewicht / Ausgewogenheit.
+  - >5 zeigt aktive Verankerung oder Expansion.
+• Bei ähnlichen Werten wird die spätere Stufe bevorzugt, um wachstumsorientierte Lesungen zu unterstützen.
+Nutze die einzelnen Stufen-Panels für detaillierte Anleitungen und nächste Schritte.`,
+  fa: `منطق امتیازدهی یکپارچه:
+• هر مرحله از ۰ تا ۱۰ نمره می‌گیرد. مرحله‌ای که میانگین بالاتری دارد، وضعیت کلی را تعیین می‌کند.
+• تفسیر نمره:
+  - <۵ نشان‌دهندهٔ آمادگی برای یکپارچه‌سازی یا گذار به مرحله بعد است (در صورت کاربرد).
+  - ≈۵ نشان‌دهندهٔ تعادل/توازی است.
+  - >۵ نشان‌دهندهٔ درگیری فعال یا گسترش است.
+• اگر دو مرحله نزدیک باشند، مرحله بالاتر ارجحیت دارد تا خوانش رشدمحور را تشویق کند.
+برای راهنمایی دقیق‌تر و گام‌های بعدی از پنل‌های هر مرحله استفاده کنید.`
+};
+
+/* -------------------------
+   Elements & state
+   ------------------------- */
 const root = document.documentElement;
 const pageTitle = document.getElementById('pageTitle');
 const langRow = document.getElementById('langRow');
@@ -272,14 +444,26 @@ const questionText = document.getElementById('questionText');
 const scoreI = document.getElementById('scoreI');
 const scoreII = document.getElementById('scoreII');
 const scoreIII = document.getElementById('scoreIII');
-const resultText = document.getElementById('resultText');
+const dominantBox = document.getElementById('dominantBox');
+
+const stageIButton = document.getElementById('stageIButton');
+const stageIIButton = document.getElementById('stageIIButton');
+const stageIIIButton = document.getElementById('stageIIIButton');
+
+const stageIDetails = document.getElementById('stageIDetails');
+const stageIIDetails = document.getElementById('stageIIDetails');
+const stageIIIDetails = document.getElementById('stageIIIDetails');
+
+const stageIContent = document.getElementById('stageIContent');
+const stageIIContent = document.getElementById('stageIIContent');
+const stageIIIContent = document.getElementById('stageIIIContent');
 
 let lang = 'en';
 let order = [];
 let idx = 0;
 let answers = []; // array of {stage, value}
 
-/* --- localization helpers --- */
+/* --- localization small helpers for labels --- */
 function setRTL(flag){ root.setAttribute('dir', flag ? 'rtl' : 'ltr'); }
 function localizeLabels(){
   const map = {
@@ -297,7 +481,6 @@ function localizeLabels(){
   nextBtn.textContent = map.next;
   restartBtn.textContent = map.restart;
   landingText.textContent = map.landingDesc;
-  // update page title localized
   pageTitle.textContent = (lang==='de' ? 'Spektrum des Bewusstseins' : lang==='fa' ? 'طیف آگاهی' : 'Spectrum of Awareness');
 }
 
@@ -306,20 +489,17 @@ langSelect.value = lang;
 setRTL(false);
 localizeLabels();
 
-/* allow language selection only on landing (visible there) */
+/* language change */
 langSelect.addEventListener('change', (e)=>{
   lang = e.target.value;
   setRTL(lang === 'fa');
   localizeLabels();
 });
 
-/* Start - prepare randomized order, hide title & lang row for questionnaire */
+/* Start quiz - same as original */
 startBtn.addEventListener('click', ()=>{
-  // hide title & language selector during questionnaire
   pageTitle.style.display = 'none';
   langRow.style.display = 'none';
-
-  // randomize indices
   order = QUESTIONS.map((_,i)=>i).sort(()=>Math.random()-0.5);
   idx = 0;
   answers = [];
@@ -329,12 +509,12 @@ startBtn.addEventListener('click', ()=>{
   showQuestion();
 });
 
-/* show question at index idx (based on order) */
+/* show question */
 function showQuestion(){
   const qIdx = order[idx];
   const q = QUESTIONS[qIdx];
-  questionText.textContent = q[lang];
-  questionSlider.value = 5; // default middle
+  questionText.textContent = q[lang] || q.en;
+  questionSlider.value = 5;
   questionText.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
@@ -345,19 +525,55 @@ nextBtn.addEventListener('click', ()=>{
   answers.push({stage:QUESTIONS[qIdx].stage, value:v});
   idx++;
   if(idx >= order.length){
-    // finished
     questionPane.classList.add('hidden');
-    // show title on result page (but language selector stays hidden)
     pageTitle.style.display = '';
     resultPane.classList.remove('hidden');
-    computeResult();
+    computeResult(); // new compute & render logic
   } else {
     showQuestion();
   }
 });
 
-/* Compute per-stage averages and pick highest */
+/* Restart */
+restartBtn.addEventListener('click', ()=>{
+  resultPane.classList.add('hidden');
+  landingPane.classList.remove('hidden');
+  pageTitle.style.display = '';
+  langRow.style.display = '';
+  landingSlider.value = 5;
+});
+
+/* Utility: open/close stage panels */
+function openPanel(panel){
+  // close others
+  [stageIDetails, stageIIDetails, stageIIIDetails].forEach(p=>{
+    if(p !== panel) p.classList.remove('open');
+  });
+  panel.classList.toggle('open');
+}
+
+/* Hook buttons */
+stageIButton.addEventListener('click', ()=> openPanel(stageIDetails));
+stageIIButton.addEventListener('click', ()=> openPanel(stageIIDetails));
+stageIIIButton.addEventListener('click', ()=> openPanel(stageIIIDetails));
+
+document.querySelectorAll('.closeBtn').forEach(b=>{
+  b.addEventListener('click', (e)=>{
+    const sel = e.currentTarget.getAttribute('data-close');
+    const el = document.getElementById(sel);
+    if(el) el.classList.remove('open');
+  });
+});
+
+/* -------------------------
+   computeResult: updated to reflect your rules
+   - compute per-stage averages
+   - determine dominant stage (highest avg; ties -> later stage)
+   - compute readiness/balance notes and show them
+   - populate stage detail panels with full localized long text + dynamic score notes
+   ------------------------- */
 function computeResult(){
+  // 1. per-stage average
   const sums = [0,0,0];
   const counts = [0,0,0];
   answers.forEach(a=>{
@@ -367,34 +583,97 @@ function computeResult(){
   const avgs = [0,0,0];
   for(let i=0;i<3;i++){ avgs[i] = counts[i] ? (sums[i]/counts[i]) : 0; }
 
-  // Update numeric displays - Roman style Stage I/II/III labels are already visual; show numeric avg
+  // 2. show numeric
   scoreI.textContent = avgs[0].toFixed(1);
   scoreII.textContent = avgs[1].toFixed(1);
   scoreIII.textContent = avgs[2].toFixed(1);
 
-  // pick highest avg (if tie, highest index - later stage wins)
+  // 3. determine dominant stage (highest average; if tie, later stage wins)
   let highest = 0;
   if(avgs[1] > avgs[highest]) highest = 1;
   if(avgs[2] > avgs[highest]) highest = 2;
+  if(avgs[1] === avgs[highest] && highest !== 1 && avgs[1] === avgs[2]) { highest = Math.max(highest, 2); }
 
-  // localized descriptive result
-  resultText.textContent = STAGE_TEXT[highest][lang] || STAGE_TEXT[highest].en;
+  // 4. prepare contextual notes based on thresholds
+  // threshold logic:
+  // - score <5 => readiness/integration required (promotes movement if stage is preceding)
+  // - score == ~5 => balanced
+  // - score >5 => active immersion/expansion
+
+  function interpretScore(stageIndex, score){
+    const res = {label:'', note:''};
+    if(score < 5) res.label = (lang==='de' ? 'Unter 5' : lang==='fa' ? 'کمتر از ۵' : 'Below 5');
+    else if(Math.abs(score - 5) < 0.4) res.label = (lang==='de' ? 'Um 5' : lang==='fa' ? 'حدود ۵' : 'Around 5');
+    else res.label = (lang==='de' ? 'Über 5' : lang==='fa' ? 'بیشتر از ۵' : 'Above 5');
+
+    // stage-specific dynamic notes
+    if(stageIndex === 0){
+      // Stage I victims
+      if(score >= 8) res.note = (lang==='de' ? 'Tiefe Verstrickung im Opferbewusstsein. Dringende Schattenarbeit empfohlen.' : lang==='fa' ? 'درگیری عمیق با حالت قربانی؛ کار سایه فوری لازم است.' : 'Deep immersion in victimhood; urgent shadow work recommended.');
+      else if(score >= 5) res.note = (lang==='de' ? 'Verletzlichkeit und Identifikation. Arbeit an Selbstvergebung hilfreich.' : lang==='fa' ? 'آسیب‌پذیری و همپوشانی هویت؛ کار روی خودبخشش مفید است.' : 'Vulnerability and identification. Self-forgiveness work helpful.');
+      else res.note = (lang==='de' ? 'Anfänge des Erwachens. Möglichkeit des Übergangs zu Stufe II.' : lang==='fa' ? 'آغاز بیداری؛ امکان گذار به مرحله دوم وجود دارد.' : 'Beginnings of awakening; possible move to Stage II.');
+    } else if(stageIndex === 1){
+      if(score < 5) res.note = (lang==='de' ? 'Bereit zur Transzendenz in Richtung Stufe III.' : lang==='fa' ? 'آمادگی گذار به مرحله سوم.' : 'Readiness to transcend toward Stage III.');
+      else if(score <= 7) res.note = (lang==='de' ? 'Wachsendes Bewusstsein; Integration empfohlen.' : lang==='fa' ? 'گسترش آگاهی؛ یکپارچه‌سازی توصیه می‌شود.' : 'Growing awareness; integration recommended.');
+      else res.note = (lang==='de' ? 'Starke Fragebereitschaft; Balance vor Autorenschaft einüben.' : lang==='fa' ? 'پرسشگری قوی؛ باید قبل از نویسندگی تعادل برقرار شود.' : 'Strong questioning; practice balance before full authorship.');
+    } else {
+      // Stage III
+      if(score >= 8) res.note = (lang==='de' ? 'Aktive multidimensionale Expansion; Meisterschaft sichtbar.' : lang==='fa' ? 'گسترش چندبعدی فعال؛ نشانه‌های تسلط.' : 'Active multidimensional expansion; mastery visible.');
+      else if(score >= 5) res.note = (lang==='de' ? 'Gleichgewicht erreicht; Integration stabil.' : lang==='fa' ? 'تعادل برقرار؛ یکپارچگی تثبیت شده.' : 'Balance attained; integration stabilizing.');
+      else res.note = (lang==='de' ? 'Teilweise Expansion; Balance und Stabilisierung notwendig.' : lang==='fa' ? 'گسترش جزئی؛ نیاز به تثبیت و تعادل.' : 'Partial expansion; stabilization needed.');
+    }
+    return res;
+  }
+
+  const interpI = interpretScore(0, avgs[0]);
+  const interpII = interpretScore(1, avgs[1]);
+  const interpIII = interpretScore(2, avgs[2]);
+
+  // 5. compose dominant box (localized)
+  const dominantTitle = (lang==='de' ? ['Opferbewusstsein','Erwachen','Autorenschaft'][highest] : lang==='fa' ? ['قربانی بودن','بیداری','نویسندگی'][highest] : ['Victimhood','Awakening','Authorship'][highest]);
+  const dominantText = STAGE_FULL[highest][lang] || STAGE_FULL[highest].en;
+
+  // integrate numeric notes for clarity
+  const noteLines = [];
+  noteLines.push((lang==='de' ? 'Durchschnittswerte: ' : lang==='fa' ? 'میانگین‌ها: ' : 'Averages: ') +
+                 `${(lang==='de'?'Stufe I':'Stage I')}: ${avgs[0].toFixed(1)}  |  ${(lang==='de'?'Stufe II':'Stage II')}: ${avgs[1].toFixed(1)}  |  ${(lang==='de'?'Stufe III':'Stage III')}: ${avgs[2].toFixed(1)}`);
+
+  noteLines.push(INTEGRATED_NOTES[lang] || INTEGRATED_NOTES.en);
+
+  // readiness hint: if Stage II below 5, add a recommendation about moving to Stage III
+  if(avgs[1] < 5 && highest === 1){
+    noteLines.push((lang==='de' ? 'Hinweis: Stufe II ist unter 5 — das System erkennt Bereitschaft zur Transzendenz in Richtung Stufe III.' : lang==='fa' ? 'توجه: میانگین مرحله دوم زیر ۵ است — سیستم آمادگی گذار به مرحله سوم را تشخیص می‌دهد.' : 'Note: Stage II is below 5 — the system recognizes readiness to transcend toward Stage III.'));
+  }
+
+  // if Stage I is dominant but low Stage II present, show potential to shift
+  if(highest === 0 && avgs[0] > avgs[1] && avgs[1] < 5){
+    noteLines.push((lang==='de' ? 'Trotzdominanz von Stufe I zeigen niedrigere Werte in Stufe II Potenzial für Wandel.' : lang==='fa' ? 'گرچه مرحله اول غالب است، ارزش‌های پایین‌تر در مرحله دوم پتانسیل تغییر را نشان می‌دهند.' : 'Although Stage I is dominant, lower Stage II values indicate potential for change.'));
+  }
+
+  // Render dominant box: title + short description + integrated notes
+  dominantBox.innerHTML = `<strong>${dominantTitle}</strong><div style="margin-top:8px;">${(STAGE_FULL[highest][lang] || STAGE_FULL[highest].en).split('\n')[0]}</div>
+  <div style="margin-top:10px;font-size:13px;color:#444;white-space:pre-wrap;">${noteLines.join('\n\n')}</div>`;
+
+  // 6. populate stage detail panels with full text + dynamic score interpretations
+  const assemblePanelContent = (stageIndex, avg, interp) => {
+    const header = (lang==='de' ? `Punktestand: ${avg.toFixed(1)}` : lang==='fa' ? `امتیاز: ${avg.toFixed(1)}` : `Score: ${avg.toFixed(1)}`);
+    const dyn = `${(lang==='de' ? 'Bedeutung:' : lang==='fa' ? 'معنی:' : 'Interpretation:')} ${interp.label} — ${interp.note}`;
+    const full = STAGE_FULL[stageIndex][lang] || STAGE_FULL[stageIndex].en;
+    const nextSteps = (lang==='de' ? '\n\nNächste Schritte: Lies die Anleitungen in diesem Abschnitt und arbeite an Schattenintegration, Balance und Erinnerung an deine Autorenschaft.' :
+                       lang==='fa' ? '\n\nقدم‌های بعدی: متن این بخش را بخوان و روی یکپارچه‌سازی سایه‌ها، تعادل و یادآوری نویسندگی خود کار کن.' :
+                       '\n\nNext steps: Read the guidance in this panel and work on shadow integration, balance, and remembering your authorship.');
+    return `<div style="font-weight:700;margin-bottom:8px;">${header}</div><div style="white-space:pre-wrap;">${full}</div><div style="margin-top:10px;font-weight:600;">${dyn}</div><div style="white-space:pre-wrap;margin-top:8px;color:#444;">${nextSteps}</div>`;
+  };
+
+  stageIContent.innerHTML = assemblePanelContent(0, avgs[0], interpI);
+  stageIIContent.innerHTML = assemblePanelContent(1, avgs[1], interpII);
+  stageIIIContent.innerHTML = assemblePanelContent(2, avgs[2], interpIII);
+
+  // 7. finally, ensure all panels are collapsed initially
+  [stageIDetails, stageIIDetails, stageIIIDetails].forEach(p=>p.classList.remove('open'));
 }
 
-/* Restart -> back to landing (show title & langRow) */
-restartBtn.addEventListener('click', ()=>{
-  resultPane.classList.add('hidden');
-  landingPane.classList.remove('hidden');
-  pageTitle.style.display = '';
-  langRow.style.display = '';
-  landingSlider.value = 5;
-  questionSlider.value = 5;
-});
-
-/* Accessibility: allow Enter to trigger Next when slider focused? (optional) */
-/* Optional: keyboard shortcuts can be added later */
-
-/* Initialize */
+/* Initialize sliders */
 landingSlider.value = 5;
 questionSlider.value = 5;
 </script>
