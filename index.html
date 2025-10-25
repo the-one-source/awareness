@@ -71,6 +71,16 @@ input[type=range]::-moz-range-thumb {
     border: 2px solid #fff;
     box-shadow: 0 0 8px rgba(0,0,0,0.3);
 }
+#sliderLabels {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-top: -20px;
+}
+#sliderLabels span {
+    text-align: center;
+    width: 33%;
+}
 </style>
 </head>
 <body>
@@ -80,13 +90,22 @@ input[type=range]::-moz-range-thumb {
 <div id="intro">
     <p>This is a reflection of my inner consciousness called <strong>Spectrum of Being</strong>.</p>
     <p>I am answering a series of statements using the slider to indicate my agreement.</p>
-    <p><strong>1 = Disagree</strong> &nbsp;|&nbsp; <strong>10 = Completely Agree</strong></p>
+    <p>Move the slider from left (Disagree) to right (Completely Agree) to indicate your response.</p>
+    
+    <!-- Visual Showcase Slider -->
+    <input type="range" min="0" max="10" value="0" id="demoSlider">
+    <div id="sliderLabels">
+        <span>Disagree</span>
+        <span>Agree</span>
+        <span>Completely Agree</span>
+    </div>
+
     <button id="startBtn">Take the Test</button>
 </div>
 
 <div class="question-container" id="question" style="display:none;"></div>
 
-<input type="range" min="1" max="10" value="1" id="slider" style="display:none;">
+<input type="range" min="0" max="10" value="0" id="slider" style="display:none;">
 <button id="nextBtn" style="display:none;">Next</button>
 
 <div class="result" id="result"></div>
@@ -154,7 +173,7 @@ const shuffledQuestions = shuffle([...questions]);
 function showQuestion() {
     if (currentIndex < shuffledQuestions.length) {
         document.getElementById("question").textContent = shuffledQuestions[currentIndex].text;
-        document.getElementById("slider").value = 1; // always start at 1
+        document.getElementById("slider").value = 0; // start at 0
     } else {
         showResult();
     }
