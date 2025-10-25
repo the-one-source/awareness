@@ -23,10 +23,10 @@
   .fixed-slider-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;margin:18px 0 8px 0;}
   .fixed-track{width:92%;max-width:640px;}
   input[type="range"]{-webkit-appearance:none;width:100%;height:12px;border-radius:10px;background:#e6e6e6;outline:none;margin:0;padding:0;}
-  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;margin-top:-3px;cursor:pointer;}
-  input[type="range"]::-moz-range-thumb{width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;cursor:pointer;}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:14px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:4px solid white;margin-top:-9px;cursor:pointer;}
+  input[type="range"]::-moz-range-thumb{width:30px;height:30px;border-radius:14px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:4px solid white;cursor:pointer;}
   .slider-labels{width:92%;max-width:640px;display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:8px;user-select:none;}
-  .btn{display:inline-block;padding:12px 28px;border-radius:28px;background:var(--accent);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:18px;}
+  .btn{display:inline-block;padding:12px 28px;border-radius:28px;background:linear-gradient(180deg,var(--accent),#555533);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:18px;}
   .btn:active{transform:translateY(1px);}
   .question-container{width:100%;}
   .result-row{margin-top:12px;color:#333;font-size:15px;}
@@ -44,7 +44,7 @@
     <!-- Title - visible on Landing & Result only -->
     <h1 id="pageTitle">Spectrum of Awareness</h1>
 
-    <!-- Language dropdown - VISIBLE ONLY on landing -->
+    <!-- Language dropdown - only visible on landing -->
     <div class="row" id="langRow">
       <select id="langSelect" aria-label="Language">
         <option value="en">English</option>
@@ -78,6 +78,11 @@
       <div class="fixed-slider-wrap">
         <div class="fixed-track">
           <input id="questionSlider" type="range" min="0" max="10" value="5" />
+        </div>
+        <div class="slider-labels" id="questionLabels">
+          <span id="qLblLeft">Disagree</span>
+          <span id="qLblMid">Uncertain</span>
+          <span id="qLblRight">Agree</span>
         </div>
       </div>
 
@@ -203,182 +208,105 @@ const QUESTIONS = {
     "من منبع هستم؛ خدا یک مفهوم درون من است.",
     "کسی دیوار را ساخته است.",
     "من یک آجر در دیوار هستم.",
-    "من دیوار هستم، دیوار را دائماً شکل می‌دهم.",
-    "من همه چیز را به جامعه نسبت می‌دهم.",
-    "من بخشی از جامعه هستم، بنابراین خودم را مقصر می‌دانم.",
-    "جامعه از من بوجود می‌آید؛ من کسی را سرزنش نمی‌کنم.",
+    "من خود دیوار هستم و دیوار را دائماً شکل می‌دهم.",
+    "من جامعه را برای همه تجربیاتم مقصر می‌دانم.",
+    "من بخشی از جامعه هستم؛ بنابراین خودم را مقصر می‌دانم.",
+    "جامعه از من ایجاد می‌شود؛ من کسی را مقصر نمی‌دانم.",
     "همه چیز ناعادلانه است؛ این جهان باید تغییر کند.",
     "من باید جهان را تغییر دهم و عدالت بیاورم.",
-    "من عدالت می‌تابانم؛ هیچ چیزی نیاز به تغییر ندارد.",
-    "من نیاز دارم دیده شوم؛ جهان باید من را ببیند.",
+    "من عدالت می‌تابانم؛ هیچ چیزی نیازی به تغییر ندارد.",
+    "من باید دیده شوم؛ جهان باید مرا ببیند.",
     "من خودم را می‌بینم؛ نیازی به دیده شدن نیست.",
-    "بگذار نور باشد — من جهان را خلق می‌کنم.",
+    "بگذار نور باشد — من جهان را پیش‌بینی می‌کنم.",
     "خدا وجود دارد.",
     "خدا وجود ندارد.",
-    "خدا یک مفهوم ساخته‌شده توسط من است.",
-    "من نیاز دارم که تعلق داشته باشم تا کامل باشم.",
+    "خدا مفهومی است که من خلق کرده‌ام.",
+    "من برای کامل شدن نیاز دارم که تعلق داشته باشم.",
     "من تنها نیستم؛ من تعلق دارم.",
-    "من تنها هستم — تنها یک موجود.",
-    "واقعیت هم‌آفرین است؛ من در یک سلسله مراتب و ناتوان هستم.",
-    "واقعیت توسط من خلق می‌شود.",
+    "من تنها هستم — تنها کسی که هستم.",
+    "واقعیت مشارکتی است؛ من در سلسله‌مراتب و ناتوان هستم.",
+    "واقعیت توسط من پیش‌بینی می‌شود.",
     "من واقعیت را می‌سازم؛ من قدرت تمام فرکانس‌ها هستم."
   ]
 };
 
-/* stage result texts */
-const STAGE_TEXT = [
-  { en: "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
-    de: "Mein Bewusstsein stimmt derzeit mit Opferbewusstsein überein, Herausforderungen werden erlebt, Lernen und Wachstum sind notwendig.",
-    fa: "آگاهی من در حال حاضر با قربانی بودن هماهنگ است؛ تجربهٔ چالش‌ها، نیاز به یادگیری و رشد وجود دارد." },
-  { en: "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.",
-    de: "Mein Bewusstsein stimmt derzeit mit Erkenntnis überein, beobachtet Muster, hinterfragt und erweitert das Bewusstsein.",
-    fa: "آگاهی من در حال حاضر با درک هماهنگ است؛ مشاهدهٔ الگوها، پرسشگری و گسترش آگاهی." },
-  { en: "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.",
-    de: "Mein Bewusstsein stimmt derzeit mit Sein, vollständiger Autorenschaft, Quellbewusstsein und tiefem Bewusstsein überein.",
-    fa: "آگاهی من در حال حاضر با بودن، خالقیت کامل، آگاهی منبع و آگاهی عمیق هماهنگ است." }
-];
-
+/* === Core JS functionality === */
 let lang = "en";
-let order = [];
-let idx = 0;
+let currentIndex = 0;
 let answers = [];
 
-const root = document.documentElement;
-const pageTitle = document.getElementById("pageTitle");
-const langSelect = document.getElementById("langSelect");
 const landingPane = document.getElementById("landingPane");
 const questionPane = document.getElementById("questionPane");
 const resultPane = document.getElementById("resultPane");
-const startBtn = document.getElementById("startBtn");
-const nextBtn = document.getElementById("nextBtn");
 const questionText = document.getElementById("questionText");
 const questionSlider = document.getElementById("questionSlider");
-const landingSlider = document.getElementById("landingSlider");
-const lblLeft = document.getElementById("lblLeft");
-const lblMid  = document.getElementById("lblMid");
-const lblRight = document.getElementById("lblRight");
-const stageIEl = document.getElementById("stageI");
-const stageIIEl = document.getElementById("stageII");
-const stageIIIEl = document.getElementById("stageIII");
-const resultTextEl = document.getElementById("resultText");
+const startBtn = document.getElementById("startBtn");
+const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
-const langRow = document.getElementById("langRow");
+const langSelect = document.getElementById("langSelect");
+const pageTitle = document.getElementById("pageTitle");
+const qLblLeft = document.getElementById("qLblLeft");
+const qLblMid = document.getElementById("qLblMid");
+const qLblRight = document.getElementById("qLblRight");
 
-/* language application */
-function applyLanguage(l){
-  lang = l;
-  if(lang === "fa"){ root.setAttribute("dir","rtl"); } else { root.setAttribute("dir","ltr"); }
-
-  // page title text
-  pageTitle.textContent = (lang==="en" ? "Spectrum of Awareness" : lang==="de" ? "Spektrum des Bewusstseins" : "طیف آگاهی");
-
-  // landing description
-  const desc = {
-    en: "This is a reflection of my inner consciousness called Spectrum of Awareness. I am answering a series of statements using the slider to indicate my agreement.",
-    de: "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Bewusstseins. Ich beantworte eine Reihe von Aussagen mit dem Schieberegler.",
-    fa: "این بازتابی از آگاهی درونی من به نام طیف آگاهی است. من به مجموعه‌ای از جملات پاسخ می‌دهم و با استفاده از نوار لغزنده میزان موافقت را مشخص می‌کنم."
-  }[lang];
-  document.getElementById("landingText").textContent = desc;
-
-  // slider labels on landing
-  const labels = { en:["Disagree","Uncertain","Agree"], de:["Ablehnen","Unentschieden","Zustimmen"], fa:["مخالف","نامطمئن","موافق"] }[lang];
-  lblLeft.textContent = labels[0];
-  lblMid.textContent  = labels[1];
-  lblRight.textContent = labels[2];
-
-  // button texts
-  startBtn.textContent = (lang==="en" ? "Start" : lang==="de" ? "Start" : "شروع");
-  nextBtn.textContent  = (lang==="en" ? "Next" : lang==="de" ? "Weiter" : "بعدی");
-  restartBtn.textContent = (lang==="en" ? "Restart" : lang==="de" ? "Neu starten" : "دوباره");
+/* Update labels based on language */
+function updateLabels() {
+  if(lang==="en"){
+    qLblLeft.textContent="Disagree";
+    qLblMid.textContent="Uncertain";
+    qLblRight.textContent="Agree";
+  }else if(lang==="de"){
+    qLblLeft.textContent="Nicht einverstanden";
+    qLblMid.textContent="Ungewiss";
+    qLblRight.textContent="Einverstanden";
+  }else if(lang==="fa"){
+    qLblLeft.textContent="مخالف";
+    qLblMid.textContent="مردد";
+    qLblRight.textContent="موافق";
+  }
 }
 
-/* utility: shuffle */
-function shuffle(n){ const a=Array.from({length:n},(_,i)=>i); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a; }
+/* Show next question */
+function showQuestion() {
+  if(currentIndex<QUESTIONS[lang].length){
+    questionText.textContent=QUESTIONS[lang][currentIndex];
+  }else{
+    showResult();
+  }
+}
 
-/* start */
-startBtn.addEventListener("click", ()=>{
-  pageTitle.style.display = "none";
-  langRow.style.display = "none";
-
-  order = shuffle(QUESTIONS[lang].length);
-  idx = 0;
-  answers = [];
+/* Start questionnaire */
+startBtn.onclick = ()=>{
+  lang=langSelect.value;
   landingPane.classList.add("hidden");
-  resultPane.classList.add("hidden");
   questionPane.classList.remove("hidden");
+  currentIndex=0;
+  answers=[];
+  updateLabels();
   showQuestion();
-});
+};
 
-/* show a question from randomized order */
-function showQuestion(){
-  questionSlider.value = 5; // middle
-  const qIdx = order[idx];
-  questionText.textContent = QUESTIONS[lang][qIdx];
-  questionText.style.textAlign = "center";
-}
+/* Next button */
+nextBtn.onclick = ()=>{
+  answers.push(questionSlider.value);
+  currentIndex++;
+  showQuestion();
+};
 
-/* next */
-nextBtn.addEventListener("click", ()=>{
-  answers.push(Number(questionSlider.value || 5));
-  idx++;
-  if(idx < order.length){
-    showQuestion();
-  } else {
-    questionPane.classList.add("hidden");
-    pageTitle.style.display = "";
-    landingPane.classList.add("hidden");
-    resultPane.classList.remove("hidden");
-    computeResult();
-  }
-});
-
-/* compute result by grouping original indices into 3 chunks */
-function computeResult(){
-  const N = QUESTIONS[lang].length;
-  const chunk = Math.floor(N/3);
-  const sums = [0,0,0];
-  for(let i=0;i<order.length;i++){
-    const orig = order[i];
-    const val = answers[i] || 0;
-    let s;
-    if(orig < chunk) s = 0;
-    else if(orig < 2*chunk) s = 1;
-    else s = 2;
-    sums[s] += val;
-  }
-  const counts = [chunk, chunk, N - 2*chunk];
-  const avgs = [
-    counts[0] ? sums[0]/counts[0] : 0,
-    counts[1] ? sums[1]/counts[1] : 0,
-    counts[2] ? sums[2]/counts[2] : 0
-  ];
-  stageIEl.textContent = "Stage I: " + avgs[0].toFixed(1);
-  stageIIEl.textContent = "Stage II: " + avgs[1].toFixed(1);
-  stageIIIEl.textContent = "Stage III: " + avgs[2].toFixed(1);
-
-  let highest = 0;
-  if(avgs[1] > avgs[highest]) highest = 1;
-  if(avgs[2] > avgs[highest]) highest = 2;
-  resultTextEl.textContent = STAGE_TEXT[highest][lang];
-}
-
-/* restart from result */
-restartBtn.addEventListener("click", ()=>{
+/* Restart */
+restartBtn.onclick = ()=>{
   resultPane.classList.add("hidden");
   landingPane.classList.remove("hidden");
-  pageTitle.style.display = "";
-  langRow.style.display = "";
-  landingSlider.value = 5;
-  questionSlider.value = 5;
-});
+};
 
-/* language change */
-langSelect.addEventListener("change",(e)=>{ applyLanguage(e.target.value); landingSlider.value=5; questionSlider.value=5; });
-
-/* initialize */
-applyLanguage("en");
-landingSlider.value = 5;
-questionSlider.value = 5;
+/* Show results (placeholder example) */
+function showResult(){
+  questionPane.classList.add("hidden");
+  resultPane.classList.remove("hidden");
+  document.getElementById("stageI").textContent="Stage I: "+answers.length+" answers recorded.";
+  document.getElementById("stageII").textContent="Stage II: Analysis complete.";
+  document.getElementById("stageIII").textContent="Stage III: Full integration achieved.";
+}
 </script>
 </body>
 </html>
