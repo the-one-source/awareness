@@ -38,6 +38,7 @@ button {
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
+    margin-top: 30px; /* Added space above button */
 }
 button:hover {
     transform: translateY(-3px);
@@ -74,13 +75,18 @@ input[type=range]::-moz-range-thumb {
 #sliderLabels {
     display: flex;
     justify-content: space-between;
-    font-weight: bold;
+    font-weight: normal; /* Not bold */
+    font-size: 0.9em; /* Smaller text */
     margin-top: -20px;
+    margin-bottom: 20px; /* More space before button */
 }
 #sliderLabels span {
-    text-align: center;
     width: 33%;
+    text-align: center;
 }
+#sliderLabels span:first-child { text-align: left; }
+#sliderLabels span:nth-child(2) { text-align: center; }
+#sliderLabels span:last-child { text-align: right; }
 </style>
 </head>
 <body>
@@ -90,7 +96,6 @@ input[type=range]::-moz-range-thumb {
 <div id="intro">
     <p>This is a reflection of my inner consciousness called <strong>Spectrum of Being</strong>.</p>
     <p>I am answering a series of statements using the slider to indicate my agreement.</p>
-    <p>Move the slider from left (Disagree) to right (Completely Agree) to indicate your response.</p>
     
     <!-- Visual Showcase Slider -->
     <input type="range" min="0" max="10" value="0" id="demoSlider">
@@ -100,7 +105,7 @@ input[type=range]::-moz-range-thumb {
         <span>Completely Agree</span>
     </div>
 
-    <button id="startBtn">Take the Test</button>
+    <button id="startBtn">Start</button>
 </div>
 
 <div class="question-container" id="question" style="display:none;"></div>
@@ -210,22 +215,20 @@ function showResult() {
     let maxAvg = Math.max(avg1, avg2, avg3);
 
     if(maxAvg == avg1){
-        overallMessage = "Your consciousness currently aligns with Victimhood: experiencing challenges, learning, and growth is needed.";
+        overallMessage = "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.";
     } else if(maxAvg == avg2){
-        overallMessage = "Your consciousness currently aligns with Realization: observing patterns, questioning, and expanding awareness.";
+        overallMessage = "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.";
     } else {
-        overallMessage = "Your consciousness currently aligns with Being: full authorship, source awareness, and deep consciousness.";
+        overallMessage = "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.";
     }
 
     document.getElementById("question").style.display = "none";
     document.getElementById("slider").style.display = "none";
     document.getElementById("nextBtn").style.display = "none";
-
     document.getElementById("result").innerHTML = `
-        <p><strong>Stage 1 - Victimhood Average:</strong> ${avg1}</p>
-        <p><strong>Stage 2 - Realization Average:</strong> ${avg2}</p>
-        <p><strong>Stage 3 - Being Average:</strong> ${avg3}</p>
-        <hr>
+        <p><strong>Stage I:</strong> ${avg1}</p>
+        <p><strong>Stage II:</strong> ${avg2}</p>
+        <p><strong>Stage III:</strong> ${avg3}</p>
         <p><strong>Overall State of Consciousness:</strong> ${overallMessage}</p>
     `;
 }
