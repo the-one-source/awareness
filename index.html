@@ -7,7 +7,7 @@
 <style>
   :root{
     --panel-width:720px;
-    --accent:#4a90e2;
+    --accent:#666440; /* updated color */
     --bg:#f5f7fa;
     --card:#ffffff;
     --muted:#666;
@@ -23,10 +23,10 @@
   .fixed-slider-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;margin:18px 0 8px 0;}
   .fixed-track{width:92%;max-width:640px;}
   input[type="range"]{-webkit-appearance:none;width:100%;height:12px;border-radius:10px;background:#e6e6e6;outline:none;margin:0;padding:0;}
-  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;background:var(--accent);box-shadow:0 6px 18px rgba(74,144,226,0.24);border:4px solid white;margin-top:-9px;cursor:pointer;}
-  input[type="range"]::-moz-range-thumb{width:30px;height:30px;border-radius:50%;background:var(--accent);box-shadow:0 6px 18px rgba(74,144,226,0.24);border:4px solid white;cursor:pointer;}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;margin-top:-3px;cursor:pointer;}
+  input[type="range"]::-moz-range-thumb{width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;cursor:pointer;}
   .slider-labels{width:92%;max-width:640px;display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:8px;user-select:none;}
-  .btn{display:inline-block;padding:12px 28px;border-radius:28px;background:linear-gradient(180deg,var(--accent),#2f7fcf);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(46,119,205,0.18);margin-top:18px;}
+  .btn{display:inline-block;padding:12px 28px;border-radius:28px;background:var(--accent);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:18px;}
   .btn:active{transform:translateY(1px);}
   .question-container{width:100%;}
   .result-row{margin-top:12px;color:#333;font-size:15px;}
@@ -44,7 +44,7 @@
     <!-- Title - visible on Landing & Result only -->
     <h1 id="pageTitle">Spectrum of Awareness</h1>
 
-    <!-- Language dropdown - VISIBLE ONLY on landing (we hide it during questionnaire/result) -->
+    <!-- Language dropdown - VISIBLE ONLY on landing -->
     <div class="row" id="langRow">
       <select id="langSelect" aria-label="Language">
         <option value="en">English</option>
@@ -79,7 +79,6 @@
         <div class="fixed-track">
           <input id="questionSlider" type="range" min="0" max="10" value="5" />
         </div>
-        <!-- intentionally no labels here -->
       </div>
 
       <button id="nextBtn" class="btn">Next</button>
@@ -270,7 +269,7 @@ function applyLanguage(l){
   lang = l;
   if(lang === "fa"){ root.setAttribute("dir","rtl"); } else { root.setAttribute("dir","ltr"); }
 
-  // page title text (Spectrum of Awareness translations)
+  // page title text
   pageTitle.textContent = (lang==="en" ? "Spectrum of Awareness" : lang==="de" ? "Spektrum des Bewusstseins" : "طیف آگاهی");
 
   // landing description
@@ -298,11 +297,9 @@ function shuffle(n){ const a=Array.from({length:n},(_,i)=>i); for(let i=a.length
 
 /* start */
 startBtn.addEventListener("click", ()=>{
-  // hide title and language select during questionnaire
   pageTitle.style.display = "none";
   langRow.style.display = "none";
 
-  // prepare randomized order
   order = shuffle(QUESTIONS[lang].length);
   idx = 0;
   answers = [];
@@ -328,9 +325,7 @@ nextBtn.addEventListener("click", ()=>{
     showQuestion();
   } else {
     questionPane.classList.add("hidden");
-    // show title only on result
     pageTitle.style.display = "";
-    // keep langRow hidden (language select only on landing)
     landingPane.classList.add("hidden");
     resultPane.classList.remove("hidden");
     computeResult();
@@ -342,7 +337,6 @@ function computeResult(){
   const N = QUESTIONS[lang].length;
   const chunk = Math.floor(N/3);
   const sums = [0,0,0];
-  // answers correspond to order[...] mapping:
   for(let i=0;i<order.length;i++){
     const orig = order[i];
     const val = answers[i] || 0;
@@ -352,7 +346,6 @@ function computeResult(){
     else s = 2;
     sums[s] += val;
   }
-  // averages
   const counts = [chunk, chunk, N - 2*chunk];
   const avgs = [
     counts[0] ? sums[0]/counts[0] : 0,
@@ -363,19 +356,18 @@ function computeResult(){
   stageIIEl.textContent = "Stage II: " + avgs[1].toFixed(1);
   stageIIIEl.textContent = "Stage III: " + avgs[2].toFixed(1);
 
-  // highest stage only
   let highest = 0;
   if(avgs[1] > avgs[highest]) highest = 1;
   if(avgs[2] > avgs[highest]) highest = 2;
   resultTextEl.textContent = STAGE_TEXT[highest][lang];
 }
 
-/* restart from result (go back to landing) */
+/* restart from result */
 restartBtn.addEventListener("click", ()=>{
   resultPane.classList.add("hidden");
   landingPane.classList.remove("hidden");
-  pageTitle.style.display = "";      // show title on landing
-  langRow.style.display = "";        // show language select on landing
+  pageTitle.style.display = "";
+  langRow.style.display = "";
   landingSlider.value = 5;
   questionSlider.value = 5;
 });
