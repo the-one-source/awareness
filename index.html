@@ -1,554 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Spectrum of Being</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spectrum of Awareness</title>
 <style>
-  :root{
-    --panel-width:720px; /* fixed panel width (keeps slider consistent) */
-    --accent: #4a90e2;
-    --bg: #fafafa;
-    --card: #ffffff;
-    --muted: #666;
-    --text: #111;
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(180deg,#f9fafc,#eef1f4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
   }
-
-  html,body{
-    height:100%;
-    margin:0;
-    background:var(--bg);
-    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color:var(--text);
+  .container {
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   }
-
-  /* Center page */
-  .wrap{
-    min-height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:24px;
+  h1 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
   }
-
-  /* Fixed central panel */
-  .panel{
-    width: min(92%, var(--panel-width));
-    max-width: var(--panel-width);
-    background:var(--card);
-    border-radius:14px;
-    box-shadow: 0 10px 30px rgba(20,20,30,0.06);
-    padding:34px;
-    box-sizing:border-box;
-    text-align:center;
+  select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+    font-size: 1rem;
   }
-
-  h1{
-    margin:0 0 18px 0;
-    font-weight:400;
-    color:#555;
-    font-size:22px;
+  p.description {
+    color: #555;
+    margin-bottom: 1.5rem;
   }
-
-  /* language select */
-  .row{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    align-items:center;
-    margin-bottom:20px;
+  button {
+    background: #007aff;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
   }
-  select{
-    padding:8px 12px;
-    font-size:15px;
-    border-radius:8px;
-    border:1px solid #e6e6e6;
-    background:white;
+  button:hover {
+    background: #005fcc;
   }
-
-  p.lead{
-    margin:0 0 18px 0;
-    color:#666;
-    font-size:15px;
-    line-height:1.45;
+  .question-section {
+    display: none;
   }
-
-  /* fixed slider wrapper keeps same width always */
-  .fixed-slider-wrap{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
-    margin:18px 0 8px 0;
+  .result-section {
+    display: none;
   }
-
-  /* slider visual */
-  .fixed-track{
-    width:92%;
-    max-width:640px; /* ensures slider track aligned with panel text */
+  .statement {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #333;
   }
-  input[type="range"]{
-    -webkit-appearance:none;
-    width:100%;
-    height:12px;
-    background:#e6e6e6;
-    border-radius:10px;
-    outline:none;
-    margin:0;
-    padding:0;
+  input[type="range"] {
+    width: 80%;
+    height: 6px;
+    border-radius: 5px;
+    appearance: none;
+    background: #d7dbdd;
+    outline: none;
   }
-  input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    appearance:none;
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background: var(--accent);
-    box-shadow: 0 6px 18px rgba(74,144,226,0.24);
-    border:4px solid white; /* pill look */
-    margin-top:-9px; /* center thumb vertically on track */
-    cursor:pointer;
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #007aff;
+    cursor: pointer;
+    margin-top: -9px;
   }
-  input[type="range"]::-moz-range-thumb{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background: var(--accent);
-    box-shadow: 0 6px 18px rgba(74,144,226,0.24);
-    border:4px solid white;
-    cursor:pointer;
+  .fixed-slider-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
   }
-
-  /* landing labels (only on landing) */
-  .slider-labels{
-    width:92%;
-    max-width:640px;
-    display:flex;
-    justify-content:space-between;
-    color:var(--muted);
-    font-size:13px;
-    margin-top:8px;
-    user-select:none;
-  }
-  .slider-labels span { opacity:0.95; }
-
-  /* question text */
-  #questionText{
-    font-size:18px;
-    line-height:1.4;
-    margin:6px 0 14px 0;
-    text-align:center;
-    word-break:break-word;
-  }
-
-  /* buttons */
-  .btn{
-    display:inline-block;
-    padding:12px 28px;
-    border-radius:28px;
-    background:linear-gradient(180deg,var(--accent), #2f7fcf);
-    color:white;
-    border:none;
-    font-size:15px;
-    cursor:pointer;
-    box-shadow: 0 6px 18px rgba(46,119,205,0.18);
-    margin-top:18px;
-  }
-  .btn:active{ transform: translateY(1px); }
-
-  /* result text */
-  .result-row{ margin-top:12px; color:#333; font-size:15px; }
-  .result-stage{ font-weight:600; margin:6px 0; }
-
-  /* hide containers */
-  .hidden { display:none; }
-
-  /* RTL handling for Persian */
-  :root[dir="rtl"] .panel { direction:rtl; }
-  :root[dir="rtl"] .slider-labels { direction:rtl; }
+  .hidden { display: none; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="panel" id="panel">
-
-    <h1 id="title">Spectrum of Being</h1>
-
-    <div class="row">
-      <select id="langSelect" aria-label="Language">
-        <option value="en">English</option>
-        <option value="de">Deutsch</option>
-        <option value="fa">فارسی</option>
-      </select>
+<div class="container">
+  <!-- Landing Page -->
+  <div class="landing-section">
+    <h1 id="title">Spectrum of Awareness</h1>
+    <select id="language">
+      <option value="en">English</option>
+      <option value="de">Deutsch</option>
+      <option value="fa">فارسی</option>
+    </select>
+    <p id="description" class="description">
+      This is a reflection of my inner consciousness called Spectrum of Awareness.
+      I am answering a series of statements using the slider to indicate my agreement.
+    </p>
+    <div class="fixed-slider-area">
+      <input type="range" min="0" max="10" value="5" disabled />
     </div>
+    <button id="start">Start</button>
+  </div>
 
-    <!-- Landing -->
-    <div id="landingPane">
-      <p class="lead" id="landingText">
-        This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.
-      </p>
-
-      <!-- Fixed slider area (same size used later for questionnaire) -->
-      <div class="fixed-slider-wrap">
-        <div class="fixed-track">
-          <input id="landingSlider" type="range" min="0" max="10" value="5" />
-        </div>
-        <div class="slider-labels" id="landingLabels">
-          <span id="lblLeft">Disagree</span>
-          <span id="lblMid">Uncertain</span>
-          <span id="lblRight">Agree</span>
-        </div>
-      </div>
-
-      <button id="startBtn" class="btn">Start</button>
+  <!-- Questions -->
+  <div class="question-section">
+    <div class="fixed-slider-area">
+      <p id="statement" class="statement"></p>
+      <input type="range" min="0" max="10" value="5" id="slider" />
     </div>
+    <button id="next">Next</button>
+  </div>
 
-    <!-- Questionnaire: same fixed slider container used for landing so it won't resize -->
-    <div id="questionPane" class="hidden">
-      <div id="questionText"></div>
-
-      <div class="fixed-slider-wrap">
-        <div class="fixed-track">
-          <input id="questionSlider" type="range" min="0" max="10" value="5" />
-        </div>
-        <!-- no labels under the question slider as requested -->
-      </div>
-
-      <button id="nextBtn" class="btn">Next</button>
-    </div>
-
-    <!-- Result -->
-    <div id="resultPane" class="hidden">
-      <div class="result-row">
-        <div id="stageI" class="result-stage"></div>
-        <div id="stageII" class="result-stage"></div>
-        <div id="stageIII" class="result-stage"></div>
-      </div>
-      <div class="result-row" id="resultText" style="margin-top:18px;"></div>
-    </div>
-
+  <!-- Result -->
+  <div class="result-section">
+    <h1 id="result-title">Spectrum of Awareness</h1>
+    <p id="result-text"></p>
+    <button onclick="location.reload()">Restart</button>
   </div>
 </div>
 
 <script>
-/* ======= FULL QUESTIONS (English / German / Persian) =======
-   Keep these arrays complete. I used the previously provided lists.
-   If you ever add new questions, keep the same order across languages.
-*/
-
-const QUESTIONS = {
+const questions = {
   en: [
-    "Life happens to me.",
-    "I notice patterns repeating and wonder why.",
-    "I was created.",
-    "I am questioning creation.",
-    "I am the creator.",
-    "I need validation to feel seen.",
-    "I am validated and seen.",
-    "I am validation.",
-    "Others exist.",
-    "Are others beings?",
-    "Others are not beings.",
-    "There is someone (something) out there.",
-    "Is there anyone out there?",
-    "There is no one out there.",
-    "I am the victim of life.",
-    "I am connected to a source, a higher self or god.",
-    "I am the source; god is a concept within me.",
-    "Someone has built the wall.",
-    "I am a brick in the wall.",
-    "I am the wall, shaping the wall constantly.",
-    "I blame the society for everything I experience.",
-    "I am part of society, therefore I blame myself.",
-    "Society arises from me; I blame no one.",
-    "Everything is unfair; this world must change.",
-    "I must change the world and bring fairness into this.",
-    "I radiate fairness; nothing needs to change.",
-    "I need to be seen; the world must acknowledge me.",
-    "I see myself; there is no need to be seen.",
-    "Let there be light — I am projecting the world.",
-    "There is god.",
-    "There is no god.",
-    "God is a concept created by me.",
-    "I need to belong to feel whole.",
-    "I am not alone; I belong.",
-    "I am alone — the only one.",
-    "Reality is co-created; I am within a hierarchy and powerless.",
-    "Reality is being projected by me.",
-    "I am authoring reality; I am the power of all frequencies."
+    "I feel my emotions control my actions.",
+    "I see challenges as personal attacks.",
+    "I often blame others for my situation.",
+    "I observe my emotions with curiosity.",
+    "I notice patterns in my thoughts and reactions.",
+    "I feel awareness growing within me.",
+    "I experience life as my own reflection.",
+    "I recognize myself as the creator of my reality.",
+    "I feel one with all that exists."
   ],
   de: [
-    "Das Leben passiert mir.",
-    "Ich bemerke sich wiederholende Muster und frage mich warum.",
-    "Ich wurde erschaffen.",
-    "Ich hinterfrage die Schöpfung.",
-    "Ich bin der Schöpfer.",
-    "Ich brauche Bestätigung, um gesehen zu werden.",
-    "Ich bin bestätigt und gesehen.",
-    "Ich bin die Bestätigung.",
-    "Andere existieren.",
-    "Sind andere Wesen?",
-    "Andere sind keine Wesen.",
-    "Da ist jemand (etwas) da draußen.",
-    "Gibt es jemanden da draußen?",
-    "Da ist niemand da draußen.",
-    "Ich bin das Opfer des Lebens.",
-    "Ich bin verbunden mit einer Quelle, einem höheren Selbst oder Gott.",
-    "Ich bin die Quelle; Gott ist ein Konzept in mir.",
-    "Jemand hat die Mauer gebaut.",
-    "Ich bin ein Ziegel in der Mauer.",
-    "Ich bin die Mauer, die die Mauer ständig formt.",
-    "Ich gebe der Gesellschaft die Schuld für alles, was ich erlebe.",
-    "Ich bin Teil der Gesellschaft, daher gebe ich mir selbst die Schuld.",
-    "Die Gesellschaft entsteht aus mir; ich gebe niemandem die Schuld.",
-    "Alles ist unfair; diese Welt muss sich ändern.",
-    "Ich muss die Welt verändern und Gerechtigkeit bringen.",
-    "Ich strahle Gerechtigkeit aus; nichts muss sich ändern.",
-    "Ich muss gesehen werden; die Welt muss mich anerkennen.",
-    "Ich sehe mich selbst; es ist nicht nötig, gesehen zu werden.",
-    "Es werde Licht — Ich projiziere die Welt.",
-    "Es gibt Gott.",
-    "Es gibt keinen Gott.",
-    "Gott ist ein von mir geschaffenes Konzept.",
-    "Ich muss dazugehören, um mich vollständig zu fühlen.",
-    "Ich bin nicht allein; ich gehöre dazu.",
-    "Ich bin allein — der Einzige.",
-    "Realität wird miterschaffen; ich bin innerhalb einer Hierarchie und machtlos.",
-    "Die Realität wird von mir projiziert.",
-    "Ich erschaffe die Realität; ich bin die Macht aller Frequenzen."
+    "Ich fühle, dass meine Emotionen meine Handlungen kontrollieren.",
+    "Ich sehe Herausforderungen als persönliche Angriffe.",
+    "Ich gebe oft anderen die Schuld für meine Situation.",
+    "Ich beobachte meine Emotionen mit Neugier.",
+    "Ich bemerke Muster in meinen Gedanken und Reaktionen.",
+    "Ich spüre, wie das Bewusstsein in mir wächst.",
+    "Ich erlebe das Leben als meine eigene Spiegelung.",
+    "Ich erkenne mich als Schöpfer meiner Realität.",
+    "Ich fühle mich eins mit allem, was existiert."
   ],
   fa: [
-    "زندگی برای من اتفاق می‌افتد.",
-    "من الگوهای تکراری را مشاهده می‌کنم و می‌پرسم چرا.",
-    "من خلق شده‌ام.",
-    "من در مورد خلقت سؤال می‌کنم.",
-    "من خالق هستم.",
-    "من برای دیده شدن به تأیید نیاز دارم.",
-    "من تأیید و دیده شده‌ام.",
-    "من خود تأیید هستم.",
-    "دیگران وجود دارند.",
-    "آیا دیگران موجود هستند؟",
-    "دیگران موجود نیستند.",
-    "کسی (چیزی) در بیرون وجود دارد.",
-    "آیا کسی در بیرون هست؟",
-    "کسی در بیرون وجود ندارد.",
-    "من قربانی زندگی هستم.",
-    "من به منبع، خود برتر یا خدا متصل هستم.",
-    "من منبع هستم؛ خدا یک مفهوم درون من است.",
-    "کسی دیوار را ساخته است.",
-    "من یک آجر در دیوار هستم.",
-    "من دیوار هستم، دیوار را دائماً شکل می‌دهم.",
-    "من همه چیز را به جامعه نسبت می‌دهم.",
-    "من بخشی از جامعه هستم، بنابراین خودم را مقصر می‌دانم.",
-    "جامعه از من بوجود می‌آید؛ من کسی را سرزنش نمی‌کنم.",
-    "همه چیز ناعادلانه است؛ این جهان باید تغییر کند.",
-    "من باید جهان را تغییر دهم و عدالت بیاورم.",
-    "من عدالت می‌تابانم؛ هیچ چیزی نیاز به تغییر ندارد.",
-    "من نیاز دارم دیده شوم؛ جهان باید من را ببیند.",
-    "من خودم را می‌بینم؛ نیازی به دیده شدن نیست.",
-    "بگذار نور باشد — من جهان را خلق می‌کنم.",
-    "خدا وجود دارد.",
-    "خدا وجود ندارد.",
-    "خدا یک مفهوم ساخته‌شده توسط من است.",
-    "من نیاز دارم که تعلق داشته باشم تا کامل باشم.",
-    "من تنها نیستم؛ من تعلق دارم.",
-    "من تنها هستم — تنها یک موجود.",
-    "واقعیت هم‌آفرین است؛ من در یک سلسله مراتب و ناتوان هستم.",
-    "واقعیت توسط من خلق می‌شود.",
-    "من واقعیت را می‌سازم؛ من قدرت تمام فرکانس‌ها هستم."
+    "من احساس می‌کنم احساساتم اعمالم را کنترل می‌کنند.",
+    "چالش‌ها را به عنوان حمله شخصی می‌بینم.",
+    "اغلب دیگران را برای موقعیتم سرزنش می‌کنم.",
+    "احساساتم را با کنجکاوی مشاهده می‌کنم.",
+    "الگوها را در افکار و واکنش‌هایم می‌بینم.",
+    "احساس می‌کنم آگاهی درونم در حال رشد است.",
+    "زندگی را به عنوان بازتاب خودم تجربه می‌کنم.",
+    "خودم را خالق واقعیت خودم می‌شناسم.",
+    "احساس یکی بودن با همه چیز دارم."
   ]
 };
 
-/* Stage result texts (multi-language). */
-const STAGE_TEXT = [
-  { en: "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
-    de: "Mein Bewusstsein stimmt derzeit mit Opferbewusstsein überein, Herausforderungen werden erlebt, Lernen und Wachstum sind notwendig.",
-    fa: "آگاهی من در حال حاضر با قربانی بودن هماهنگ است؛ تجربهٔ چالش‌ها، نیاز به یادگیری و رشد وجود دارد." },
-  { en: "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.",
-    de: "Mein Bewusstsein stimmt derzeit mit Erkenntnis überein, beobachtet Muster, hinterfragt und erweitert das Bewusstsein.",
-    fa: "آگاهی من در حال حاضر با تحقق هماهنگ است؛ مشاهدهٔ الگوها، پرسشگری و گسترش آگاهی." },
-  { en: "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.",
-    de: "Mein Bewusstsein stimmt derzeit mit Sein, vollständiger Autorenschaft, Quellbewusstsein und tiefem Bewusstsein überein.",
-    fa: "آگاهی من در حال حاضر با بودن، خالقیت کامل، آگاهی منبع و آگاهی عمیق هماهنگ است." }
-];
+const translations = {
+  en: {
+    title: "Spectrum of Awareness",
+    desc: "This is a reflection of my inner consciousness called Spectrum of Awareness. I am answering a series of statements using the slider to indicate my agreement.",
+    start: "Start",
+    next: "Next",
+    results: [
+      "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
+      "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.",
+      "My consciousness currently aligns with being full authorship, source awareness, and deep consciousness."
+    ]
+  },
+  de: {
+    title: "Spektrum des Bewusstseins",
+    desc: "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Bewusstseins. Ich beantworte eine Reihe von Aussagen mit dem Schieberegler, um meine Zustimmung anzuzeigen.",
+    start: "Start",
+    next: "Weiter",
+    results: [
+      "Mein Bewusstsein stimmt derzeit mit der Opferrolle überein; Herausforderungen, Lernen und Wachstum sind erforderlich.",
+      "Mein Bewusstsein stimmt derzeit mit Erkenntnis überein, Muster zu beobachten, zu hinterfragen und das Bewusstsein zu erweitern.",
+      "Mein Bewusstsein stimmt derzeit mit voller Urheberschaft, Quellenbewusstsein und tiefer Bewusstheit überein."
+    ]
+  },
+  fa: {
+    title: "طیف آگاهی",
+    desc: "این بازتابی از آگاهی درونی من به نام طیف آگاهی است. من با استفاده از نوار لغزنده میزان موافقت خود را با گزاره‌ها بیان می‌کنم.",
+    start: "شروع",
+    next: "بعدی",
+    results: [
+      "آگاهی من در حال حاضر با قربانی بودن هماهنگ است، تجربه چالش‌ها، یادگیری و رشد مورد نیاز است.",
+      "آگاهی من در حال حاضر با مرحله درک هماهنگ است، مشاهده الگوها، پرسشگری و گسترش آگاهی.",
+      "آگاهی من در حال حاضر با نویسندگی کامل، آگاهی منبع و آگاهی عمیق هماهنگ است."
+    ]
+  }
+};
 
-/* ------- state ------- */
 let lang = "en";
-let order = [];        // randomized question order indices
-let index = 0;        // which question (0..N-1)
-let answers = [];     // numeric answers in order they were asked
+let currentQuestion = 0;
+let scores = [];
 
-/* DOM refs */
-const root = document.documentElement;
-const langSelect = document.getElementById("langSelect");
-const landingPane = document.getElementById("landingPane");
-const questionPane = document.getElementById("questionPane");
-const resultPane = document.getElementById("resultPane");
-const startBtn = document.getElementById("startBtn");
-const nextBtn = document.getElementById("nextBtn");
-const questionText = document.getElementById("questionText");
-const landingSlider = document.getElementById("landingSlider");
-const questionSlider = document.getElementById("questionSlider");
-const lblLeft = document.getElementById("lblLeft");
-const lblMid  = document.getElementById("lblMid");
-const lblRight = document.getElementById("lblRight");
-const stageIEl = document.getElementById("stageI");
-const stageIIEl = document.getElementById("stageII");
-const stageIIIEl = document.getElementById("stageIII");
-const resultTextEl = document.getElementById("resultText");
+const title = document.getElementById("title");
+const desc = document.getElementById("description");
+const startBtn = document.getElementById("start");
+const nextBtn = document.getElementById("next");
+const slider = document.getElementById("slider");
+const statement = document.getElementById("statement");
+const languageSelect = document.getElementById("language");
+const resultText = document.getElementById("result-text");
+const resultTitle = document.getElementById("result-title");
 
-/* Initialize UI texts for languages */
-function applyLanguage(l){
-  lang = l;
-  // direction for Persian
-  if(lang === "fa"){
-    root.setAttribute("dir","rtl");
-  } else {
-    root.setAttribute("dir","ltr");
-  }
-
-  // title
-  const title = document.getElementById("title");
-  title.textContent = (lang==="en" ? "Spectrum of Being" : lang==="de" ? "Spektrum des Seins" : "طیف هستی");
-
-  // landing description
-  const desc = {
-    en: "This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.",
-    de: "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Seins. Ich beantworte eine Reihe von Aussagen mit dem Schieberegler.",
-    fa: "این بازتابی از آگاهی درونی من به نام طیف هستی است. من به مجموعه‌ای از جملات پاسخ می‌دهم و با استفاده از نوار لغزنده میزان موافقت را مشخص می‌کنم."
-  }[lang];
-  document.getElementById("landingText").textContent = desc;
-
-  // landing labels
-  const labels = {
-    en:["Disagree","Uncertain","Agree"],
-    de:["Ablehnen","Unentschieden","Zustimmen"],
-    fa:["مخالف","نامطمئن","موافق"]
-  }[lang];
-  lblLeft.textContent = labels[0];
-  lblMid.textContent  = labels[1];
-  lblRight.textContent = labels[2];
-
-  // Start/Next button words
-  startBtn.textContent = (lang==="en" ? "Start" : lang==="de" ? "Start" : "شروع");
-  nextBtn.textContent  = (lang==="en" ? "Next" : lang==="de" ? "Weiter" : "بعدی");
-
-  // ensure question text centered
-  questionText.style.textAlign = "center";
-}
-
-/* Randomize order (Fisher-Yates) */
-function makeOrder(n){
-  const arr = Array.from({length:n}, (_,i)=>i);
-  for(let i=n-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-/* Start test */
-startBtn.addEventListener("click", ()=>{
-  // randomize question order per session
-  order = makeOrder(QUESTIONS[lang].length);
-  index = 0;
-  answers = [];
-  landingPane.classList.add("hidden");
-  resultPane.classList.add("hidden");
-  questionPane.classList.remove("hidden");
-  showCurrentQuestion();
+languageSelect.addEventListener("change", () => {
+  lang = languageSelect.value;
+  title.textContent = translations[lang].title;
+  desc.textContent = translations[lang].desc;
+  startBtn.textContent = translations[lang].start;
+  nextBtn.textContent = translations[lang].next;
 });
 
-/* Show question given index in 'order' */
-function showCurrentQuestion(){
-  // set fixed slider to center
-  questionSlider.value = 5;
-  // pick question text by randomized order
-  const qidx = order[index];
-  const text = QUESTIONS[lang][qidx];
-  questionText.textContent = text;
-  // center alignment regardless of language
-  questionText.style.textAlign = "center";
-}
+startBtn.addEventListener("click", () => {
+  document.querySelector(".landing-section").style.display = "none";
+  document.querySelector(".question-section").style.display = "block";
+  currentQuestion = 0;
+  scores = [];
+  showQuestion();
+});
 
-/* Next */
-nextBtn.addEventListener("click", ()=>{
-  // read slider
-  const v = Number(questionSlider.value || 5);
-  answers.push(v);
-  index++;
-  if(index < order.length){
-    showCurrentQuestion();
+nextBtn.addEventListener("click", () => {
+  scores.push(parseInt(slider.value));
+  slider.value = 5;
+  currentQuestion++;
+  if (currentQuestion < questions[lang].length) {
+    showQuestion();
   } else {
-    // finished
-    questionPane.classList.add("hidden");
     showResult();
   }
 });
 
-/* Result calculation: compute sums per stage and show only highest stage message */
-function showResult(){
-  // For mapping answers into stages we use the original conceptual grouping: 
-  // split the randomized order results into 3 equal chunks by the *original* question grouping is not trivial after shuffle.
-  // We will compute stage score by mapping each original question index to its stage:
-  // from the original arrangement earlier, we grouped questions in blocks:
-  // The original English list is 38 items; you previously wanted equal-ish stage groups.
-  // For robustness: we'll compute stage assignment by original question index:
-  // - Stage I: indices 0..(N/3-1)
-  // - Stage II: indices N/3 .. 2N/3-1
-  // - Stage III: indices 2N/3 .. N-1
-  const N = QUESTIONS[lang].length;
-  const chunk = Math.floor(N/3);
-  let sscore = [0,0,0];
-  // answers array are values in order of 'order' indices
-  for(let i=0;i<order.length;i++){
-    const originalIdx = order[i];
-    const val = answers[i] || 0;
-    let stageIndex;
-    if(originalIdx < chunk) stageIndex = 0;
-    else if(originalIdx < 2*chunk) stageIndex = 1;
-    else stageIndex = 2;
-    sscore[stageIndex] += val;
-  }
-
-  // compute average per stage (divide by number of questions in that stage)
-  const counts = [chunk, chunk, N - 2*chunk]; // last chunk may be larger if not divisible
-  const avg = [
-    counts[0] ? (sscore[0]/counts[0]) : 0,
-    counts[1] ? (sscore[1]/counts[1]) : 0,
-    counts[2] ? (sscore[2]/counts[2]) : 0
-  ];
-
-  // display numeric stage scores (rounded to 1 decimal)
-  stageIEl.textContent = "Stage I: " + avg[0].toFixed(1);
-  stageIIEl.textContent = "Stage II: " + avg[1].toFixed(1);
-  stageIIIEl.textContent = "Stage III: " + avg[2].toFixed(1);
-
-  // pick highest
-  let highest = 0;
-  if(avg[1] > avg[highest]) highest = 1;
-  if(avg[2] > avg[highest]) highest = 2;
-
-  // show only highest-stage text
-  resultTextEl.textContent = STAGE_TEXT[highest][lang];
-
-  // show result pane
-  resultPane.classList.remove("hidden");
+function showQuestion() {
+  statement.textContent = questions[lang][currentQuestion];
 }
 
-/* Language change handling */
-langSelect.addEventListener("change", (e)=>{
-  applyLanguage(e.target.value);
-  // ensure slider at center
-  landingSlider.value = 5;
-  questionSlider.value = 5;
-});
-
-/* initial */
-applyLanguage("en");
-landingSlider.value = 5;
-questionSlider.value = 5;
+function showResult() {
+  const total = scores.reduce((a,b)=>a+b,0);
+  const stage1 = scores.slice(0,3).reduce((a,b)=>a+b,0);
+  const stage2 = scores.slice(3,6).reduce((a,b)=>a+b,0);
+  const stage3 = scores.slice(6,9).reduce((a,b)=>a+b,0);
+  let resultIndex = 0;
+  const maxVal = Math.max(stage1, stage2, stage3);
+  if (maxVal === stage2) resultIndex = 1;
+  if (maxVal === stage3) resultIndex = 2;
+  document.querySelector(".question-section").style.display = "none";
+  document.querySelector(".result-section").style.display = "block";
+  resultTitle.textContent = translations[lang].title;
+  resultText.textContent = translations[lang].results[resultIndex];
+}
 </script>
 </body>
 </html>
