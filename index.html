@@ -17,20 +17,17 @@ body {
     margin: 0;
     padding: 20px;
 }
-
 h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     margin-bottom: 30px;
     color: #5e2bff;
 }
-
 #intro, .question-container, .result {
     max-width: 700px;
     width: 90%;
     margin-bottom: 30px;
     font-size: 1.3em;
 }
-
 button {
     padding: 15px 40px;
     font-size: 1.2em;
@@ -42,12 +39,10 @@ button {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
 }
-
 button:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
-
 input[type=range] {
     width: 100%;
     margin: 20px 0;
@@ -57,10 +52,8 @@ input[type=range] {
     background: #ddd;
     outline: none;
 }
-
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -69,7 +62,6 @@ input[type=range]::-webkit-slider-thumb {
     border: 2px solid #fff;
     box-shadow: 0 0 8px rgba(0,0,0,0.3);
 }
-
 input[type=range]::-moz-range-thumb {
     width: 30px;
     height: 30px;
@@ -86,10 +78,9 @@ input[type=range]::-moz-range-thumb {
 <h1>Spectrum of Being</h1>
 
 <div id="intro">
-    <p>Welcome! This is a reflection of your inner consciousness called <strong>Spectrum of Being</strong>.</p>
-    <p>You will be presented with a series of statements. Use the slider to indicate your agreement:</p>
-    <p><strong>1 = Disagree</strong> &nbsp;→&nbsp; <strong>5 = Completely Agree</strong></p>
-    <p>Click the button below to begin.</p>
+    <p>This is a reflection of my inner consciousness called <strong>Spectrum of Being</strong>.</p>
+    <p>I am answering a series of statements using the slider to indicate my agreement.</p>
+    <p><strong>1 = Disagree</strong> &nbsp;|&nbsp; <strong>5 = Completely Agree</strong></p>
     <button id="startBtn">Take the Test</button>
 </div>
 
@@ -101,7 +92,7 @@ input[type=range]::-moz-range-thumb {
 <div class="result" id="result"></div>
 
 <script>
-// Questions with associated stage (1=Victimhood, 2=Realization, 3=Being)
+// Questions with stage mapping
 const questions = [
 { text: "There is someone (something) out there.", stage: 1 },
 { text: "Is there anyone out there?", stage: 2 },
@@ -158,13 +149,12 @@ function shuffle(array) {
     }
     return array;
 }
-
 const shuffledQuestions = shuffle([...questions]);
 
 function showQuestion() {
     if (currentIndex < shuffledQuestions.length) {
         document.getElementById("question").textContent = shuffledQuestions[currentIndex].text;
-        document.getElementById("slider").value = 1; // slider always starts at 1
+        document.getElementById("slider").value = 1; // always start at 1
     } else {
         showResult();
     }
@@ -193,18 +183,19 @@ function showResult() {
     let stage2 = scores.filter(q => q.stage === 2).map(q => q.score);
     let stage3 = scores.filter(q => q.stage === 3).map(q => q.score);
 
-    let avg1 = (stage1.reduce((a,b)=>a+b,0)/stage1.length).toFixed(2);
-    let avg2 = (stage2.reduce((a,b)=>a+b,0)/stage2.length).toFixed(2);
-    let avg3 = (stage3.reduce((a,b)=>a+b,0)/stage3.length).toFixed(2);
+    let avg1 = stage1.length ? (stage1.reduce((a,b)=>a+b,0)/stage1.length).toFixed(2) : 0;
+    let avg2 = stage2.length ? (stage2.reduce((a,b)=>a+b,0)/stage2.length).toFixed(2) : 0;
+    let avg3 = stage3.length ? (stage3.reduce((a,b)=>a+b,0)/stage3.length).toFixed(2) : 0;
 
     let overallMessage = "";
+    let maxAvg = Math.max(avg1, avg2, avg3);
 
-    if(avg3 >= avg2 && avg3 >= avg1){
-        overallMessage = "You are fully aligned with Being: full authorship, source awareness, and deep consciousness.";
-    } else if(avg2 >= avg1){
-        overallMessage = "You are in Realization: observing patterns, learning, and expanding consciousness.";
+    if(maxAvg == avg1){
+        overallMessage = "Your consciousness currently aligns with Victimhood: experiencing challenges, learning, and growth is needed.";
+    } else if(maxAvg == avg2){
+        overallMessage = "Your consciousness currently aligns with Realization: observing patterns, questioning, and expanding awareness.";
     } else {
-        overallMessage = "You are primarily in Victimhood: experiencing challenges, learning, and growth is needed.";
+        overallMessage = "Your consciousness currently aligns with Being: full authorship, source awareness, and deep consciousness.";
     }
 
     document.getElementById("question").style.display = "none";
@@ -212,7 +203,6 @@ function showResult() {
     document.getElementById("nextBtn").style.display = "none";
 
     document.getElementById("result").innerHTML = `
-        <h2>Results</h2>
         <p><strong>Stage 1 - Victimhood Average:</strong> ${avg1}</p>
         <p><strong>Stage 2 - Realization Average:</strong> ${avg2}</p>
         <p><strong>Stage 3 - Being Average:</strong> ${avg3}</p>
