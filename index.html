@@ -87,9 +87,9 @@ input[type=range]::-moz-range-thumb {
 
 <div id="intro">
     <p>Welcome! This is a reflection of your inner consciousness called <strong>Spectrum of Being</strong>.</p>
-    <p>You will be presented with a series of statements. For each statement, use the slider to indicate your agreement:</p>
+    <p>You will be presented with a series of statements. Use the slider to indicate your agreement:</p>
     <p><strong>1 = Disagree</strong> &nbsp;→&nbsp; <strong>5 = Completely Agree</strong></p>
-    <p>Adjust the slider to reflect your true feeling for each statement.</p>
+    <p>Click the button below to begin.</p>
     <button id="startBtn">Take the Test</button>
 </div>
 
@@ -101,54 +101,56 @@ input[type=range]::-moz-range-thumb {
 <div class="result" id="result"></div>
 
 <script>
+// Questions with associated stage (1=Victimhood, 2=Realization, 3=Being)
 const questions = [
-"There is someone (something) out there.",
-"Is there anyone out there?",
-"There is no one out there.",
-"Life happens to me.",
-"Life happens through me.",
-"Life happens as me.",
-"I am the victim of life.",
-"I am connected to a source, a higher self, or god.",
-"I am the source; god is a concept within me.",
-"Someone has built the wall.",
-"I am a brick in the wall.",
-"I am the wall, shaping the wall constantly.",
-"I blame society for everything I experience.",
-"I am part of society; therefore I blame myself.",
-"Society arises from me; I blame no one.",
-"Everything is unfair; this world must change.",
-"I must change the world and bring fairness into this.",
-"I radiate fairness; nothing needs to change.",
-"I need to be seen; the world must acknowledge me.",
-"I see myself; there is no need to be seen.",
-"Let there be light — I am projecting the world.",
-"There is god.",
-"There is no god.",
-"God is a concept created by me.",
-"I need to belong to feel whole.",
-"I am not alone; I belong.",
-"I am alone — the only one.",
-"Reality is co-created; I am within a hierarchy and powerless.",
-"Reality is being projected by me.",
-"I am authoring reality; I am the power of all frequencies.",
-"I was created.",
-"I am questioning creation.",
-"I am the creator.",
-"I need validation to feel seen.",
-"I am validated and seen.",
-"I am validation.",
-"Others exist.",
-"Are others beings?",
-"Others are not beings.",
-"There is hell and heaven.",
-"Hell and heaven are states of being.",
-"There is no state — only being."
+{ text: "There is someone (something) out there.", stage: 1 },
+{ text: "Is there anyone out there?", stage: 2 },
+{ text: "There is no one out there.", stage: 3 },
+{ text: "Life happens to me.", stage: 1 },
+{ text: "Life happens through me.", stage: 2 },
+{ text: "Life happens as me.", stage: 3 },
+{ text: "I am the victim of life.", stage: 1 },
+{ text: "I am connected to a source, a higher self, or god.", stage: 2 },
+{ text: "I am the source; god is a concept within me.", stage: 3 },
+{ text: "Someone has built the wall.", stage: 1 },
+{ text: "I am a brick in the wall.", stage: 2 },
+{ text: "I am the wall, shaping the wall constantly.", stage: 3 },
+{ text: "I blame society for everything I experience.", stage: 1 },
+{ text: "I am part of society; therefore I blame myself.", stage: 2 },
+{ text: "Society arises from me; I blame no one.", stage: 3 },
+{ text: "Everything is unfair; this world must change.", stage: 1 },
+{ text: "I must change the world and bring fairness into this.", stage: 2 },
+{ text: "I radiate fairness; nothing needs to change.", stage: 3 },
+{ text: "I need to be seen; the world must acknowledge me.", stage: 1 },
+{ text: "I see myself; there is no need to be seen.", stage: 2 },
+{ text: "Let there be light — I am projecting the world.", stage: 3 },
+{ text: "There is god.", stage: 1 },
+{ text: "There is no god.", stage: 2 },
+{ text: "God is a concept created by me.", stage: 3 },
+{ text: "I need to belong to feel whole.", stage: 1 },
+{ text: "I am not alone; I belong.", stage: 2 },
+{ text: "I am alone — the only one.", stage: 3 },
+{ text: "Reality is co-created; I am within a hierarchy and powerless.", stage: 1 },
+{ text: "Reality is being projected by me.", stage: 2 },
+{ text: "I am authoring reality; I am the power of all frequencies.", stage: 3 },
+{ text: "I was created.", stage: 1 },
+{ text: "I am questioning creation.", stage: 2 },
+{ text: "I am the creator.", stage: 3 },
+{ text: "I need validation to feel seen.", stage: 1 },
+{ text: "I am validated and seen.", stage: 2 },
+{ text: "I am validation.", stage: 3 },
+{ text: "Others exist.", stage: 1 },
+{ text: "Are others beings?", stage: 2 },
+{ text: "Others are not beings.", stage: 3 },
+{ text: "There is hell and heaven.", stage: 1 },
+{ text: "Hell and heaven are states of being.", stage: 2 },
+{ text: "There is no state — only being.", stage: 3 }
 ];
 
 let currentIndex = 0;
 let scores = [];
 
+// Shuffle questions
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -161,13 +163,14 @@ const shuffledQuestions = shuffle([...questions]);
 
 function showQuestion() {
     if (currentIndex < shuffledQuestions.length) {
-        document.getElementById("question").textContent = shuffledQuestions[currentIndex];
-        document.getElementById("slider").value = 1; // start from 1
+        document.getElementById("question").textContent = shuffledQuestions[currentIndex].text;
+        document.getElementById("slider").value = 1; // slider always starts at 1
     } else {
         showResult();
     }
 }
 
+// Start test
 document.getElementById("startBtn").addEventListener("click", () => {
     document.getElementById("intro").style.display = "none";
     document.getElementById("question").style.display = "block";
@@ -176,28 +179,46 @@ document.getElementById("startBtn").addEventListener("click", () => {
     showQuestion();
 });
 
+// Next button
 document.getElementById("nextBtn").addEventListener("click", () => {
-    const value = document.getElementById("slider").value;
-    scores.push(parseInt(value));
+    const value = parseInt(document.getElementById("slider").value);
+    scores.push({ score: value, stage: shuffledQuestions[currentIndex].stage });
     currentIndex++;
     showQuestion();
 });
 
+// Show result
 function showResult() {
-    const total = scores.reduce((a,b) => a+b,0);
-    const average = (total / scores.length).toFixed(2);
-    let message = "";
-    if(average < 2){
-        message = "You are primarily experiencing victimhood tendencies.";
-    } else if(average < 4){
-        message = "You are in realization, observing patterns and inner growth.";
+    let stage1 = scores.filter(q => q.stage === 1).map(q => q.score);
+    let stage2 = scores.filter(q => q.stage === 2).map(q => q.score);
+    let stage3 = scores.filter(q => q.stage === 3).map(q => q.score);
+
+    let avg1 = (stage1.reduce((a,b)=>a+b,0)/stage1.length).toFixed(2);
+    let avg2 = (stage2.reduce((a,b)=>a+b,0)/stage2.length).toFixed(2);
+    let avg3 = (stage3.reduce((a,b)=>a+b,0)/stage3.length).toFixed(2);
+
+    let overallMessage = "";
+
+    if(avg3 >= avg2 && avg3 >= avg1){
+        overallMessage = "You are fully aligned with Being: full authorship, source awareness, and deep consciousness.";
+    } else if(avg2 >= avg1){
+        overallMessage = "You are in Realization: observing patterns, learning, and expanding consciousness.";
     } else {
-        message = "You are in being, aligned with consciousness and flow.";
+        overallMessage = "You are primarily in Victimhood: experiencing challenges, learning, and growth is needed.";
     }
+
     document.getElementById("question").style.display = "none";
     document.getElementById("slider").style.display = "none";
     document.getElementById("nextBtn").style.display = "none";
-    document.getElementById("result").innerHTML = `Average Score: ${average}<br>${message}`;
+
+    document.getElementById("result").innerHTML = `
+        <h2>Results</h2>
+        <p><strong>Stage 1 - Victimhood Average:</strong> ${avg1}</p>
+        <p><strong>Stage 2 - Realization Average:</strong> ${avg2}</p>
+        <p><strong>Stage 3 - Being Average:</strong> ${avg3}</p>
+        <hr>
+        <p><strong>Overall State of Consciousness:</strong> ${overallMessage}</p>
+    `;
 }
 </script>
 
