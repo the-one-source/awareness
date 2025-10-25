@@ -118,120 +118,125 @@
    en, de, fa
    ------------------------------------------------------------------ */
 const QUESTIONS = [
-  /* Life experience */
-  {stage:1, en:"Life happens to me.", de:"Das Leben passiert mir.", fa:"زندگی برای من اتفاق می‌افتد."},
-  {stage:2, en:"Life happens through me.", de:"Das Leben passiert durch mich.", fa:"زندگی از طریق من اتفاق می‌افتد."},
-  {stage:3, en:"Life happens as me.", de:"Das Leben passiert als ich.", fa:"زندگی همان من است که رخ می‌دهد."},
+  {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
+  {stage:2,en:"Life happens through me.",de:"Das Leben passiert durch mich.",fa:"زندگی از طریق من اتفاق می‌افتد."},
+  {stage:3,en:"Life happens as me.",de:"Das Leben passiert als ich.",fa:"زندگی همان من است که رخ می‌دهد."},
 
-  /* Fairness / Perception */
-  {stage:1, en:"I feel life is unfair or against me.", de:"Ich fühle, das Leben ist unfair oder gegen mich.", fa:"من احساس می‌کنم زندگی ناعادلانه است یا علیه من است."},
-  {stage:2, en:"I notice patterns repeating and wonder why.", de:"Ich bemerke sich wiederholende Muster und frage mich warum.", fa:"من الگوهای تکراری را مشاهده می‌کنم و می‌پرسم چرا."},
-  {stage:3, en:"I see all as one flow of consciousness.", de:"Ich sehe alles als einen Fluss des Bewusstseins.", fa:"من همه چیز را به‌عنوان یک جریان واحد آگاهی می‌بینم."},
+  {stage:1,en:"I feel life is unfair or against me.",de:"Ich fühle, das Leben ist unfair oder gegen mich.",fa:"من احساس می‌کنم زندگی ناعادلانه است یا علیه من است."},
+  {stage:2,en:"I notice patterns repeating and wonder why.",de:"Ich bemerke sich wiederholende Muster und frage mich warum.",fa:"من الگوهای تکراری را مشاهده می‌کنم و می‌پرسم چرا."},
+  {stage:3,en:"I see all as one flow of consciousness.",de:"Ich sehe alles als einen Fluss des Bewusstseins.",fa:"من همه چیز را به‌عنوان یک جریان واحد آگاهی می‌بینم."},
 
-  /* Victimhood / Source */
-  {stage:1, en:"I am the victim of life.", de:"Ich bin das Opfer des Lebens.", fa:"من قربانی زندگی هستم."},
-  {stage:2, en:"I am connected to a source (higher self, God).", de:"Ich bin mit einer Quelle (höheres Selbst, Gott) verbunden.", fa:"من به یک منبع (خود برتر، خدا) متصل هستم."},
-  {stage:3, en:"I am the only source; God is a concept within me.", de:"Ich bin die einzige Quelle; Gott ist ein Konzept in mir.", fa:"من تنها منبع هستم؛ خدا مفهومی درون من است."},
+  {stage:1,en:"I am the victim of life.",de:"Ich bin das Opfer des Lebens.",fa:"من قربانی زندگی هستم."},
+  {stage:2,en:"I am connected to a source (higher self, God).",de:"Ich bin mit einer Quelle (höheres Selbst, Gott) verbunden.",fa:"من به یک منبع (خود برتر، خدا) متصل هستم."},
+  {stage:3,en:"I am the only source; God is a concept within me.",de:"Ich bin die einzige Quelle; Gott ist ein Konzept in mir.",fa:"من تنها منبع هستم؛ خدا مفهومی درون من است."},
 
-  /* Validation */
-  {stage:1, en:"I need validation to feel seen.", de:"Ich brauche Bestätigung, um gesehen zu werden.", fa:"من برای دیده شدن به تأیید نیاز دارم."},
-  {stage:2, en:"I am validated and seen.", de:"Ich bin bestätigt und gesehen.", fa:"من تأیید و دیده شده‌ام."},
-  {stage:3, en:"I am the only validation.", de:"Ich bin die einzige Bestätigung.", fa:"من تنها تأیید هستم."},
+  {stage:1,en:"I need validation to feel seen.",de:"Ich brauche Bestätigung, um gesehen zu werden.",fa:"من برای دیده شدن به تأیید نیاز دارم."},
+  {stage:2,en:"I am validated and seen.",de:"Ich bin bestätigt und gesehen.",fa:"من تأیید و دیده شده‌ام."},
+  {stage:3,en:"I am the only validation.",de:"Ich bin die einzige Bestätigung.",fa:"من تنها تأیید هستم."},
 
-  /* Blame / Responsibility */
-  {stage:1, en:"I blame society for everything I experience.", de:"Ich gebe der Gesellschaft die Schuld für alles, was ich erlebe.", fa:"من جامعه را برای همه چیز سرزنش می‌کنم."},
-  {stage:2, en:"I blame myself for what I experience.", de:"Ich gebe mir selbst die Schuld für das, was ich erlebe.", fa:"من خودم را برای تجربه‌هایم سرزنش می‌کنم."},
-  {stage:3, en:"I blame no one; all arises from me.", de:"Ich gebe niemandem die Schuld; alles entsteht aus mir.", fa:"من کسی را سرزنش نمی‌کنم؛ همه چیز از من برمی‌خیزد."},
+  {stage:1,en:"I blame society for everything I experience.",de:"Ich gebe der Gesellschaft die Schuld für alles, was ich erlebe.",fa:"من جامعه را برای همه چیز سرزنش می‌کنم."},
+  {stage:2,en:"I blame myself for what I experience.",de:"Ich gebe mir selbst die Schuld für das, was ich erlebe.",fa:"من خودم را برای تجربه‌هایم سرزنش می‌کنم."},
+  {stage:3,en:"I blame no one; all arises from me.",de:"Ich gebe niemandem die Schuld; alles entsteht aus mir.",fa:"من کسی را سرزنش نمی‌کنم؛ همه چیز از من برمی‌خیزد."},
 
-  /* Disconnection / Flow */
-  {stage:1, en:"I feel disconnected or unseen.", de:"Ich fühle mich getrennt oder ungesehen.", fa:"من احساس جدایی یا نادیده گرفته شدن می‌کنم."},
-  {stage:2, en:"I feel glimpses of unity and flow.", de:"Ich spüre Momente der Einheit und des Flusses.", fa:"من لحظاتی از وحدت و جریان را تجربه می‌کنم."},
-  {stage:3, en:"I live without striving; I am being.", de:"Ich lebe ohne Anstrengung; ich bin.", fa:"من بدون تلاش زندگی می‌کنم؛ من هستم."},
+  {stage:1,en:"I feel disconnected or unseen.",de:"Ich fühle mich getrennt oder ungesehen.",fa:"من احساس جدایی یا نادیده گرفته شدن می‌کنم."},
+  {stage:2,en:"I feel glimpses of unity and flow.",de:"Ich spüre Momente der Einheit und des Flusses.",fa:"من لحظاتی از وحدت و جریان را تجربه می‌کنم."},
+  {stage:3,en:"I live without striving; I am being.",de:"Ich lebe ohne Anstrengung; ich bin.",fa:"من بدون تلاش زندگی می‌کنم؛ من هستم."},
 
-  /* Creation / Questioning */
-  {stage:1, en:"I was created.", de:"Ich wurde erschaffen.", fa:"من خلق شده‌ام."},
-  {stage:2, en:"I am questioning creation.", de:"Ich hinterfrage die Schöpfung.", fa:"من در مورد خلقت سؤال می‌کنم."},
-  {stage:3, en:"I am the only creator.", de:"Ich bin der einzige Schöpfer.", fa:"من تنها خالق هستم."},
+  {stage:1,en:"I was created.",de:"Ich wurde erschaffen.",fa:"من خلق شده‌ام."},
+  {stage:2,en:"I am questioning creation.",de:"Ich hinterfrage die Schöpfung.",fa:"من در مورد خلقت سؤال می‌کنم."},
+  {stage:3,en:"I am the only creator.",de:"Ich bin der einzige Schöpfer.",fa:"من تنها خالق هستم."},
 
-  /* External presence */
-  {stage:1, en:"There is someone or something out there.", de:"Da ist jemand oder etwas da draußen.", fa:"کسی یا چیزی در بیرون وجود دارد."},
-  {stage:2, en:"Is there anyone out there?", de:"Gibt es jemanden da draußen?", fa:"آیا کسی در بیرون هست؟"},
-  {stage:3, en:"There is no one; only I experience myself.", de:"Es ist niemand da; nur ich erlebe mich selbst.", fa:"هیچ‌کس نیست؛ تنها من خودم را تجربه می‌کنم."},
+  {stage:1,en:"There is someone or something out there.",de:"Da ist jemand oder etwas da draußen.",fa:"کسی یا چیزی در بیرون وجود دارد."},
+  {stage:2,en:"Is there anyone out there?",de:"Gibt es jemanden da draußen?",fa:"آیا کسی در بیرون هست؟"},
+  {stage:3,en:"There is no one; only I experience myself.",de:"Es ist niemand da; nur ich erlebe mich selbst.",fa:"هیچ‌کس نیست؛ تنها من خودم را تجربه می‌کنم."},
 
-  /* Walls / Obstacles */
-  {stage:1, en:"Someone has built the wall.", de:"Jemand hat die Mauer gebaut.", fa:"کسی دیوار را ساخته است."},
-  {stage:2, en:"I am a brick in the wall.", de:"Ich bin ein Ziegel in der Mauer.", fa:"من یک آجر در دیوار هستم."},
-  {stage:3, en:"I am the wall, shaping it constantly.", de:"Ich bin die Mauer, die sie ständig formt.", fa:"من دیوار هستم و آن را دائماً شکل می‌دهم."},
+  {stage:1,en:"Someone has built the wall.",de:"Jemand hat die Mauer gebaut.",fa:"کسی دیوار را ساخته است."},
+  {stage:2,en:"I am a brick in the wall.",de:"Ich bin ein Ziegel in der Mauer.",fa:"من یک آجر در دیوار هستم."},
+  {stage:3,en:"I am the wall, shaping it constantly.",de:"Ich bin die Mauer, die sie ständig formt.",fa:"من دیوار هستم و آن را دائماً شکل می‌دهم."},
 
-  /* Paths / Roads */
-  {stage:1, en:"Somebody has built the road.", de:"Jemand hat die Straße gebaut.", fa:"کسی جاده را ساخته است."},
-  {stage:2, en:"Who built the road?", de:"Wer hat die Straße gebaut?", fa:"چه کسی جاده را ساخته است؟"},
-  {stage:3, en:"As I walk, the road appears; all is my creation.", de:"Während ich gehe, erscheint die Straße; alles ist meine Schöpfung.", fa:"همان‌طور که راه می‌روم، جاده ظاهر می‌شود؛ همه چیز خلق من است."},
+  {stage:1,en:"Somebody has built the road.",de:"Jemand hat die Straße gebaut.",fa:"کسی جاده را ساخته است."},
+  {stage:2,en:"Who built the road?",de:"Wer hat die Straße gebaut?",fa:"چه کسی جاده را ساخته است؟"},
+  {stage:3,en:"As I walk, the road appears; all is my creation.",de:"Während ich gehe, erscheint die Straße; alles ist meine Schöpfung.",fa:"همان‌طور که راه می‌روم، جاده ظاهر می‌شود؛ همه چیز خلق من است."},
 
-  /* Power / Change */
-  {stage:1, en:"I feel powerless to change what happens.", de:"Ich fühle mich machtlos, das Geschehen zu ändern.", fa:"من قدرت تغییر آنچه اتفاق می‌افتد را ندارم."},
-  {stage:2, en:"I am the change; I need to act.", de:"Ich bin die Veränderung; ich muss handeln.", fa:"من خود تغییر هستم؛ باید عمل کنم."},
-  {stage:3, en:"I hold no resistance; all is perfectly aligned with me.", de:"Ich widerstehe nichts; alles ist perfekt mit mir ausgerichtet.", fa:"من هیچ مقاومتی ندارم؛ همه چیز کاملاً با من هماهنگ است."},
+  {stage:1,en:"I feel powerless to change what happens.",de:"Ich fühle mich machtlos, das Geschehen zu ändern.",fa:"من قدرت تغییر آنچه اتفاق می‌افتد را ندارم."},
+  {stage:2,en:"I am the change; I need to act.",de:"Ich bin die Veränderung; ich muss handeln.",fa:"من تغییر هستم؛ باید عمل کنم."},
+  {stage:3,en:"I hold no resistance; all is perfectly aligned with me.",de:"Ich widerstehe nichts; alles ist perfekt mit mir ausgerichtet.",fa:"من هیچ مقاومتی ندارم؛ همه چیز کاملاً با من هماهنگ است."},
 
-  /* Luck / Fate */
-  {stage:1, en:"I believe luck or fate decides outcomes.", de:"Ich glaube, Glück oder Schicksal entscheidet die Ergebnisse.", fa:"من باور دارم شانس یا سرنوشت نتایج را تعیین می‌کند."},
-  {stage:2, en:"I trust life more than I resist it.", de:"Ich vertraue dem Leben mehr, als dass ich Widerstand leiste.", fa:"من به زندگی بیشتر از مقاومت اعتماد دارم."},
-  {stage:3, en:"I radiate fairness; all outcomes flow through me.", de:"Ich strahle Gerechtigkeit aus; alle Ergebnisse fließen durch mich.", fa:"من عدالت می‌تابانم؛ همه نتایج از طریق من جریان دارند."},
+  {stage:1,en:"I believe luck or fate decides outcomes.",de:"Ich glaube, Glück oder Schicksal entscheidet die Ergebnisse.",fa:"من باور دارم شانس یا سرنوشت نتایج را تعیین می‌کند."},
+  {stage:2,en:"I trust life more than I resist it.",de:"Ich vertraue dem Leben mehr, als dass ich Widerstand leiste.",fa:"من به زندگی بیشتر از مقاومت اعتماد می‌کنم."},
+  {stage:3,en:"I radiate fairness; all outcomes flow through me.",de:"Ich strahle Gerechtigkeit aus; alle Ergebnisse fließen durch mich.",fa:"من عدالت می‌تابانم؛ همه نتایج از طریق من جریان دارند."},
 
-  /* Others / Observations */
-  {stage:1, en:"I see others as separate beings on their own journey.", de:"Ich sehe andere als separate Wesen auf ihrem eigenen Weg.", fa:"من دیگران را موجودات جداگانه در مسیر خود می‌بینم."},
-  {stage:2, en:"I see others as mirrors, reflecting and teaching me.", de:"Ich sehe andere als Spiegel, die mich reflektieren und lehren.", fa:"من دیگران را به‌عنوان آیینه‌ای می‌بینم که بازتاب می‌دهند و به من آموزش می‌دهند."},
-  {stage:3, en:"I see others only as shadows I create; only characters I allow.", de:"Ich sehe andere nur als Schatten, die ich erschaffe; nur Figuren, die ich erlaube.", fa:"من  دیگران را تنها به‌عنوان سایه‌هایی که خلق می‌کنم می‌بینم؛ فقط شخصیت‌هایی که من اجازه می‌دهم وجود داشته باشند."},
+  {stage:1,en:"I see others as separate beings on their own journey.",de:"Ich sehe andere als separate Wesen auf ihrem eigenen Weg.",fa:"من دیگران را موجودات جداگانه در مسیر خود می‌بینم."},
+  {stage:2,en:"I see others as mirrors, reflecting and teaching me.",de:"Ich sehe andere als Spiegel, die mich reflektieren und lehren.",fa:"من دیگران را به‌عنوان آیینه‌ای می‌بینم که بازتاب می‌دهند و به من آموزش می‌دهند."},
+  {stage:3,en:"I see others only as shadows I create; only characters I allow.",de:"Ich sehe andere nur als Schatten, die ich erschaffe; nur Figuren, die ich erlaube.",fa:"من دیگران را تنها به‌عنوان سایه‌هایی که خلق می‌کنم می‌بینم؛ فقط شخصیت‌هایی که اجازه می‌دهم."},
 
-  /* Fear / Control */
-  {stage:1, en:"I fear losing control.", de:"Ich habe Angst, die Kontrolle zu verlieren.", fa:"من از دست دادن کنترل می‌ترسم."},
-  {stage:2, en:"I see no separation between creation and creator.", de:"Ich sehe keine Trennung zwischen Schöpfung und Schöpfer.", fa:"من جدایی بین خلق و خالق را نمی‌بینم."},
-  {stage:3, en:"There are no others; only I experience my creation.", de:"Es gibt keine anderen; nur ich erlebe meine Schöpfung.", fa:"هیچ دیگری وجود ندارد؛ تنها من خلق خود را تجربه می‌کنم."},
+  {stage:1,en:"I fear losing control.",de:"Ich habe Angst, die Kontrolle zu verlieren.",fa:"من از دست دادن کنترل می‌ترسم."},
+  {stage:2,en:"I see no separation between creation and creator.",de:"Ich sehe keine Trennung zwischen Schöpfung und Schöpfer.",fa:"من جدایی بین خلق و خالق را نمی‌بینم."},
+  {stage:3,en:"There are no others; only I experience my creation.",de:"Es gibt keine anderen; nur ich erlebe meine Schöpfung.",fa:"هیچ دیگری وجود ندارد؛ تنها من خلق خود را تجربه می‌کنم."},
 
-  /* Existence / God */
-  {stage:1, en:"There is God.", de:"Es gibt Gott.", fa:"خدا وجود دارد."},
-  {stage:2, en:"Is there a God?", de:"Gibt es einen Gott?", fa:"آیا خدایی وجود دارد؟"},
-  {stage:3, en:"There is no God; only I exist.", de:"Es gibt keinen Gott; nur ich existiere.", fa:"خدایی وجود ندارد؛ تنها من هستم."},
+  {stage:1,en:"There is God.",de:"Es gibt Gott.",fa:"خدا وجود دارد."},
+  {stage:2,en:"Is there a God?",de:"Gibt es einen Gott?",fa:"آیا خدایی وجود دارد؟"},
+  {stage:3,en:"There is no God; only I exist.",de:"Es gibt keinen Gott; nur ich existiere.",fa:"خدایی وجود ندارد؛ تنها من هستم."},
 
-  /* Belonging */
-  {stage:1, en:"I need to belong to feel whole.", de:"Ich muss dazugehören, um mich vollständig zu fühlen.", fa:"من نیاز دارم تعلق داشته باشم تا کامل باشم."},
-  {stage:2, en:"I am not alone; I belong.", de:"Ich bin nicht allein; ich gehöre dazu.", fa:"من تنها نیستم؛ تعلق دارم."},
-  {stage:3, en:"I am alone; the only one.", de:"Ich bin allein; der Einzige.", fa:"من تنها هستم؛ تنها یک موجود."},
+  {stage:1,en:"I need to belong to feel whole.",de:"Ich muss dazugehören, um mich vollständig zu fühlen.",fa:"من نیاز دارم تعلق داشته باشم تا کامل باشم."},
+  {stage:2,en:"I am not alone; I belong.",de:"Ich bin nicht allein; ich gehöre dazu.",fa:"من تنها نیستم؛ تعلق دارم."},
+  {stage:3,en:"I am alone; the only one.",de:"Ich bin allein; der Einzige.",fa:"من تنها هستم؛ تنها یک موجود."},
 
-  /* Comparison / Reflection */
-  {stage:1, en:"I often compare myself to others.", de:"Ich vergleiche mich oft mit anderen.", fa:"من اغلب خود را با دیگران مقایسه می‌کنم."},
-  {stage:2, en:"I recognize reflections in others.", de:"Ich erkenne Spiegelungen in anderen.", fa:"من بازتاب‌ها را در دیگران تشخیص می‌دهم."},
-  {stage:3, en:"I know love as my natural state.", de:"Ich kenne Liebe als meinen natürlichen Zustand.", fa:"من عشق را به‌عنوان حالت طبیعی خود می‌شناسم."},
+  {stage:1,en:"I often compare myself to others.",de:"Ich vergleiche mich oft mit anderen.",fa:"من اغلب خود را با دیگران مقایسه می‌کنم."},
+  {stage:2,en:"I recognize reflections in others.",de:"Ich erkenne Spiegelungen in anderen.",fa:"من بازتاب‌ها را در دیگران تشخیص می‌دهم."},
+  {stage:3,en:"I know love as my natural state.",de:"Ich kenne Liebe als meinen natürlichen Zustand.",fa:"من عشق را به‌عنوان حالت طبیعی خود می‌شناسم."},
 
-  /* Peace / Love */
-  {stage:1, en:"I think peace depends on circumstances.", de:"Ich glaube, Frieden hängt von den Umständen ab.", fa:"من فکر می‌کنم صلح به شرایط بستگی دارد."},
-  {stage:2, en:"I begin to see love behind appearances.", de:"Ich beginne, Liebe hinter Erscheinungen zu sehen.", fa:"من شروع می‌کنم عشق پشت ظاهرها را ببینم."},
-  {stage:3, en:"I am love observing myself.", de:"Ich bin die Liebe, die sich selbst beobachtet.", fa:"من عشقم که خود را مشاهده می‌کند."},
+  {stage:1,en:"I think peace depends on circumstances.",de:"Ich glaube, Frieden hängt von den Umständen ab.",fa:"من فکر می‌کنم صلح به شرایط بستگی دارد."},
+  {stage:2,en:"I begin to see love behind appearances.",de:"Ich beginne, Liebe hinter Erscheinungen zu sehen.",fa:"من شروع می‌کنم عشق پشت ظاهرها را ببینم."},
+  {stage:3,en:"I am love observing myself.",de:"Ich bin die Liebe, die sich selbst beobachtet.",fa:"من عشق هستم که خود را مشاهده می‌کنم."},
 
-  /* Resentment / Forgiveness */
-  {stage:1, en:"I hold resentment or blame.", de:"Ich hege Groll oder Schuldgefühle.", fa:"من دلخوری یا سرزنش دارم."},
-  {stage:2, en:"I begin forgiving and letting go.", de:"Ich beginne zu vergeben und loszulassen.", fa:"من شروع می‌کنم به بخشیدن و رها کردن."},
-  {stage:3, en:"I understand nothing is missing; all is integrated in me.", de:"Ich verstehe, dass nichts fehlt; alles ist in mir integriert.", fa:"من می‌فهمم هیچ چیزی کم نیست؛ همه چیز در من یکپارچه است."},
+  {stage:1,en:"I hold resentment or blame.",de:"Ich hege Groll oder Schuldgefühle.",fa:"من دلخوری یا سرزنش دارم."},
+  {stage:2,en:"I begin forgiving and letting go.",de:"Ich beginne zu vergeben und loszulassen.",fa:"من شروع می‌کنم به بخشیدن و رها کردن."},
+  {stage:3,en:"I understand nothing is missing; all is integrated in me.",de:"Ich verstehe, dass nichts fehlt; alles ist in mir integriert.",fa:"من می‌فهمم هیچ چیزی کم نیست؛ همه چیز در من یکپارچه است."},
 
-  /* Heaven / Hell / Being */
-  {stage:1, en:"There is hell and heaven.", de:"Es gibt Himmel und Hölle.", fa:"جهنم و بهشت وجود دارد."},
-  {stage:2, en:"Hell and heaven are states of being.", de:"Himmel und Hölle sind Zustände des Seins.", fa:"جهنم و بهشت حالت‌های هستی هستند."},
-  {stage:3, en:"There is no hell or heaven; only I experience myself.", de:"Es gibt kein Himmel oder Hölle; nur ich erlebe mich selbst.", fa:"هیچ جهنم یا بهشتی وجود ندارد؛ تنها من خودم را تجربه می‌کنم."},
+  {stage:1,en:"There is hell and heaven.",de:"Es gibt Himmel und Hölle.",fa:"جهنم و بهشت وجود دارد."},
+  {stage:2,en:"Hell and heaven are states of being.",de:"Himmel und Hölle sind Zustände des Seins.",fa:"جهنم و بهشت حالت‌های هستی هستند."},
+  {stage:3,en:"There is no hell or heaven; only I experience myself.",de:"Es gibt kein Himmel oder Hölle; nur ich erlebe mich selbst.",fa:"هیچ جهنم یا بهشتی وجود ندارد؛ تنها من خودم را تجربه می‌کنم."},
 
-  /* Blame Awareness */
-  {stage:1, en:"There is always someone to blame for events or my experience.", de:"Es gibt immer jemanden, dem man die Schuld geben kann.", fa:"همیشه کسی برای سرزنش وجود دارد."},
-  {stage:2, en:"I only blame myself for what I experience.", de:"Ich gebe nur mir selbst die Schuld für das, was ich erlebe.", fa:"من تنها خودم را برای آنچه تجربه می‌کنم سرزنش می‌کنم."},
-  {stage:3, en:"I blame no one; all arises from me.", de:"Ich gebe niemandem die Schuld; alles entsteht aus mir.", fa:"من کسی را سرزنش نمی‌کنم؛ همه چیز از من برمی‌خیزد."},
+  {stage:1,en:"There is always someone to blame for events or my experience.",de:"Es gibt immer jemanden, dem man die Schuld geben kann.",fa:"همیشه کسی برای سرزنش وجود دارد."},
+  {stage:2,en:"I only blame myself for what I experience.",de:"Ich gebe nur mir selbst die Schuld für das, was ich erlebe.",fa:"من تنها خودم را برای آنچه تجربه می‌کنم سرزنش می‌کنم."},
+  {stage:3,en:"I blame no one; all arises from me.",de:"Ich gebe niemandem die Schuld; alles entsteht aus mir.",fa:"من کسی را سرزنش نمی‌کنم؛ همه چیز از من برمی‌خیزد."},
 
-  /* Acknowledgement */
-  {stage:1, en:"I need to be acknowledged.", de:"Ich muss anerkannt werden.", fa:"من نیاز دارم که به رسمیت شناخته شوم."},
-  {stage:2, en:"I question whether acknowledgement matters.", de:"Ich hinterfrage, ob Anerkennung wichtig ist.", fa:"من می‌پرسم آیا به رسمیت شناختن مهم است؟"},
-  {stage:3, en:"I am acknowledgement.", de:"Ich bin Anerkennung.", fa:"من خودم رسمیت هستم."},
+  {stage:1,en:"I need to be acknowledged.",de:"Ich muss anerkannt werden.",fa:"من نیاز دارم که به رسمیت شناخته شوم."},
+  {stage:2,en:"I question whether acknowledgement matters.",de:"Ich hinterfrage, ob Anerkennung wichtig ist.",fa:"من می‌پرسم آیا به رسمیت شناختن مهم است؟"},
+  {stage:3,en:"I am acknowledgement.",de:"Ich bin Anerkennung.",fa:"من خودم رسمیت هستم."},
 
-  /* Judgment */
-  {stage:1, en:"I am constantly judging others.", de:"Ich urteile ständig über andere.", fa:"من مدام دیگران را قضاوت می‌کنم."},
-  {stage:2, en:"I try not to judge, but I judge myself.", de:"Ich versuche nicht zu urteilen, aber ich urteile über mich selbst.", fa:"من سعی می‌کنم قضاوت نکنم، اما خودم را قضاوت می‌کنم."},
-  {stage:3, en:"There is no judgment.", de:"Es gibt kein Urteil.", fa:"قضاوتی وجود ندارد."}
+  {stage:1,en:"I am constantly judging others.",de:"Ich urteile ständig über andere.",fa:"من مدام دیگران را قضاوت می‌کنم."},
+  {stage:2,en:"I try not to judge, but I judge myself.",de:"Ich versuche nicht zu urteilen, aber ich urteile über mich selbst.",fa:"من سعی می‌کنم قضاوت نکنم، اما خودم را قضاوت می‌کنم."},
+  {stage:3,en:"There is no judgment.",de:"Es gibt kein Urteil.",fa:"قضاوتی وجود ندارد."},
+
+  {stage:1,en:"There is a history before me.",de:"Es gibt eine Geschichte vor mir.",fa:"تاریخی قبل از من وجود دارد."},
+  {stage:2,en:"I think there is a source giving all beings consciousness.",de:"Ich erkenne, dass es eine Quelle gibt, die allen Wesen Bewusstsein verleiht.",fa:"من می‌دانم منبعی وجود دارد که به همه موجودات آگاهی می‌دهد."},
+  {stage:3,en:"Time is an illusion; everything is in the now.",de:"Zeit ist eine Illusion; alles existiert im Jetzt.",fa:"زمان توهم است؛ همه چیز در اکنون است."},
+
+  {stage:1,en:"Life is being projected to me.",de:"Das Leben wird mir projiziert.",fa:"زندگی برای من تجسم می‌شود."},
+  {stage:2,en:"Reality is a co-creation; I am projecting and being projected.",de:"Die Realität ist eine Mit-Schöpfung; ich projiziere und werde projiziert.",fa:"واقعیت یک هم‌آفرینی است؛ من پروژه می‌کنم و پروژه می‌شوم."},
+  {stage:3,en:"Let there be light; I only project my thoughts and feelings.",de:"Es werde Licht; ich projiziere nur meine Gedanken und Gefühle.",fa:"بگذار نور باشد؛ من فقط افکار و احساسات خود را تجسم می‌کنم."},
+
+  {stage:1,en:"I perceive reality as external and separate from me.",de:"Ich nehme die Realität als extern und getrennt von mir wahr.",fa:"من واقعیت را جدا و بیرونی نسبت به خود می‌بینم."},
+  {stage:2,en:"I recognize that my perception shapes what I call reality.",de:"Ich erkenne, dass meine Wahrnehmung formt, was ich Realität nenne.",fa:"من می‌دانم که ادراک من آنچه واقعیت می‌نامم را شکل می‌دهد."},
+  {stage:3,en:"All reality is my own consciousness; I am both observer and observed.",de:"Alle Realität ist mein eigenes Bewusstsein; ich bin Beobachter und Beobachtetes.",fa:"همه واقعیت آگاهی خود من است؛ من هم ناظر و هم مشاهده‌شده هستم."},
+
+  {stage:1,en:"I am influenced by past experiences and patterns.",de:"Ich bin von vergangenen Erfahrungen und Mustern beeinflusst.",fa:"من تحت تأثیر تجربیات و الگوهای گذشته هستم."},
+  {stage:2,en:"I see the threads of causality and my participation in them.",de:"Ich sehe die Fäden der Kausalität und meine Beteiligung daran.",fa:"من تارهای علیت و مشارکت خود را در آنها می‌بینم."},
+  {stage:3,en:"I am timeless; all causes and effects are me, fully present.",de:"Ich bin zeitlos; alle Ursachen und Wirkungen sind ich, vollständig präsent.",fa:"من بی‌زمان هستم؛ همه علل و معلول‌ها من هستم، کاملاً حاضر."},
+
+  {stage:1,en:"I seek answers outside myself.",de:"Ich suche Antworten außerhalb von mir.",fa:"من دنبال پاسخ بیرون از خودم می‌گردم."},
+  {stage:2,en:"I begin to find truth within my own awareness.",de:"Ich beginne, Wahrheit in meinem eigenen Bewusstsein zu finden.",fa:"من شروع به یافتن حقیقت در آگاهی خود می‌کنم."},
+  {stage:3,en:"All knowing arises within me; there is no outside, only insight.",de:"Alles Wissen entsteht in mir; هیچ بیرونی وجود ندارد، تنها بینش هست.",fa:"همه دانایی درون من پدید می‌آید؛ هیچ بیرونی وجود ندارد، فقط بینش است."},
+
+  {stage:1,en:"I feel bound by limitations of body and mind.",de:"Ich fühle mich durch Körper- und Geistesgrenzen gebunden.",fa:"من محدود به محدودیت‌های بدن و ذهن هستم."},
+  {stage:2,en:"I sense the expansion beyond perceived limits.",de:"Ich spüre die Ausdehnung über wahrgenommene Grenzen hinaus.",fa:"من گسترش فراتر از مرزهای درک‌شده را حس می‌کنم."},
+  {stage:3,en:"I exist beyond all limitations; I am infinite presence.",de:"Ich existiere jenseits aller Begrenzungen; ich bin unendliche Präsenz.",fa:"من فراتر از همه محدودیت‌ها وجود دارم؛ من حضور بی‌نهایت هستم."},
+
+  {stage:1,en:"I judge and label what I experience.",de:"Ich urteile und etikettiere, was ich erfahre.",fa:"من تجربه‌هایم را قضاوت و برچسب می‌زنم."},
+  {stage:2,en:"I witness my judgments and release them.",de:"Ich beobachte meine Urteile und lasse sie los.",fa:"من قضاوت‌های خود را مشاهده می‌کنم و رها می‌کنم."},
+  {stage:3,en:"I am the pure witness; all distinctions are reflections of my own mind.",de:"Ich bin der reine Zeuge; alle Unterschiede sind Spiegelungen meines eigenen Geistes.",fa:"من شاهد مطلق هستم؛ همه تمایزات بازتاب ذهن خودم هستند."}
 ];
 
 /* stage description text localized */
