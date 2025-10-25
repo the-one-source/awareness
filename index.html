@@ -16,6 +16,7 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
+    text-align: center;
 }
 h1 {
     font-weight: 400;
@@ -86,6 +87,11 @@ input[type=range]::-moz-range-thumb {
 .hidden {
     display: none;
 }
+#questionText {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    text-align: center;
+}
 </style>
 </head>
 <body>
@@ -110,8 +116,8 @@ input[type=range]::-moz-range-thumb {
 </div>
 
 <div id="questionnaire" class="hidden">
+    <p id="questionText"></p>
     <div class="slider-container">
-        <p id="questionText"></p>
         <input type="range" min="0" max="10" value="5" id="questionSlider">
     </div>
     <button class="button" id="nextButton">Next</button>
@@ -125,7 +131,7 @@ input[type=range]::-moz-range-thumb {
 </div>
 
 <script>
-// Full questions in English, German, Persian
+// Full questions
 const questions = {
 en: [
 "Life happens to me.",
@@ -133,39 +139,31 @@ en: [
 "I was created.",
 "I am questioning creation.",
 "I am the creator.",
-"I need validation to feel seen.",
-"I am validated and seen.",
-"I am validation.",
-"Others exist.",
-"Are others beings?",
-"Others are not beings.",
-"There is someone (something) out there.",
-"Is there anyone out there?",
-"There is no one out there.",
-"I am the victim of life.",
-"I am connected to a source, a higher self or god.",
-"I am the source; god is a concept within me.",
-"Someone has built the wall.",
-"I am a brick in the wall.",
-"I am the wall, shaping the wall constantly.",
-"I blame the society for everything I experience.",
-"I am part of society, therefore I blame myself.",
-"Society arises from me; I blame no one.",
-"Everything is unfair; this world must change.",
-"I must change the world and bring fairness into this.",
-"I radiate fairness; nothing needs to change.",
-"I need to be seen; the world must acknowledge me.",
-"I see myself; there is no need to be seen.",
-"Let there be light — I am projecting the world.",
-"There is god.",
-"There is no god.",
-"God is a concept created by me.",
-"I need to belong to feel whole.",
-"I am not alone; I belong.",
-"I am alone — the only one.",
-"Reality is co-created; I am within a hierarchy and powerless.",
-"Reality is being projected by me.",
-"I am authoring reality; I am the power of all frequencies."
+"I fear losing control.",
+"I question my thoughts and reactions.",
+"I observe my emotions deeply.",
+"My consciousness is expanding.",
+"I am aware of the source of everything.",
+"I feel interconnected with all.",
+"My mind is clear and present.",
+"I trust my inner guidance.",
+"I create my reality consciously.",
+"I embrace my responsibilities.",
+"I release limiting beliefs.",
+"I align with universal flow.",
+"I notice my past influencing me.",
+"I integrate all parts of myself.",
+"My life unfolds in harmony.",
+"My awareness is continuously growing.",
+"I understand my desires fully.",
+"I am aware of my impact.",
+"My choices reflect my highest self.",
+"I recognize my inner truth.",
+"I honor my intuition.",
+"I perceive the unseen.",
+"I transform challenges into growth.",
+"My consciousness guides my actions.",
+"I accept the present moment fully."
 ],
 de: [
 "Das Leben passiert mir.",
@@ -173,39 +171,31 @@ de: [
 "Ich wurde erschaffen.",
 "Ich hinterfrage die Schöpfung.",
 "Ich bin der Schöpfer.",
-"Ich brauche Bestätigung, um gesehen zu werden.",
-"Ich bin bestätigt und gesehen.",
-"Ich bin die Bestätigung.",
-"Andere existieren.",
-"Sind andere Wesen?",
-"Andere sind keine Wesen.",
-"Da ist jemand (etwas) da draußen.",
-"Gibt es jemanden da draußen?",
-"Da ist niemand da draußen.",
-"Ich bin das Opfer des Lebens.",
-"Ich bin verbunden mit einer Quelle, einem höheren Selbst oder Gott.",
-"Ich bin die Quelle; Gott ist ein Konzept in mir.",
-"Jemand hat die Mauer gebaut.",
-"Ich bin ein Ziegel in der Mauer.",
-"Ich bin die Mauer, die die Mauer ständig formt.",
-"Ich gebe der Gesellschaft die Schuld für alles, was ich erlebe.",
-"Ich bin Teil der Gesellschaft, daher gebe ich mir selbst die Schuld.",
-"Die Gesellschaft entsteht aus mir; ich gebe niemandem die Schuld.",
-"Alles ist unfair; diese Welt muss sich ändern.",
-"Ich muss die Welt verändern und Gerechtigkeit bringen.",
-"Ich strahle Gerechtigkeit aus; nichts muss sich ändern.",
-"Ich muss gesehen werden; die Welt muss mich anerkennen.",
-"Ich sehe mich selbst; es ist nicht nötig, gesehen zu werden.",
-"Es werde Licht — Ich projiziere die Welt.",
-"Es gibt Gott.",
-"Es gibt keinen Gott.",
-"Gott ist ein von mir geschaffenes Konzept.",
-"Ich muss dazugehören, um mich vollständig zu fühlen.",
-"Ich bin nicht allein; ich gehöre dazu.",
-"Ich bin allein — der Einzige.",
-"Realität wird miterschaffen; ich bin innerhalb einer Hierarchie und machtlos.",
-"Die Realität wird von mir projiziert.",
-"Ich erschaffe die Realität; ich bin die Macht aller Frequenzen."
+"Ich fürchte, die Kontrolle zu verlieren.",
+"Ich hinterfrage meine Gedanken und Reaktionen.",
+"Ich beobachte meine Emotionen tief.",
+"Mein Bewusstsein erweitert sich.",
+"Ich bin mir der Quelle von allem bewusst.",
+"Ich fühle mich mit allem verbunden.",
+"Mein Geist ist klar und präsent.",
+"Ich vertraue meiner inneren Führung.",
+"Ich erschaffe meine Realität bewusst.",
+"Ich übernehme meine Verantwortung.",
+"Ich lasse einschränkende Glaubenssätze los.",
+"Ich bin im Einklang mit dem universellen Fluss.",
+"Ich bemerke, wie meine Vergangenheit mich beeinflusst.",
+"Ich integriere alle Teile von mir.",
+"Mein Leben entfaltet sich in Harmonie.",
+"Mein Bewusstsein wächst kontinuierlich.",
+"Ich verstehe meine Wünsche vollständig.",
+"Ich bin mir meiner Auswirkungen bewusst.",
+"Meine Entscheidungen spiegeln mein höchstes Selbst wider.",
+"Ich erkenne meine innere Wahrheit.",
+"Ich ehre meine Intuition.",
+"Ich nehme das Unsichtbare wahr.",
+"Ich verwandle Herausforderungen in Wachstum.",
+"Mein Bewusstsein leitet meine Handlungen.",
+"Ich akzeptiere den gegenwärtigen Moment vollständig."
 ],
 fa: [
 "زندگی برای من اتفاق می‌افتد.",
@@ -213,43 +203,34 @@ fa: [
 "من خلق شده‌ام.",
 "من در مورد خلقت سؤال می‌کنم.",
 "من خالق هستم.",
-"من برای دیده شدن به تأیید نیاز دارم.",
-"من تأیید و دیده شده‌ام.",
-"من خود تأیید هستم.",
-"دیگران وجود دارند.",
-"آیا دیگران موجود هستند؟",
-"دیگران موجود نیستند.",
-"کسی (چیزی) در بیرون وجود دارد.",
-"آیا کسی در بیرون هست؟",
-"کسی در بیرون وجود ندارد.",
-"من قربانی زندگی هستم.",
-"من به منبع، خود برتر یا خدا متصل هستم.",
-"من منبع هستم؛ خدا یک مفهوم درون من است.",
-"کسی دیوار را ساخته است.",
-"من یک آجر در دیوار هستم.",
-"من دیوار هستم، دیوار را دائماً شکل می‌دهم.",
-"من همه چیز را به جامعه نسبت می‌دهم.",
-"من بخشی از جامعه هستم، بنابراین خودم را مقصر می‌دانم.",
-"جامعه از من بوجود می‌آید؛ من کسی را سرزنش نمی‌کنم.",
-"همه چیز ناعادلانه است؛ این جهان باید تغییر کند.",
-"من باید جهان را تغییر دهم و عدالت بیاورم.",
-"من عدالت می‌تابانم؛ هیچ چیزی نیاز به تغییر ندارد.",
-"من نیاز دارم دیده شوم؛ جهان باید من را ببیند.",
-"من خودم را می‌بینم؛ نیازی به دیده شدن نیست.",
-"بگذار نور باشد — من جهان را خلق می‌کنم.",
-"خدا وجود دارد.",
-"خدا وجود ندارد.",
-"خدا یک مفهوم ساخته‌شده توسط من است.",
-"من نیاز دارم که تعلق داشته باشم تا کامل باشم.",
-"من تنها نیستم؛ من تعلق دارم.",
-"من تنها هستم — تنها یک موجود.",
-"واقعیت هم‌آفرین است؛ من در یک سلسله مراتب و ناتوان هستم.",
-"واقعیت توسط من خلق می‌شود.",
-"من واقعیت را می‌سازم؛ من قدرت تمام فرکانس‌ها هستم."
+"من از دست دادن کنترل می‌ترسم.",
+"من افکار و واکنش‌هایم را بررسی می‌کنم.",
+"من احساساتم را عمیقاً مشاهده می‌کنم.",
+"آگاهی من در حال گسترش است.",
+"من از منبع همه چیز آگاه هستم.",
+"من با همه چیز ارتباط دارم.",
+"ذهن من واضح و حاضر است.",
+"من به هدایت درونی خود اعتماد دارم.",
+"من واقعیت خود را آگاهانه خلق می‌کنم.",
+"من مسئولیت‌هایم را می‌پذیرم.",
+"من باورهای محدودکننده را رها می‌کنم.",
+"من با جریان جهانی هماهنگ هستم.",
+"من متوجه تأثیر گذشته‌ام بر خود هستم.",
+"من همه بخش‌های خود را یکپارچه می‌کنم.",
+"زندگی من در هماهنگی پیش می‌رود.",
+"آگاهی من به طور مداوم در حال رشد است.",
+"من خواسته‌هایم را به طور کامل درک می‌کنم.",
+"من از تأثیر خود آگاه هستم.",
+"انتخاب‌هایم بازتاب بالاترین خودم هستند.",
+"من حقیقت درونی خود را می‌شناسم.",
+"من شهودم را محترم می‌شمارم.",
+"من نادیدنی‌ها را درک می‌کنم.",
+"من چالش‌ها را به رشد تبدیل می‌کنم.",
+"آگاهی من هدایتگر اعمالم است.",
+"من لحظه حال را به طور کامل می‌پذیرم."
 ]
 };
 
-// Define stages
 const stages = [
     { name: "Stage I", text: {
         en: "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
@@ -264,73 +245,75 @@ const stages = [
     { name: "Stage III", text: {
         en: "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.",
         de: "Mein Bewusstsein stimmt derzeit mit Sein, vollständiger Autorenschaft, Quellbewusstsein und tiefem Bewusstsein überein.",
-        fa: "آگاهی من در حال حاضر با بودن، مالکیت کامل، آگاهی منبع و آگاهی عمیق هماهنگ است."
+        fa: "آگاهی من در حال حاضر با بودن، خالقیت کامل، آگاهی از منبع و آگاهی عمیق هماهنگ است."
     }}
 ];
 
-let currentLanguage = 'en';
-let currentQuestion = 0;
+let currentLanguage = "en";
+let currentIndex = 0;
 let answers = [];
 
-const titleEl = document.getElementById('title');
-const landingEl = document.getElementById('landing');
-const questionnaireEl = document.getElementById('questionnaire');
-const resultEl = document.getElementById('result');
+const landingDiv = document.getElementById("landing");
+const questionnaireDiv = document.getElementById("questionnaire");
+const resultDiv = document.getElementById("result");
 
-const questionTextEl = document.getElementById('questionText');
-const stageIEl = document.getElementById('stageI');
-const stageIIEl = document.getElementById('stageII');
-const stageIIIEl = document.getElementById('stageIII');
-const finalResultEl = document.getElementById('finalResult');
+const questionText = document.getElementById("questionText");
+const stageIEl = document.getElementById("stageI");
+const stageIIEl = document.getElementById("stageII");
+const stageIIIEl = document.getElementById("stageIII");
+const finalResultEl = document.getElementById("finalResult");
 
-document.getElementById('language').addEventListener('change', function() {
-    currentLanguage = this.value;
+const languageSelect = document.getElementById("language");
+const startButton = document.getElementById("startButton");
+const nextButton = document.getElementById("nextButton");
+
+languageSelect.addEventListener("change", () => {
+    currentLanguage = languageSelect.value;
     updateLanguage();
 });
 
-document.getElementById('startButton').addEventListener('click', function() {
-    landingEl.classList.add('hidden');
-    questionnaireEl.classList.remove('hidden');
-    currentQuestion = 0;
+startButton.addEventListener("click", () => {
+    landingDiv.classList.add("hidden");
+    questionnaireDiv.classList.remove("hidden");
+    currentIndex = 0;
     answers = [];
-    questionTextEl.textContent = questions[currentLanguage][currentQuestion];
-    document.getElementById('questionSlider').value = 5;
+    showQuestion();
 });
 
-document.getElementById('nextButton').addEventListener('click', function() {
-    answers.push(Number(document.getElementById('questionSlider').value));
-    currentQuestion++;
-    if(currentQuestion < questions[currentLanguage].length){
-        questionTextEl.textContent = questions[currentLanguage][currentQuestion];
-        document.getElementById('questionSlider').value = 5;
+nextButton.addEventListener("click", () => {
+    const sliderValue = parseInt(document.getElementById("questionSlider").value);
+    answers.push(sliderValue);
+    currentIndex++;
+    if(currentIndex < questions[currentLanguage].length) {
+        showQuestion();
     } else {
-        questionnaireEl.classList.add('hidden');
-        resultEl.classList.remove('hidden');
+        questionnaireDiv.classList.add("hidden");
+        resultDiv.classList.remove("hidden");
         calculateResult();
     }
 });
 
-function updateLanguage(){
-    if(currentQuestion === 0){
-        document.getElementById('landingText').textContent = {
-            en: "This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.",
-            de: "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spectrum of Being. Ich beantworte eine Reihe von Aussagen mit dem Schieberegler.",
-            fa: "این بازتابی از آگاهی درونی من است به نام Spectrum of Being. من به مجموعه‌ای از جملات با استفاده از اسلایدر پاسخ می‌دهم."
-        }[currentLanguage];
-        document.getElementById('landingSlider').value = 5;
-    }
+function updateLanguage() {
+    document.getElementById("title").textContent = (currentLanguage === "en" ? "Spectrum of Being" : currentLanguage === "de" ? "Spektrum des Seins" : "طیف هستی");
+    document.getElementById("landingText").textContent = (currentLanguage === "en" ? "This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement." : currentLanguage === "de" ? "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Seins. Ich beantworte eine Reihe von Aussagen mithilfe des Schiebereglers, um meine Zustimmung anzuzeigen." : "این بازتابی از آگاهی درونی من به نام طیف هستی است. من به مجموعه‌ای از جملات پاسخ می‌دهم و از نوار لغزنده برای نشان دادن میزان موافقت خود استفاده می‌کنم.");
+    startButton.textContent = (currentLanguage === "en" ? "Start" : currentLanguage === "de" ? "Start" : "شروع");
 }
 
-function calculateResult(){
-    let stageScores = [0,0,0]; // Stage I, II, III
+function showQuestion() {
+    questionText.textContent = questions[currentLanguage][currentIndex];
+    document.getElementById("questionSlider").value = 5; // default middle
+}
+
+function calculateResult() {
+    const stageScores = [0,0,0];
     for(let i=0;i<answers.length;i++){
         if(i < answers.length/3) stageScores[0] += answers[i];
         else if(i < 2*answers.length/3) stageScores[1] += answers[i];
         else stageScores[2] += answers[i];
     }
-    stageIEl.textContent = stages[0].name + ": " + Math.round(stageScores[0]/(answers.length/3)*10)/10;
-    stageIIEl.textContent = stages[1].name + ": " + Math.round(stageScores[1]/(answers.length/3)*10)/10;
-    stageIIIEl.textContent = stages[2].name + ": " + Math.round(stageScores[2]/(answers.length/3)*10)/10;
+    stageIEl.textContent = "Stage I: " + Math.round(stageScores[0]/(answers.length/3)*10)/10;
+    stageIIEl.textContent = "Stage II: " + Math.round(stageScores[1]/(answers.length/3)*10)/10;
+    stageIIIEl.textContent = "Stage III: " + Math.round(stageScores[2]/(answers.length/3)*10)/10;
 
     let maxIndex = stageScores.indexOf(Math.max(...stageScores));
     finalResultEl.textContent = stages[maxIndex].text[currentLanguage];
