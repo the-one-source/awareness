@@ -18,9 +18,10 @@ body {
     padding: 20px;
 }
 h1 {
-    font-size: 3em;
+    font-size: 2.2em; /* Smaller */
     margin-bottom: 30px;
-    color: #5e2bff;
+    color: #6c757d; /* Subtle, minimalistic */
+    font-weight: 400;
 }
 #intro, .question-container, .result {
     max-width: 700px;
@@ -38,7 +39,7 @@ button {
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
-    margin-top: 30px; /* Added space above button */
+    margin-top: 40px;
 }
 button:hover {
     transform: translateY(-3px);
@@ -75,10 +76,10 @@ input[type=range]::-moz-range-thumb {
 #sliderLabels {
     display: flex;
     justify-content: space-between;
-    font-weight: normal; /* Not bold */
-    font-size: 0.9em; /* Smaller text */
+    font-weight: normal;
+    font-size: 0.9em;
     margin-top: -20px;
-    margin-bottom: 20px; /* More space before button */
+    margin-bottom: 40px; 
 }
 #sliderLabels span {
     width: 33%;
@@ -98,7 +99,7 @@ input[type=range]::-moz-range-thumb {
     <p>I am answering a series of statements using the slider to indicate my agreement.</p>
     
     <!-- Visual Showcase Slider -->
-    <input type="range" min="0" max="10" value="0" id="demoSlider">
+    <input type="range" min="0" max="10" value="5" id="demoSlider">
     <div id="sliderLabels">
         <span>Disagree</span>
         <span>Agree</span>
@@ -110,7 +111,7 @@ input[type=range]::-moz-range-thumb {
 
 <div class="question-container" id="question" style="display:none;"></div>
 
-<input type="range" min="0" max="10" value="0" id="slider" style="display:none;">
+<input type="range" min="0" max="10" value="5" id="slider" style="display:none;">
 <button id="nextBtn" style="display:none;">Next</button>
 
 <div class="result" id="result"></div>
@@ -178,7 +179,7 @@ const shuffledQuestions = shuffle([...questions]);
 function showQuestion() {
     if (currentIndex < shuffledQuestions.length) {
         document.getElementById("question").textContent = shuffledQuestions[currentIndex].text;
-        document.getElementById("slider").value = 0; // start at 0
+        document.getElementById("slider").value = 5; // default middle
     } else {
         showResult();
     }
@@ -203,6 +204,10 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 
 // Show result
 function showResult() {
+    document.getElementById("question").style.display = "none";
+    document.getElementById("slider").style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";
+
     let stage1 = scores.filter(q => q.stage === 1).map(q => q.score);
     let stage2 = scores.filter(q => q.stage === 2).map(q => q.score);
     let stage3 = scores.filter(q => q.stage === 3).map(q => q.score);
@@ -215,20 +220,17 @@ function showResult() {
     let maxAvg = Math.max(avg1, avg2, avg3);
 
     if(maxAvg == avg1){
-        overallMessage = "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.";
+        overallMessage = "my consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.";
     } else if(maxAvg == avg2){
-        overallMessage = "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.";
+        overallMessage = "my consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.";
     } else {
-        overallMessage = "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.";
+        overallMessage = "my consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.";
     }
 
-    document.getElementById("question").style.display = "none";
-    document.getElementById("slider").style.display = "none";
-    document.getElementById("nextBtn").style.display = "none";
     document.getElementById("result").innerHTML = `
-        <p><strong>Stage I:</strong> ${avg1}</p>
-        <p><strong>Stage II:</strong> ${avg2}</p>
-        <p><strong>Stage III:</strong> ${avg3}</p>
+        <p>Stage I: ${avg1}</p>
+        <p>Stage II: ${avg2}</p>
+        <p>Stage III: ${avg3}</p>
         <p><strong>Overall State of Consciousness:</strong> ${overallMessage}</p>
     `;
 }
