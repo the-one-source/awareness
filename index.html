@@ -5,30 +5,97 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spectrum of Being Test</title>
 <style>
-body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; }
-h1 { text-align: center; margin-bottom: 30px; }
-#quiz-container { margin-top: 20px; }
-.question { font-size: 1.1em; margin-bottom: 20px; }
-.slider-label { display: flex; justify-content: space-between; font-size: 0.9em; }
-button { padding: 10px 20px; font-size: 1em; margin-top: 20px; }
-#progress { margin-top: 10px; font-size: 0.9em; color: gray; }
-#result { margin-top: 30px; padding: 20px; border: 1px solid #ccc; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+}
+h1 { text-align: center; margin-bottom: 30px; color: #1f2937; }
+#quiz-container {
+  background: #ffffffcc;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+#theme { font-size: 1.3em; font-weight: bold; margin-bottom: 15px; color: #334155; }
+#question-box { font-size: 1.1em; margin-bottom: 30px; }
+.slider-container {
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+}
+input[type=range] {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 12px;
+  border-radius: 6px;
+  background: #cbd5e1;
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+input[type=range]::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.slider-label { display: flex; justify-content: space-between; font-size: 0.9em; margin-top: -10px; color: #475569; }
+#next-btn {
+  padding: 12px 30px;
+  font-size: 1em;
+  border-radius: 10px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+#next-btn:hover { background: #2563eb; }
+#progress {
+  margin-top: 15px;
+  font-size: 0.9em;
+  color: #64748b;
+}
+#result { margin-top: 30px; padding: 20px; border-radius: 15px; background: #e2e8f0; max-width: 600px; }
 </style>
 </head>
 <body>
 
 <h1>Spectrum of Being Test</h1>
 <div id="quiz-container">
+  <div id="theme"></div>
   <div id="question-box"></div>
-  <input type="range" id="answer-slider" min="1" max="5" value="3">
-  <div class="slider-label"><span>1 (Not at all)</span><span>5 (Completely)</span></div>
+  <div class="slider-container">
+    <input type="range" id="answer-slider" min="1" max="5" value="3">
+    <div class="slider-label"><span>1 (Not at all)</span><span>5 (Completely)</span></div>
+  </div>
   <div id="progress"></div>
   <button id="next-btn">Next</button>
 </div>
 <div id="result"></div>
 
 <script>
-// All questions from your Spectrum of Being
+// All questions from your table
 const questions = [
   { theme: "Existence", text: "There is someone (something) out there.", stage: 1 },
   { theme: "Existence", text: "Is there anyone out there?", stage: 2 },
@@ -74,8 +141,18 @@ const questions = [
   { theme: "Heaven & Hell", text: "There is no state — only being.", stage: 3 }
 ];
 
+// Shuffle questions
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+shuffle(questions);
+
 let current = 0;
 let answers = Array(questions.length).fill(3);
+const themeBox = document.getElementById("theme");
 const questionBox = document.getElementById("question-box");
 const slider = document.getElementById("answer-slider");
 const progress = document.getElementById("progress");
@@ -85,7 +162,8 @@ const nextBtn = document.getElementById("next-btn");
 function showQuestion() {
   if(current >= questions.length) { calculateResult(); return; }
   const q = questions[current];
-  questionBox.innerHTML = "<b>" + q.theme + ":</b> " + q.text;
+  themeBox.innerText = q.theme;
+  questionBox.innerText = q.text;
   slider.value = answers[current];
   progress.innerText = "Question " + (current + 1) + " of " + questions.length;
 }
@@ -121,6 +199,5 @@ function calculateResult() {
 
 showQuestion();
 </script>
-
 </body>
 </html>
