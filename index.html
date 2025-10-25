@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spectrum of Being Test</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; }
+h1 { text-align: center; margin-bottom: 30px; }
+#quiz-container { margin-top: 20px; }
+.question { font-size: 1.1em; margin-bottom: 20px; }
+.slider-label { display: flex; justify-content: space-between; font-size: 0.9em; }
+button { padding: 10px 20px; font-size: 1em; margin-top: 20px; }
+#progress { margin-top: 10px; font-size: 0.9em; color: gray; }
+#result { margin-top: 30px; padding: 20px; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+
+<h1>Spectrum of Being Test</h1>
+<div id="quiz-container">
+  <div id="question-box"></div>
+  <input type="range" id="answer-slider" min="1" max="5" value="3">
+  <div class="slider-label"><span>1 (Not at all)</span><span>5 (Completely)</span></div>
+  <div id="progress"></div>
+  <button id="next-btn">Next</button>
+</div>
+<div id="result"></div>
+
+<script>
+// All questions from your Spectrum of Being
+const questions = [
+  { theme: "Existence", text: "There is someone (something) out there.", stage: 1 },
+  { theme: "Existence", text: "Is there anyone out there?", stage: 2 },
+  { theme: "Existence", text: "There is no one out there.", stage: 3 },
+  { theme: "Life Orientation", text: "Life happens to me.", stage: 1 },
+  { theme: "Life Orientation", text: "Life happens through me.", stage: 2 },
+  { theme: "Life Orientation", text: "Life happens as me.", stage: 3 },
+  { theme: "Life Position", text: "I am the victim of life.", stage: 1 },
+  { theme: "Life Position", text: "I am connected to a source, a higher self, or god.", stage: 2 },
+  { theme: "Life Position", text: "I am the source; god is a concept within me.", stage: 3 },
+  { theme: "The Wall / Reality", text: "Someone has built the wall.", stage: 1 },
+  { theme: "The Wall / Reality", text: "I am a brick in the wall.", stage: 2 },
+  { theme: "The Wall / Reality", text: "I am the wall, shaping the wall constantly.", stage: 3 },
+  { theme: "Society", text: "I blame society for everything I experience.", stage: 1 },
+  { theme: "Society", text: "I am part of society; therefore I blame myself.", stage: 2 },
+  { theme: "Society", text: "Society arises from me; I blame no one.", stage: 3 },
+  { theme: "Fairness", text: "Everything is unfair; this world must change.", stage: 1 },
+  { theme: "Fairness", text: "I must change the world and bring fairness into this.", stage: 2 },
+  { theme: "Fairness", text: "I radiate fairness; nothing needs to change.", stage: 3 },
+  { theme: "Recognition", text: "I need to be seen; the world must acknowledge me.", stage: 1 },
+  { theme: "Recognition", text: "I see myself; there is no need to be seen.", stage: 2 },
+  { theme: "Recognition", text: "Let there be light — I am projecting the world.", stage: 3 },
+  { theme: "Divinity", text: "There is god.", stage: 1 },
+  { theme: "Divinity", text: "There is no god.", stage: 2 },
+  { theme: "Divinity", text: "God is a concept created by me.", stage: 3 },
+  { theme: "Belonging", text: "I need to belong to feel whole.", stage: 1 },
+  { theme: "Belonging", text: "I am not alone; I belong.", stage: 2 },
+  { theme: "Belonging", text: "I am alone — the only one.", stage: 3 },
+  { theme: "Reality Creation", text: "Reality is co-created; I am within a hierarchy and powerless.", stage: 1 },
+  { theme: "Reality Creation", text: "Reality is being projected by me.", stage: 2 },
+  { theme: "Reality Creation", text: "I am authoring reality; I am the power of all frequencies.", stage: 3 },
+  { theme: "Creation", text: "I was created.", stage: 1 },
+  { theme: "Creation", text: "I am questioning creation.", stage: 2 },
+  { theme: "Creation", text: "I am the creator.", stage: 3 },
+  { theme: "Validation", text: "I need validation to feel seen.", stage: 1 },
+  { theme: "Validation", text: "I am validated and seen.", stage: 2 },
+  { theme: "Validation", text: "I am validation.", stage: 3 },
+  { theme: "Others", text: "Others exist.", stage: 1 },
+  { theme: "Others", text: "Are others beings?", stage: 2 },
+  { theme: "Others", text: "Others are not beings.", stage: 3 },
+  { theme: "Heaven & Hell", text: "There is hell and heaven.", stage: 1 },
+  { theme: "Heaven & Hell", text: "Hell and heaven are states of being.", stage: 2 },
+  { theme: "Heaven & Hell", text: "There is no state — only being.", stage: 3 }
+];
+
+let current = 0;
+let answers = Array(questions.length).fill(3);
+const questionBox = document.getElementById("question-box");
+const slider = document.getElementById("answer-slider");
+const progress = document.getElementById("progress");
+const resultDiv = document.getElementById("result");
+const nextBtn = document.getElementById("next-btn");
+
+function showQuestion() {
+  if(current >= questions.length) { calculateResult(); return; }
+  const q = questions[current];
+  questionBox.innerHTML = "<b>" + q.theme + ":</b> " + q.text;
+  slider.value = answers[current];
+  progress.innerText = "Question " + (current + 1) + " of " + questions.length;
+}
+
+nextBtn.addEventListener("click", () => {
+  answers[current] = parseInt(slider.value);
+  current++;
+  showQuestion();
+});
+
+function calculateResult() {
+  document.getElementById("quiz-container").style.display = "none";
+  let stage1=0, stage2=0, stage3=0;
+  answers.forEach((val,i)=>{
+    if(questions[i].stage===1) stage1+=val;
+    else if(questions[i].stage===2) stage2+=val;
+    else stage3+=val;
+  });
+  const total = stage1+stage2+stage3;
+  const stage1Pct = Math.round(stage1/total*100);
+  const stage2Pct = Math.round(stage2/total*100);
+  const stage3Pct = Math.round(stage3/total*100);
+  let summary="";
+  if(stage3Pct>stage1Pct && stage3Pct>stage2Pct) summary="You are deeply aligned with Being and source awareness.";
+  else if(stage2Pct>stage1Pct && stage2Pct>stage3Pct) summary="You are in the process of realization and reflective awareness.";
+  else summary="You still resonate more with victimhood patterns; awareness may be limited.";
+  resultDiv.innerHTML = "<h2>Consciousness Analysis</h2>"+
+    "<p><b>Victimhood (Stage I):</b> "+stage1Pct+"%</p>"+
+    "<p><b>Realization (Stage II):</b> "+stage2Pct+"%</p>"+
+    "<p><b>Being (Stage III):</b> "+stage3Pct+"%</p>"+
+    "<hr><p>"+summary+"</p>";
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
