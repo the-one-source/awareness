@@ -5,236 +5,287 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spectrum of Being</title>
 <style>
-body {
-    font-family: 'Helvetica', sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: #f0f5f9;
-    height: 100vh;
-    margin: 0;
-    padding: 20px;
-}
-h1 {
-    font-size: 2.2em; /* Smaller */
-    margin-bottom: 30px;
-    color: #6c757d; /* Subtle, minimalistic */
-    font-weight: 400;
-}
-#intro, .question-container, .result {
-    max-width: 700px;
-    width: 90%;
-    margin-bottom: 30px;
-    font-size: 1.3em;
-}
-button {
-    padding: 15px 40px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 50px;
-    background: linear-gradient(45deg, #ff5eaa, #ffcc5e);
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-    margin-top: 40px;
-}
-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-input[type=range] {
-    width: 100%;
-    margin: 30px 0;
-    -webkit-appearance: none;
-    height: 12px;
-    border-radius: 6px;
-    background: #ddd;
-    outline: none;
-}
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #ff5eaa;
-    cursor: pointer;
-    border: 2px solid #fff;
-    box-shadow: 0 0 8px rgba(0,0,0,0.3);
-}
-input[type=range]::-moz-range-thumb {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #ff5eaa;
-    cursor: pointer;
-    border: 2px solid #fff;
-    box-shadow: 0 0 8px rgba(0,0,0,0.3);
-}
-#sliderLabels {
-    display: flex;
-    justify-content: space-between;
-    font-weight: normal;
-    font-size: 0.9em;
-    margin-top: -20px;
-    margin-bottom: 40px; 
-}
-#sliderLabels span {
-    width: 33%;
-    text-align: center;
-}
-#sliderLabels span:first-child { text-align: left; }
-#sliderLabels span:nth-child(2) { text-align: center; }
-#sliderLabels span:last-child { text-align: right; }
+    body { font-family: Arial, sans-serif; text-align: center; margin:0; padding:0; background:#f5f5f5; }
+    .container { max-width: 700px; margin: auto; padding: 30px; }
+    h1 { font-size: 2em; font-weight: normal; color:#555; margin-bottom: 20px; }
+    #landing, #questionnaire, #result { display:none; }
+    .slider-container { margin: 50px 0; position: relative; }
+    input[type=range] { width: 100%; }
+    .slider-labels { display: flex; justify-content: space-between; font-size: 0.9em; color:#555; margin-top: 10px; }
+    button { padding: 12px 25px; font-size: 1em; margin-top: 40px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; }
+    select { padding:5px 10px; margin-bottom:20px; }
 </style>
 </head>
 <body>
 
-<h1>Spectrum of Being</h1>
+<div class="container">
 
-<div id="intro">
-    <p>This is a reflection of my inner consciousness called <strong>Spectrum of Being</strong>.</p>
-    <p>I am answering a series of statements using the slider to indicate my agreement.</p>
-    
-    <!-- Visual Showcase Slider -->
-    <input type="range" min="0" max="10" value="5" id="demoSlider">
-    <div id="sliderLabels">
-        <span>Disagree</span>
-        <span>Agree</span>
-        <span>Completely Agree</span>
+    <!-- Landing Page -->
+    <div id="landing">
+        <h1 id="landing-title">Spectrum of Being</h1>
+        <p id="landing-text">This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.</p>
+
+        <div class="slider-container">
+            <input type="range" min="0" max="10" value="5" id="landing-slider" disabled>
+            <div class="slider-labels" id="landing-labels">
+                <span id="label-left">Disagree</span>
+                <span id="label-middle">Uncertain</span>
+                <span id="label-right">Agree</span>
+            </div>
+        </div>
+
+        <div>
+            <select id="language-select">
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="fa">فارسی</option>
+            </select>
+        </div>
+
+        <button id="start-btn">Start</button>
     </div>
 
-    <button id="startBtn">Start</button>
+    <!-- Questionnaire -->
+    <div id="questionnaire">
+        <div class="slider-container">
+            <p id="question-text"></p>
+            <input type="range" min="0" max="10" value="5" id="question-slider">
+        </div>
+        <button id="next-btn">Next</button>
+    </div>
+
+    <!-- Result -->
+    <div id="result"></div>
+
 </div>
 
-<div class="question-container" id="question" style="display:none;"></div>
-
-<input type="range" min="0" max="10" value="5" id="slider" style="display:none;">
-<button id="nextBtn" style="display:none;">Next</button>
-
-<div class="result" id="result"></div>
-
 <script>
-// Questions with stage mapping
-const questions = [
-{ text: "There is someone (something) out there.", stage: 1 },
-{ text: "Is there anyone out there?", stage: 2 },
-{ text: "There is no one out there.", stage: 3 },
-{ text: "Life happens to me.", stage: 1 },
-{ text: "Life happens through me.", stage: 2 },
-{ text: "Life happens as me.", stage: 3 },
-{ text: "I am the victim of life.", stage: 1 },
-{ text: "I am connected to a source, a higher self, or god.", stage: 2 },
-{ text: "I am the source; god is a concept within me.", stage: 3 },
-{ text: "Someone has built the wall.", stage: 1 },
-{ text: "I am a brick in the wall.", stage: 2 },
-{ text: "I am the wall, shaping the wall constantly.", stage: 3 },
-{ text: "I blame society for everything I experience.", stage: 1 },
-{ text: "I am part of society; therefore I blame myself.", stage: 2 },
-{ text: "Society arises from me; I blame no one.", stage: 3 },
-{ text: "Everything is unfair; this world must change.", stage: 1 },
-{ text: "I must change the world and bring fairness into this.", stage: 2 },
-{ text: "I radiate fairness; nothing needs to change.", stage: 3 },
-{ text: "I need to be seen; the world must acknowledge me.", stage: 1 },
-{ text: "I see myself; there is no need to be seen.", stage: 2 },
-{ text: "Let there be light — I am projecting the world.", stage: 3 },
-{ text: "There is god.", stage: 1 },
-{ text: "There is no god.", stage: 2 },
-{ text: "God is a concept created by me.", stage: 3 },
-{ text: "I need to belong to feel whole.", stage: 1 },
-{ text: "I am not alone; I belong.", stage: 2 },
-{ text: "I am alone — the only one.", stage: 3 },
-{ text: "Reality is co-created; I am within a hierarchy and powerless.", stage: 1 },
-{ text: "Reality is being projected by me.", stage: 2 },
-{ text: "I am authoring reality; I am the power of all frequencies.", stage: 3 },
-{ text: "I was created.", stage: 1 },
-{ text: "I am questioning creation.", stage: 2 },
-{ text: "I am the creator.", stage: 3 },
-{ text: "I need validation to feel seen.", stage: 1 },
-{ text: "I am validated and seen.", stage: 2 },
-{ text: "I am validation.", stage: 3 },
-{ text: "Others exist.", stage: 1 },
-{ text: "Are others beings?", stage: 2 },
-{ text: "Others are not beings.", stage: 3 },
-{ text: "There is hell and heaven.", stage: 1 },
-{ text: "Hell and heaven are states of being.", stage: 2 },
-{ text: "There is no state — only being.", stage: 3 }
-];
+// Multi-language text
+const languages = {
+    en: {
+        landingTitle: "Spectrum of Being",
+        landingText: "This is a reflection of my inner consciousness called Spectrum of Being. I am answering a series of statements using the slider to indicate my agreement.",
+        sliderLabels: ["Disagree", "Uncertain", "Agree"],
+        start: "Start",
+        next: "Next",
+        stages: ["Stage I", "Stage II", "Stage III"],
+        stageTexts: [
+            "my consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
+            "my consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.",
+            "my consciousness currently aligns with being, full authorship, source awareness, and deep consciousness."
+        ]
+    },
+    de: {
+        landingTitle: "Spektrum des Seins",
+        landingText: "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Seins. Ich beantworte eine Reihe von Aussagen mithilfe des Schiebereglers, um meine Zustimmung anzuzeigen.",
+        sliderLabels: ["Ablehnen", "Unentschieden", "Zustimmen"],
+        start: "Start",
+        next: "Weiter",
+        stages: ["Stufe I", "Stufe II", "Stufe III"],
+        stageTexts: [
+            "mein Bewusstsein stimmt derzeit mit Opferbewusstsein überein, Herausforderungen werden erlebt, Lernen und Wachstum sind erforderlich.",
+            "mein Bewusstsein stimmt derzeit mit Erkenntnis überein, Muster werden beobachtet, hinterfragt und das Bewusstsein erweitert.",
+            "mein Bewusstsein stimmt derzeit mit Sein überein, vollständige Urheberschaft, Quellbewusstsein und tiefes Bewusstsein."
+        ]
+    },
+    fa: {
+        landingTitle: "طیف وجود",
+        landingText: "این بازتابی از آگاهی درونی من به نام طیف وجود است. من به مجموعه‌ای از جملات پاسخ می‌دهم و با استفاده از نوار لغزنده میزان توافق خود را مشخص می‌کنم.",
+        sliderLabels: ["مخالفم", "نامطمئن", "موافقم"],
+        start: "شروع",
+        next: "بعدی",
+        stages: ["مرحله I", "مرحله II", "مرحله III"],
+        stageTexts: [
+            "آگاهی من در حال حاضر با حالت قربانی هم‌راستا است، چالش‌ها تجربه می‌شوند، یادگیری و رشد لازم است.",
+            "آگاهی من در حال حاضر با مرحله‌ی تحقق هم‌راستا است، الگوها مشاهده و مورد سوال قرار می‌گیرند و آگاهی گسترش می‌یابد.",
+            "آگاهی من در حال حاضر با بودن هم‌راستا است، خالقیت کامل، آگاهی منبع و آگاهی عمیق."
+        ]
+    }
+};
 
+// Questions (translated for all three languages)
+const questions = {
+    en: [
+        "There is someone (something) out there.",
+        "Is there anyone out there?",
+        "There is no one out there.",
+        "I am the victim of life.",
+        "I am connected to a source, a higher self, or god.",
+        "I am the source; god is a concept within me.",
+        "Someone has built the wall.",
+        "I am a brick in the wall.",
+        "I am the wall, shaping the wall constantly.",
+        "I blame society for everything I experience.",
+        "I am part of society; therefore I blame myself.",
+        "Society arises from me; I blame no one.",
+        "Everything is unfair; this world must change.",
+        "I must change the world and bring fairness into this.",
+        "I radiate fairness; nothing needs to change.",
+        "I need to be seen; the world must acknowledge me.",
+        "I see myself; there is no need to be seen.",
+        "Let there be light — I am projecting the world.",
+        "There is god.",
+        "There is no god.",
+        "God is a concept created by me.",
+        "I need to belong to feel whole.",
+        "I am not alone; I belong.",
+        "I am alone — the only one.",
+        "Reality is co-created; I am within a hierarchy and powerless.",
+        "Reality is being projected by me.",
+        "I am authoring reality; I am the power of all frequencies.",
+        "I was created.",
+        "I am questioning creation.",
+        "I am the creator.",
+        "I need validation to feel seen.",
+        "I am validated and seen.",
+        "I am validation.",
+        "Others exist.",
+        "Are others beings?",
+        "Others are not beings.",
+        "There is hell and heaven.",
+        "Hell and heaven are states of being.",
+        "There is no state — only being.",
+        "I feel life is unfair or against me.",
+        "I notice patterns repeating and wonder why.",
+        "I see all as one movement of consciousness.",
+        "I often compare myself to others.",
+        "I sense deeper meaning in challenges.",
+        "I hold no resistance to what arises.",
+        "I seek validation or approval.",
+        "I question my thoughts and reactions.",
+        "I experience peace independent of form.",
+        "I feel powerless to change what happens.",
+        "I feel moments of calm beyond emotion.",
+        "I know love as my natural state.",
+        "I believe luck or fate decides outcomes.",
+        "I begin forgiving and letting go.",
+        "I speak from stillness, not reaction.",
+        "I hold resentment or blame.",
+        "I recognize reflections in others.",
+        "I see no separation between creation and creator.",
+        "I fear losing control.",
+        "I am learning to direct my attention inward.",
+        "I feel timeless awareness beyond body and mind.",
+        "I think others owe me something.",
+        "I trust life more often than I resist it.",
+        "I understand that nothing is missing.",
+        "I feel disconnected or unseen.",
+        "I feel glimpses of unity and flow.",
+        "I live without striving — just being.",
+        "I think peace depends on circumstances.",
+        "I begin to see love behind appearances.",
+        "I am love observing itself."
+    ],
+    de: [], // Translation of questions to German (you can fill in)
+    fa: []  // Translation of questions to Persian (you can fill in)
+};
+
+let currentLang = 'en';
+let shuffledQuestions = [];
 let currentIndex = 0;
-let scores = [];
+let responses = [];
+let stageMapping = []; // array with stage info for each question
 
-// Shuffle questions
+// Define stage mapping for each question (0: Stage I, 1: Stage II, 2: Stage III)
+function initStageMapping() {
+    stageMapping = [];
+    const stage1 = 10, stage2 = 10, stage3 = 10; // adjust if your question count per stage differs
+    for(let i=0;i<stage1;i++) stageMapping.push(0);
+    for(let i=0;i<stage2;i++) stageMapping.push(1);
+    for(let i=0;i<stage3;i++) stageMapping.push(2);
+}
+
 function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    let currentIndex = array.length, randomIndex;
+    while(currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array;
 }
-const shuffledQuestions = shuffle([...questions]);
 
-function showQuestion() {
-    if (currentIndex < shuffledQuestions.length) {
-        document.getElementById("question").textContent = shuffledQuestions[currentIndex].text;
-        document.getElementById("slider").value = 5; // default middle
-    } else {
-        showResult();
-    }
+// Initialize page
+const landing = document.getElementById("landing");
+const questionnaire = document.getElementById("questionnaire");
+const resultDiv = document.getElementById("result");
+const startBtn = document.getElementById("start-btn");
+const nextBtn = document.getElementById("next-btn");
+const languageSelect = document.getElementById("language-select");
+const questionText = document.getElementById("question-text");
+const questionSlider = document.getElementById("question-slider");
+const landingLabels = document.getElementById("landing-labels").children;
+const landingTitle = document.getElementById("landing-title");
+const landingText = document.getElementById("landing-text");
+
+languageSelect.addEventListener('change', ()=>{ currentLang = languageSelect.value; updateLanguage(); });
+
+function updateLanguage(){
+    const lang = languages[currentLang];
+    landingTitle.textContent = lang.landingTitle;
+    landingText.textContent = lang.landingText;
+    landingLabels[0].textContent = lang.sliderLabels[0];
+    landingLabels[1].textContent = lang.sliderLabels[1];
+    landingLabels[2].textContent = lang.sliderLabels[2];
+    startBtn.textContent = lang.start;
+    nextBtn.textContent = lang.next;
 }
 
-// Start test
-document.getElementById("startBtn").addEventListener("click", () => {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("question").style.display = "block";
-    document.getElementById("slider").style.display = "block";
-    document.getElementById("nextBtn").style.display = "inline-block";
+// Start the test
+startBtn.addEventListener('click', ()=> {
+    landing.style.display = "none";
+    questionnaire.style.display = "block";
+    currentIndex = 0;
+    responses = [];
+    initStageMapping();
+    shuffledQuestions = shuffle([...questions[currentLang]]);
     showQuestion();
 });
 
+// Show question
+function showQuestion(){
+    if(currentIndex >= shuffledQuestions.length){
+        showResult();
+        return;
+    }
+    questionText.textContent = shuffledQuestions[currentIndex];
+    questionSlider.value = 5;
+}
+
 // Next button
-document.getElementById("nextBtn").addEventListener("click", () => {
-    const value = parseInt(document.getElementById("slider").value);
-    scores.push({ score: value, stage: shuffledQuestions[currentIndex].stage });
+nextBtn.addEventListener('click', ()=>{
+    responses.push(parseInt(questionSlider.value));
     currentIndex++;
     showQuestion();
 });
 
 // Show result
-function showResult() {
-    document.getElementById("question").style.display = "none";
-    document.getElementById("slider").style.display = "none";
-    document.getElementById("nextBtn").style.display = "none";
+function showResult(){
+    questionnaire.style.display = "none";
+    resultDiv.style.display = "block";
 
-    let stage1 = scores.filter(q => q.stage === 1).map(q => q.score);
-    let stage2 = scores.filter(q => q.stage === 2).map(q => q.score);
-    let stage3 = scores.filter(q => q.stage === 3).map(q => q.score);
-
-    let avg1 = stage1.length ? (stage1.reduce((a,b)=>a+b,0)/stage1.length).toFixed(2) : 0;
-    let avg2 = stage2.length ? (stage2.reduce((a,b)=>a+b,0)/stage2.length).toFixed(2) : 0;
-    let avg3 = stage3.length ? (stage3.reduce((a,b)=>a+b,0)/stage3.length).toFixed(2) : 0;
-
-    let overallMessage = "";
-    let maxAvg = Math.max(avg1, avg2, avg3);
-
-    if(maxAvg == avg1){
-        overallMessage = "my consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.";
-    } else if(maxAvg == avg2){
-        overallMessage = "my consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.";
-    } else {
-        overallMessage = "my consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.";
+    // Calculate stage averages
+    let stage1 = [], stage2 = [], stage3 = [];
+    for(let i=0;i<responses.length;i++){
+        if(stageMapping[i]==0) stage1.push(responses[i]);
+        else if(stageMapping[i]==1) stage2.push(responses[i]);
+        else stage3.push(responses[i]);
     }
+    function avg(arr){ return arr.length? (arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1):0; }
 
-    document.getElementById("result").innerHTML = `
-        <p>Stage I: ${avg1}</p>
-        <p>Stage II: ${avg2}</p>
-        <p>Stage III: ${avg3}</p>
-        <p><strong>Overall State of Consciousness:</strong> ${overallMessage}</p>
-    `;
+    let stageAvgs = [avg(stage1), avg(stage2), avg(stage3)];
+    const lang = languages[currentLang];
+
+    let html = "";
+    for(let i=0;i<3;i++){
+        html += `<p>${lang.stages[i]}: ${stageAvgs[i]}</p>`;
+        html += `<p>${lang.stageTexts[i]}</p>`;
+    }
+    resultDiv.innerHTML = html;
 }
-</script>
 
+updateLanguage();
+landing.style.display = "block";
+</script>
 </body>
 </html>
