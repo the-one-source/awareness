@@ -7,7 +7,7 @@
 <style>
   :root{
     --panel-width:720px;
-    --accent:#666440; /* updated color */
+    --accent:#666440;
     --bg:#f5f7fa;
     --card:#ffffff;
     --muted:#666;
@@ -99,84 +99,230 @@
 </div>
 
 <script>
-/* === Questions arrays (combined original + new, mapped to stages) === */
+/* === Questions arrays (English + German + Persian) === */
 const QUESTIONS = {
-  en: [
-    /* Stage I */
-    "Life happens to me.",
-    "I feel life is unfair or against me.",
-    "I am the victim of life.",
-    "I need validation to feel seen.",
-    "I blame society for everything I experience.",
-    "I feel disconnected or unseen.",
-    "I was created.",
-    "There is someone or something out there.",
-    "Someone has built the wall.",
-    "I feel powerless to change what happens.",
-    "I believe luck or fate decides outcomes.",
-    "I think others owe me something.",
-    "I fear losing control.",
-    "Others exist.",
-    "There is God.",
-    "Everything is unfair; this world needs to be changed.",
-    "I need to belong to feel whole.",
-    "I often compare myself to others.",
-    "I think peace depends on circumstances.",
-    "I hold resentment or blame.",
-    "There is hell and heaven.",
-    
-    /* Stage II */
-    "Life happens through me.",
-    "I notice patterns repeating and wonder why.",
-    "I am connected to a source (higher self, god).",
-    "I am validated and seen.",
-    "I am part of society, therefore I blame myself.",
-    "I feel glimpses of unity and flow.",
-    "I am questioning creation.",
-    "Is there anyone out there?",
-    "I am a brick in the wall.",
-    "I feel moments of calm beyond emotion.",
-    "I begin forgiving and letting go.",
-    "I trust life more often than I resist it.",
-    "I am learning to direct my attention inward.",
-    "Are others beings?",
-    "There is no state; just being?",
-    "I must change the world and bring fairness into this.",
-    "I am not alone; I belong.",
-    "I sense deeper meaning in challenges.",
-    "I begin to see love behind appearances.",
-    "I recognize reflections in others.",
-    "Hell and heaven are the state of being.",
-    
-    /* Stage III */
-    "Life happens as me.",
-    "I see all as one movement of consciousness.",
-    "I am the source; God is just a concept within me.",
-    "I am validation.",
-    "Society arises from me; I blame no one.",
-    "I live without striving — just being.",
-    "I am the creator.",
-    "There is no one out there.",
-    "I am the wall, shaping the wall constantly.",
-    "I know love as my natural state.",
-    "I speak from stillness, not reaction.",
-    "I understand that nothing is missing.",
-    "I feel timeless awareness beyond body and mind.",
-    "Others aren’t beings.",
-    "God is a concept created by me.",
-    "I radiate fairness; nothing needs to be changed.",
-    "I am alone — the only one.",
-    "I hold no resistance to what arises.",
-    "I am love observing itself.",
-    "I see no separation between creation and creator.",
-    "There is no state, just being."
-  ]
+en: [
+/* Stage I */
+"Life happens to me.",
+"I feel life is unfair or against me.",
+"I am the victim of life.",
+"I need validation to feel seen.",
+"I blame society for everything I experience.",
+"I feel disconnected or unseen.",
+"I was created.",
+"There is someone or something out there.",
+"Someone has built the wall.",
+"I feel powerless to change what happens.",
+"I believe luck or fate decides outcomes.",
+"I think others owe me something.",
+"I fear losing control.",
+"Others exist.",
+"There is God.",
+"Everything is unfair; this world needs to be changed.",
+"I need to belong to feel whole.",
+"I often compare myself to others.",
+"I think peace depends on circumstances.",
+"I hold resentment or blame.",
+"There is hell and heaven.",
+
+/* Stage II */
+"Life happens through me.",
+"I notice patterns repeating and wonder why.",
+"I am connected to a source (higher self, god).",
+"I am validated and seen.",
+"I am part of society, therefore I blame myself.",
+"I feel glimpses of unity and flow.",
+"I am questioning creation.",
+"Is there anyone out there?",
+"I am a brick in the wall.",
+"I feel moments of calm beyond emotion.",
+"I begin forgiving and letting go.",
+"I trust life more often than I resist it.",
+"I am learning to direct my attention inward.",
+"Are others beings?",
+"There is no state; just being?",
+"I must change the world and bring fairness into this.",
+"I am not alone; I belong.",
+"I sense deeper meaning in challenges.",
+"I begin to see love behind appearances.",
+"I recognize reflections in others.",
+"Hell and heaven are the state of being.",
+
+/* Stage III */
+"Life happens as me.",
+"I see all as one movement of consciousness.",
+"I am the source; God is just a concept within me.",
+"I am validation.",
+"Society arises from me; I blame no one.",
+"I live without striving — just being.",
+"I am the creator.",
+"There is no one out there.",
+"I am the wall, shaping the wall constantly.",
+"I know love as my natural state.",
+"I speak from stillness, not reaction.",
+"I understand that nothing is missing.",
+"I feel timeless awareness beyond body and mind.",
+"Others aren’t beings.",
+"God is a concept created by me.",
+"I radiate fairness; nothing needs to be changed.",
+"I am alone — the only one.",
+"I hold no resistance to what arises.",
+"I am love observing itself.",
+"I see no separation between creation and creator.",
+"There is no state, just being."
+],
+de: [
+/* Stage I */
+"Das Leben geschieht mir.",
+"Ich fühle, dass das Leben unfair ist oder gegen mich arbeitet.",
+"Ich bin das Opfer des Lebens.",
+"Ich brauche Bestätigung, um gesehen zu werden.",
+"Ich gebe der Gesellschaft die Schuld für alles, was ich erlebe.",
+"Ich fühle mich getrennt oder unsichtbar.",
+"Ich wurde erschaffen.",
+"Da draußen ist jemand oder etwas.",
+"Jemand hat die Mauer gebaut.",
+"Ich fühle mich machtlos, zu ändern, was geschieht.",
+"Ich glaube, Glück oder Schicksal bestimmt die Ergebnisse.",
+"Ich denke, andere schulden mir etwas.",
+"Ich fürchte, die Kontrolle zu verlieren.",
+"Andere existieren.",
+"Es gibt Gott.",
+"Alles ist unfair; diese Welt muss verändert werden.",
+"Ich muss dazugehören, um mich vollständig zu fühlen.",
+"Ich vergleiche mich oft mit anderen.",
+"Ich denke, Frieden hängt von den Umständen ab.",
+"Ich hege Groll oder Schuld.",
+"Es gibt Hölle und Himmel.",
+
+/* Stage II */
+"Das Leben geschieht durch mich.",
+"Ich bemerke sich wiederholende Muster und frage mich warum.",
+"Ich bin mit einer Quelle verbunden (höheres Selbst, Gott).",
+"Ich werde validiert und gesehen.",
+"Ich bin Teil der Gesellschaft, daher gebe ich mir selbst die Schuld.",
+"Ich spüre Momente der Einheit und des Flusses.",
+"Ich hinterfrage die Schöpfung.",
+"Gibt es jemanden da draußen?",
+"Ich bin ein Baustein in der Mauer.",
+"Ich spüre Momente der Ruhe jenseits der Emotionen.",
+"Ich beginne zu vergeben und loszulassen.",
+"Ich vertraue dem Leben öfter, als ich Widerstand leiste.",
+"Ich lerne, meine Aufmerksamkeit nach innen zu lenken.",
+"Sind andere Wesen?",
+"Es gibt keinen Zustand, nur Sein?",
+"Ich muss die Welt verändern und Gerechtigkeit bringen.",
+"Ich bin nicht allein; ich gehöre dazu.",
+"Ich erkenne tiefere Bedeutungen in Herausforderungen.",
+"Ich beginne, Liebe hinter Erscheinungen zu sehen.",
+"Ich erkenne Reflexionen in anderen.",
+"Hölle und Himmel sind Zustände des Seins.",
+
+/* Stage III */
+"Das Leben geschieht als ich.",
+"Ich sehe alles als eine Bewegung des Bewusstseins.",
+"Ich bin die Quelle; Gott ist nur ein Konzept in mir.",
+"Ich bin die Bestätigung.",
+"Die Gesellschaft entsteht aus mir; ich gebe niemandem die Schuld.",
+"Ich lebe ohne Anstrengung — einfach Sein.",
+"Ich bin der Schöpfer.",
+"Da draußen ist niemand.",
+"Ich bin die Mauer und forme sie ständig.",
+"Ich kenne Liebe als meinen natürlichen Zustand.",
+"Ich spreche aus Stille, nicht aus Reaktion.",
+"Ich verstehe, dass nichts fehlt.",
+"Ich fühle zeitlose Bewusstheit jenseits von Körper und Geist.",
+"Andere sind keine Wesen.",
+"Gott ist ein von mir geschaffenes Konzept.",
+"Ich strahle Gerechtigkeit aus; nichts muss verändert werden.",
+"Ich bin allein — der Einzige.",
+"Ich habe keinen Widerstand gegen das, was entsteht.",
+"Ich bin die Liebe, die sich selbst beobachtet.",
+"Ich sehe keine Trennung zwischen Schöpfer und Schöpfung.",
+"Es gibt keinen Zustand, nur Sein."
+],
+fa: [
+/* Stage I */
+"زندگی بر من اتفاق می‌افتد.",
+"احساس می‌کنم زندگی ناعادلانه است یا علیه من عمل می‌کند.",
+"من قربانی زندگی هستم.",
+"برای دیده شدن نیاز به تأیید دارم.",
+"جامعه را مقصر همه چیزهایی که تجربه می‌کنم می‌دانم.",
+"احساس جداشدگی یا دیده نشدن دارم.",
+"من آفریده شده‌ام.",
+"کسی یا چیزی آن بیرون وجود دارد.",
+"کسی دیوار را ساخته است.",
+"احساس ناتوانی در تغییر آنچه اتفاق می‌افتد دارم.",
+"اعتقاد دارم شانس یا سرنوشت نتایج را تعیین می‌کند.",
+"فکر می‌کنم دیگران به من بدهکارند.",
+"از دست دادن کنترل می‌ترسم.",
+"دیگران وجود دارند.",
+"خدا وجود دارد.",
+"همه چیز ناعادلانه است؛ این جهان باید تغییر کند.",
+"برای کامل بودن نیاز دارم که به جمع تعلق داشته باشم.",
+"اغلب خود را با دیگران مقایسه می‌کنم.",
+"فکر می‌کنم آرامش به شرایط وابسته است.",
+"کینه یا سرزنش دارم.",
+"بهشت و جهنم وجود دارند.",
+
+/* Stage II */
+"زندگی از طریق من اتفاق می‌افتد.",
+"الگوها را مشاهده می‌کنم و از خود می‌پرسم چرا.",
+"به منبعی متصل هستم (خود بالاتر، خدا).",
+"تأیید شده و دیده می‌شوم.",
+"من بخشی از جامعه هستم، بنابراین خودم را سرزنش می‌کنم.",
+"لحظاتی از وحدت و جریان را احساس می‌کنم.",
+"در حال سؤال دربارهٔ آفرینش هستم.",
+"آیا کسی آن بیرون هست؟",
+"من یک آجر در دیوار هستم.",
+"لحظاتی از آرامش فراتر از احساسات را تجربه می‌کنم.",
+"شروع به بخشش و رها کردن می‌کنم.",
+"به زندگی اعتماد می‌کنم بیش از مقاومت.",
+"در حال یادگیری هدایت توجه به درون هستم.",
+"دیگران موجودند؟",
+"هیچ وضعیتی وجود ندارد، فقط هستی؟",
+"باید جهان را تغییر دهم و عدالت بیاورم.",
+"من تنها نیستم؛ تعلق دارم.",
+"معنای عمیق‌تری در چالش‌ها حس می‌کنم.",
+"شروع به دیدن عشق پشت ظاهرها می‌کنم.",
+"انعکاس‌ها را در دیگران می‌شناسم.",
+"بهشت و جهنم حالت‌های هستی هستند.",
+
+/* Stage III */
+"زندگی به عنوان من اتفاق می‌افتد.",
+"همه چیز را به عنوان یک حرکت از آگاهی می‌بینم.",
+"من منبع هستم؛ خدا تنها یک مفهوم در من است.",
+"من خود تأیید هستم.",
+"جامعه از من نشأت می‌گیرد؛ به کسی سرزنش نمی‌کنم.",
+"بدون تلاش زندگی می‌کنم — فقط هستم.",
+"من خالق هستم.",
+"هیچ کسی آن بیرون نیست.",
+"من دیوار هستم و آن را مداوم شکل می‌دهم.",
+"عشق را به عنوان حالت طبیعی خود می‌شناسم.",
+"از سکون می‌گویم، نه واکنش.",
+"درک می‌کنم که هیچ چیزی کم نیست.",
+"آگاهی فراتر از بدن و ذهن را احساس می‌کنم.",
+"دیگران موجود نیستند.",
+"خدا مفهومی است که توسط من خلق شده است.",
+"عدالت را می‌تابانم؛ چیزی نیاز به تغییر ندارد.",
+"من تنها هستم — تنها یک نفر.",
+"مقاومتی نسبت به آنچه پدید می‌آید ندارم.",
+"من عشق هستم که خود را مشاهده می‌کند.",
+"هیچ جدایی بین آفریننده و آفریده نمی‌بینم.",
+"هیچ وضعیتی وجود ندارد، فقط هستی."
+]
 };
 
 const STAGE_TEXT = [
-  { en: "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed." },
-  { en: "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness." },
-  { en: "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness." }
+  { en: "My consciousness currently aligns with victimhood, experiencing challenges, learning, and growth is needed.",
+    de: "Mein Bewusstsein entspricht derzeit dem Opferbewusstsein, Herausforderungen werden erlebt, Lernen und Wachstum sind notwendig.",
+    fa: "آگاهی من در حال حاضر با قربانی بودن همسو است؛ چالش‌ها تجربه می‌شوند و یادگیری و رشد لازم است." },
+  { en: "My consciousness currently aligns with realization, observing patterns, questioning, and expanding awareness.",
+    de: "Mein Bewusstsein entspricht derzeit der Erkenntnis, Muster werden beobachtet, hinterfragt und das Bewusstsein erweitert.",
+    fa: "آگاهی من در حال حاضر با تحقق همسو است، الگوها را مشاهده می‌کنم، سؤال می‌کنم و آگاهی را گسترش می‌دهم." },
+  { en: "My consciousness currently aligns with being, full authorship, source awareness, and deep consciousness.",
+    de: "Mein Bewusstsein entspricht derzeit dem Sein, volle Autorschaft, Quellenbewusstsein und tiefe Bewusstheit.",
+    fa: "آگاهی من در حال حاضر با هستی همسو است، دارای خلق کامل، آگاهی منبع و آگاهی عمیق." }
 ];
 
 let lang = "en";
@@ -210,104 +356,78 @@ function applyLanguage(l){
   lang = l;
   if(lang === "fa"){ root.setAttribute("dir","rtl"); } else { root.setAttribute("dir","ltr"); }
 
-  pageTitle.textContent = "Spectrum of Awareness";
+  pageTitle.textContent = lang==="de"?"Bewusstseinsspektrum":lang==="fa"?"طیف آگاهی":"Spectrum of Awareness";
 
-  lblLeft.textContent = "Disagree";
-  lblMid.textContent  = "Uncertain";
-  lblRight.textContent = "Agree";
-  document.getElementById("lblLeftQ").textContent = "Disagree";
-  document.getElementById("lblMidQ").textContent = "Uncertain";
-  document.getElementById("lblRightQ").textContent = "Agree";
-
-  startBtn.textContent = "Start";
-  nextBtn.textContent  = "Next";
-  restartBtn.textContent = "Restart";
+  lblLeft.textContent = lang==="de"?"Ablehnen":lang==="fa"?"مخالف": "Disagree";
+  lblMid.textContent = lang==="de"?"Unsicher":lang==="fa"?"نامشخص": "Uncertain";
+  lblRight.textContent = lang==="de"?"Zustimmung":lang==="fa"?"موافق": "Agree";
+  document.getElementById("lblLeftQ").textContent = lblLeft.textContent;
+  document.getElementById("lblMidQ").textContent = lblMid.textContent;
+  document.getElementById("lblRightQ").textContent = lblRight.textContent;
 }
 
-/* utility: shuffle */
-function shuffle(n){ const a=Array.from({length:n},(_,i)=>i); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a; }
+/* randomize question order */
+function randomizeQuestions(){
+  const qList = QUESTIONS[lang];
+  order = qList.map((q,i)=>({q,i})).sort(()=>Math.random()-0.5);
+}
 
-/* start */
-startBtn.addEventListener("click", ()=>{
-  pageTitle.style.display = "none";
-  langRow.style.display = "none";
-
-  order = shuffle(QUESTIONS[lang].length);
-  idx = 0;
-  answers = [];
-  landingPane.classList.add("hidden");
-  resultPane.classList.add("hidden");
+/* show next question */
+function showQuestion(){
+  if(idx >= order.length){
+    questionPane.classList.add("hidden");
+    computeResult();
+    return;
+  }
+  questionText.textContent = order[idx].q;
+  questionSlider.value = 5;
   questionPane.classList.remove("hidden");
+}
+
+/* compute stage result based on averages */
+function computeResult(){
+  const stageSums = [0,0,0]; 
+  const stageCounts = [0,0,0];
+  order.forEach((item, i)=>{
+    let val = answers[i];
+    if(i<20) {stageSums[0]+=val; stageCounts[0]++;} 
+    else if(i<40) {stageSums[1]+=val; stageCounts[1]++;} 
+    else {stageSums[2]+=val; stageCounts[2]++;}
+  });
+  const stageAvgs = stageSums.map((sum,i)=>sum/stageCounts[i]);
+  const maxAvg = Math.max(...stageAvgs);
+  const maxIndex = stageAvgs.indexOf(maxAvg);
+
+  stageIEl.textContent = (lang==="de"?"Stufe I — Opferbewusstsein":lang==="fa"?"مرحله اول — قربانی بودن":"Stage I — Victimhood")+": "+stageAvgs[0].toFixed(1);
+  stageIIEl.textContent = (lang==="de"?"Stufe II — Erkenntnis":lang==="fa"?"مرحله دوم — تحقق":"Stage II — Realization")+": "+stageAvgs[1].toFixed(1);
+  stageIIIEl.textContent = (lang==="de"?"Stufe III — Sein":lang==="fa"?"مرحله سوم — هستی":"Stage III — Being")+": "+stageAvgs[2].toFixed(1);
+
+  resultTextEl.textContent = STAGE_TEXT[maxIndex][lang];
+
+  resultPane.classList.remove("hidden");
+}
+
+/* events */
+langSelect.addEventListener("change",(e)=>{applyLanguage(e.target.value);});
+startBtn.addEventListener("click",()=>{
+  landingPane.classList.add("hidden");
+  randomizeQuestions();
+  idx=0; answers=[];
   showQuestion();
 });
-
-/* show a question */
-function showQuestion(){
-  questionSlider.value = 5;
-  const qIdx = order[idx];
-  questionText.textContent = QUESTIONS[lang][qIdx];
-  questionText.style.textAlign = "center";
-}
-
-/* next */
-nextBtn.addEventListener("click", ()=>{
-  answers.push(Number(questionSlider.value || 5));
+nextBtn.addEventListener("click",()=>{
+  answers.push(parseInt(questionSlider.value));
   idx++;
-  if(idx < order.length){
-    showQuestion();
-  } else {
-    questionPane.classList.add("hidden");
-    pageTitle.style.display = "";
-    landingPane.classList.add("hidden");
-    resultPane.classList.remove("hidden");
-    computeResult();
-  }
+  showQuestion();
 });
-
-/* compute result using 0-10 scale */
-function computeResult(){
-  const N = QUESTIONS[lang].length;
-  const chunk = Math.floor(N/3);
-  const sums = [0,0,0];
-  const counts = [0,0,0];
-  for(let i=0;i<order.length;i++){
-    const orig = order[i];
-    const val = answers[i] || 0;
-    let s;
-    if(orig < chunk) s = 0;
-    else if(orig < 2*chunk) s = 1;
-    else s = 2;
-    sums[s] += val;
-    counts[s]++;
-  }
-  const avgs = sums.map((v,i)=>counts[i]?v/counts[i]:0);
-  stageIEl.textContent = "Stage I: " + avgs[0].toFixed(1);
-  stageIIEl.textContent = "Stage II: " + avgs[1].toFixed(1);
-  stageIIIEl.textContent = "Stage III: " + avgs[2].toFixed(1);
-
-  let highest = 0;
-  if(avgs[1] > avgs[highest]) highest = 1;
-  if(avgs[2] > avgs[highest]) highest = 2;
-  resultTextEl.textContent = STAGE_TEXT[highest][lang];
-}
-
-/* restart */
-restartBtn.addEventListener("click", ()=>{
+restartBtn.addEventListener("click",()=>{
   resultPane.classList.add("hidden");
   landingPane.classList.remove("hidden");
-  pageTitle.style.display = "";
-  langRow.style.display = "";
   landingSlider.value = 5;
-  questionSlider.value = 5;
 });
 
-/* language change */
-langSelect.addEventListener("change",(e)=>{ applyLanguage(e.target.value); landingSlider.value=5; questionSlider.value=5; });
-
-/* initialize */
-applyLanguage("en");
-landingSlider.value = 5;
-questionSlider.value = 5;
+/* init */
+applyLanguage(lang);
 </script>
 </body>
 </html>
