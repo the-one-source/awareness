@@ -5,108 +5,98 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spectrum of Being</title>
 <style>
-    body {
-        font-family: 'Helvetica', sans-serif;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background: #f0f5f9;
-        height: 100vh;
-        margin: 0;
-        padding: 20px;
-    }
+body {
+    font-family: 'Helvetica', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #f0f5f9;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
 
-    h1 {
-        font-size: 2.5em;
-        margin-bottom: 50px;
-        color: #5e2bff; /* Title color */
-    }
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #5e2bff;
+}
 
-    .question-container {
-        width: 90%;
-        max-width: 700px;
-        margin-bottom: 30px;
-        font-size: 1.5em;
-    }
+#intro, .question-container, .result {
+    max-width: 700px;
+    width: 90%;
+    margin-bottom: 30px;
+    font-size: 1.3em;
+}
 
-    input[type=range] {
-        width: 100%;
-        margin: 20px 0;
-        -webkit-appearance: none;
-        height: 12px;
-        border-radius: 6px;
-        background: #ddd;
-        outline: none;
-    }
+button {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #ff5eaa, #ffcc5e);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
 
-    input[type=range]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #ff5eaa; /* Slider circle color */
-        cursor: pointer;
-        border: 2px solid #fff;
-        box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    }
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
 
-    input[type=range]::-moz-range-thumb {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #ff5eaa;
-        cursor: pointer;
-        border: 2px solid #fff;
-        box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    }
+input[type=range] {
+    width: 100%;
+    margin: 20px 0;
+    -webkit-appearance: none;
+    height: 12px;
+    border-radius: 6px;
+    background: #ddd;
+    outline: none;
+}
 
-    .labels {
-        display: flex;
-        justify-content: space-between;
-        font-size: 1em;
-        margin-bottom: 30px;
-        padding: 0 10px;
-    }
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ff5eaa;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
 
-    button {
-        padding: 15px 40px;
-        font-size: 1.2em;
-        border: none;
-        border-radius: 50px;
-        background: linear-gradient(45deg, #ff5eaa, #ffcc5e);
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-    }
-
-    button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-
-    .result {
-        margin-top: 40px;
-        font-size: 1.3em;
-        max-width: 700px;
-    }
+input[type=range]::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ff5eaa;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
 </style>
 </head>
 <body>
 
 <h1>Spectrum of Being</h1>
-<div class="question-container" id="question"></div>
 
-<input type="range" min="1" max="5" value="3" id="slider">
-<div class="labels">
-    <span>Completely Disagree</span>
-    <span>Completely Agree</span>
+<div id="intro">
+    <p>Welcome! This is a reflection of your inner consciousness called <strong>Spectrum of Being</strong>.</p>
+    <p>You will be presented with a series of statements. For each statement, use the slider to indicate your agreement:</p>
+    <p><strong>1 = Disagree</strong> &nbsp;→&nbsp; <strong>5 = Completely Agree</strong></p>
+    <p>Adjust the slider to reflect your true feeling for each statement.</p>
+    <button id="startBtn">Take the Test</button>
 </div>
 
-<button id="nextBtn">Next</button>
+<div class="question-container" id="question" style="display:none;"></div>
+
+<input type="range" min="1" max="5" value="1" id="slider" style="display:none;">
+<button id="nextBtn" style="display:none;">Next</button>
 
 <div class="result" id="result"></div>
 
@@ -172,11 +162,19 @@ const shuffledQuestions = shuffle([...questions]);
 function showQuestion() {
     if (currentIndex < shuffledQuestions.length) {
         document.getElementById("question").textContent = shuffledQuestions[currentIndex];
-        document.getElementById("slider").value = 3;
+        document.getElementById("slider").value = 1; // start from 1
     } else {
         showResult();
     }
 }
+
+document.getElementById("startBtn").addEventListener("click", () => {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("question").style.display = "block";
+    document.getElementById("slider").style.display = "block";
+    document.getElementById("nextBtn").style.display = "inline-block";
+    showQuestion();
+});
 
 document.getElementById("nextBtn").addEventListener("click", () => {
     const value = document.getElementById("slider").value;
@@ -201,8 +199,6 @@ function showResult() {
     document.getElementById("nextBtn").style.display = "none";
     document.getElementById("result").innerHTML = `Average Score: ${average}<br>${message}`;
 }
-
-showQuestion();
 </script>
 
 </body>
