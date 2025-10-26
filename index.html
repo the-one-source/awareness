@@ -448,6 +448,9 @@ function showResults(){
   dominantMessageEl.classList.remove("hidden");
   dominantMessageEl.innerHTML = STAGE_SUMMARY[maxStage][currentLang];
 
+  // --------- ADD THIS LINE TO ADD STROKE ---------
+  document.getElementById("stage" + ["I","II","III"][maxStage-1]).style.border = "2px solid #666440";
+
   const detailsEl = document.getElementById("stageDetails");
   detailsEl.innerHTML = "";
 
