@@ -5,52 +5,50 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Spectrum of Awareness</title>
 <style>
-  :root{
-    --panel-width:760px;
-    --accent:#666440;
-    --bg:#f5f7fa;
-    --card:#ffffff;
-    --muted:#666;
-    --text:#111;
-  }
-  html,body{height:100%;margin:0;background:var(--bg);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);}
-  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px;}
-  .panel{width:min(96%,var(--panel-width));max-width:var(--panel-width);background:var(--card);border-radius:14px;box-shadow:0 10px 30px rgba(20,20,30,0.06);padding:34px;box-sizing:border-box;text-align:center;}
-  h1{margin:0 0 18px 0;font-weight:400;color:#444;font-size:22px;}
-  .row{display:flex;justify-content:center;gap:12px;align-items:center;margin-bottom:20px;}
-  select{padding:8px 12px;font-size:15px;border-radius:8px;border:1px solid #e6e6e6;background:white;}
-  p.lead{margin:0 0 18px 0;color:#666;font-size:15px;line-height:1.45;}
-  .fixed-slider-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;margin:18px 0 8px 0;}
-  .fixed-track{width:92%;max-width:680px;}
-  input[type="range"]{-webkit-appearance:none;width:100%;height:12px;border-radius:10px;background:#e6e6e6;outline:none;margin:0;padding:0;}
-  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;margin-top:-3px;cursor:pointer;}
-  input[type="range"]::-moz-range-thumb{width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;cursor:pointer;}
-  .slider-labels{width:92%;max-width:680px;display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px;user-select:none;}
-  .btn{display:inline-block;padding:12px 28px;border-radius:28px;background:var(--accent);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:18px;}
-  .btn:active{transform:translateY(1px);}
-  .question-container{width:100%;}
-  .result-grid{margin-top:12px;color:#333;font-size:15px;display:flex;gap:12px;justify-content:space-between;align-items:center;}
-  .result-stage{font-weight:700;flex:1;padding:10px;background:#fbfbfb;border-radius:10px;cursor:pointer;position:relative;transition:background 0.2s;}
-  .result-stage:hover{background:#f0f0f0;}
-  .result-score{font-size:18px;color:#222;margin-top:8px;font-weight:600;}
-  .hidden{display:none;}
-  .stage-desc{padding:12px 14px;margin-top:8px;background:#f9f9f9;border-radius:10px;text-align:left;font-size:14px;line-height:1.45;display:none;position:relative;}
-  .stage-desc .close-btn{position:absolute;top:6px;right:10px;font-weight:bold;font-size:16px;cursor:pointer;color:var(--accent);}
-  :root[dir="rtl"] .panel{direction:rtl;}
-  :root[dir="rtl"] .slider-labels{direction:rtl;}
-  #questionText{font-size:18px;line-height:1.45;margin:6px 0 14px 0;text-align:center;word-break:break-word;}
-  footer.note{margin-top:14px;color:#666;font-size:13px;}
-  @media (max-width:520px){ .panel{padding:20px;} #questionText{font-size:16px;} .btn{padding:10px 20px;} }
+:root{
+  --panel-width:760px;
+  --accent:#666440;
+  --bg:#f5f7fa;
+  --card:#ffffff;
+  --muted:#666;
+  --text:#111;
+}
+html,body{height:100%;margin:0;background:var(--bg);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);}
+.wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px;}
+.panel{width:min(96%,var(--panel-width));max-width:var(--panel-width);background:var(--card);border-radius:14px;box-shadow:0 10px 30px rgba(20,20,30,0.06);padding:34px;box-sizing:border-box;text-align:center;}
+h1{margin:0 0 18px 0;font-weight:400;color:#444;font-size:22px;}
+.row{display:flex;justify-content:center;gap:12px;align-items:center;margin-bottom:20px;}
+select{padding:8px 12px;font-size:15px;border-radius:8px;border:1px solid #e6e6e6;background:white;}
+p.lead{margin:0 0 18px 0;color:#666;font-size:15px;line-height:1.45;}
+.fixed-slider-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;margin:18px 0 8px 0;}
+.fixed-track{width:92%;max-width:680px;}
+input[type="range"]{-webkit-appearance:none;width:100%;height:12px;border-radius:10px;background:#e6e6e6;outline:none;margin:0;padding:0;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;margin-top:-3px;cursor:pointer;}
+input[type="range"]::-moz-range-thumb{width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;cursor:pointer;}
+.slider-labels{width:92%;max-width:680px;display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px;user-select:none;}
+.btn{display:inline-block;padding:12px 28px;border-radius:28px;background:var(--accent);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:18px;}
+.btn:active{transform:translateY(1px);}
+.question-container{width:100%;}
+.result-grid{margin-top:12px;color:#333;font-size:15px;display:flex;gap:12px;justify-content:space-between;align-items:center;}
+.result-stage{font-weight:700;flex:1;padding:10px;background:#fbfbfb;border-radius:10px;cursor:pointer;position:relative;transition:background 0.2s;}
+.result-stage:hover{background:#f0f0f0;}
+.result-score{font-size:18px;color:#222;margin-top:8px;font-weight:600;}
+.hidden{display:none;}
+.stage-desc{padding:12px 14px;margin-top:8px;background:#f9f9f9;border-radius:10px;text-align:left;font-size:14px;line-height:1.45;display:none;position:relative;}
+.stage-desc .close-btn{position:absolute;top:6px;right:10px;font-weight:bold;font-size:16px;cursor:pointer;color:var(--accent);}
+:root[dir="rtl"] .panel{direction:rtl;}
+:root[dir="rtl"] .slider-labels{direction:rtl;}
+#questionText{font-size:18px;line-height:1.45;margin:6px 0 14px 0;text-align:center;word-break:break-word;}
+footer.note{margin-top:14px;color:#666;font-size:13px;}
+@media (max-width:520px){ .panel{padding:20px;} #questionText{font-size:16px;} .btn{padding:10px 20px;} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="panel" id="panel">
 
-    <!-- Title -->
     <h1 id="pageTitle">Spectrum of Awareness</h1>
 
-    <!-- Language selector -->
     <div class="row" id="langRow">
       <select id="langSelect" aria-label="Language">
         <option value="en">English</option>
@@ -59,25 +57,11 @@
       </select>
     </div>
 
-    <!-- Landing pane -->
     <div id="landingPane">
       <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness. I am answering a series of statements using the slider to indicate my agreement.</p>
-
-      <div class="fixed-slider-wrap">
-        <div class="fixed-track">
-          <input id="landingSlider" type="range" min="0" max="10" value="5" />
-        </div>
-        <div class="slider-labels" id="landingLabels">
-          <span id="lblLeft">Disagree</span>
-          <span id="lblMid">Uncertain</span>
-          <span id="lblRight">Agree</span>
-        </div>
-      </div>
-
       <button id="startBtn" class="btn">Start</button>
     </div>
 
-    <!-- Questionnaire pane -->
     <div id="questionPane" class="hidden" aria-live="polite">
       <div id="questionText" role="heading" aria-level="2"></div>
 
@@ -95,16 +79,13 @@
       <button id="nextBtn" class="btn">Next</button>
     </div>
 
-    <!-- Result pane -->
     <div id="resultPane" class="hidden">
       <div class="result-grid" aria-hidden="false">
         <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
         <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
         <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
       </div>
-
       <div id="stageDetails"></div>
-
       <div style="margin-top:18px;">
         <button id="restartBtn" class="btn">Restart</button>
       </div>
@@ -116,7 +97,7 @@
 
 <script>
 /* ----------------- QUESTIONS ----------------- */
-const QUESTIONS = [
+const QUESTIONS = [ 
   {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
   {stage:2,en:"Life happens through me.",de:"Das Leben passiert durch mich.",fa:"زندگی از طریق من اتفاق می‌افتد."},
   {stage:3,en:"Life happens as me.",de:"Das Leben passiert als ich.",fa:"زندگی همان من است که رخ می‌دهد."},
@@ -237,25 +218,24 @@ const QUESTIONS = [
   {stage:2,en:"I witness my judgments and release them.",de:"Ich beobachte meine Urteile und lasse sie los.",fa:"من قضاوت‌های خود را مشاهده می‌کنم و رها می‌کنم."},
   {stage:3,en:"I am the pure witness; all distinctions are reflections of my own mind.",de:"Ich bin der reine Zeuge; alle Unterschiede sind Spiegelungen meines eigenen Geistes.",fa:"من شاهد مطلق هستم؛ همه تمایزات بازتاب ذهن خودم هستند."}
 ];
-
 /* ----------------- STAGE INFO ----------------- */
-const STAGE_INFO = [
-  {title:"Stage I — Victimhood", scoreRange:"0–10", description:
-`Stage I is the realm of victimhood, where the self feels distant from its origin and lost in the density of forgetfulness. Life is experienced as happening to the self rather than through it.
-• Score close to 10: Deep immersion in victimhood; heavy attachment, resistance, and identification with external stories. Overall state dominated by Stage I.
-• Score around 5: Partial awareness emerging; glimpses of truth appear, potential to move toward Stage II.
-• Score below 5: Early awakening; self begins noticing patterns and reflections. Shadow work and self-inquiry required.`},
-  {title:"Stage II — Awakening", scoreRange:"0–10", description:
-`Stage II is the stage of awakening. The self notices patterns, cycles, and connections. Life happens through the self as awareness grows. Self feels more integrated yet still sees separation. It is the bridge between victimhood and mastery.
-• Score close to 10: High awareness; frequent moments of flow and clarity.
-• Score around 5: Partial integration; awareness fluctuates between old patterns and insights.
-• Score below 5: Awakening just starting; conscious choice and self-observation needed.`},
-  {title:"Stage III — Mastery", scoreRange:"0–10", description:
-`Stage III is mastery. The self recognizes all arises from it. There is no other; life is seamless and fully conscious. Stage III is nondual, beyond victimhood, fully awake.
-• Score close to 10: Complete embodiment; life happens as self; absolute sovereignty.
-• Score around 5: Emerging mastery; occasional shadows of lower stages appear.
-• Score below 5: Foundations of mastery being laid; self-integration in progress.`}
-];
+const STAGE_INFO = {
+  en: [
+    {title:"Stage I — Victimhood", scoreRange:"0–10", description:"Stage I is the realm of victimhood, ..."},
+    {title:"Stage II — Awakening", scoreRange:"0–10", description:"Stage II is the stage of awakening, ..."},
+    {title:"Stage III — Mastery", scoreRange:"0–10", description:"Stage III is mastery, ..."}
+  ],
+  de: [
+    {title:"Stufe I — Opferrolle", scoreRange:"0–10", description:"Stufe I ist das Reich des ..."},
+    {title:"Stufe II — Erwachen", scoreRange:"0–10", description:"Stufe II ist das Stadium des ..."},
+    {title:"Stufe III — Meisterschaft", scoreRange:"0–10", description:"Stufe III ist die Meisterschaft ..."}
+  ],
+  fa: [
+    {title:"مرحله اول — قربانی", scoreRange:"0–10", description:"مرحله اول حوزه قربانی است ..."},
+    {title:"مرحله دوم — بیداری", scoreRange:"0–10", description:"مرحله دوم مرحله بیداری است ..."},
+    {title:"مرحله سوم — تسلط", scoreRange:"0–10", description:"مرحله سوم تسلط است ..."}
+  ]
+};
 
 /* ----------------- LABELS ----------------- */
 const LABELS = {
@@ -263,6 +243,12 @@ const LABELS = {
   de: { left:"Stimme nicht zu", mid:"Ungewiss", right:"Stimme zu", next:"Weiter", start:"Start", restart:"Neu starten" },
   fa: { left:"مخالف", mid:"نامطمئن", right:"موافق", next:"بعدی", start:"شروع", restart:"دوباره" }
 };
+
+/* ----------------- STATE ----------------- */
+let currentLang = "en";
+let currentQ = 0;
+let scores = [0,0,0];
+let shuffledQuestions = [];
 
 /* ----------------- DOM ELEMENTS ----------------- */
 const landingPane = document.getElementById("landingPane");
@@ -279,64 +265,42 @@ const qLblRight = document.getElementById("qLblRight");
 
 const langSelect = document.getElementById("langSelect");
 
-/* ----------------- STATE ----------------- */
-let currentLang = "en";
-let currentQ = 0;
-let scores = [0,0,0];
-const stageWeights = [1,1,1];
-
-/* ----------------- INITIAL LABELS ----------------- */
-function updateLandingLabels(){
-  document.getElementById("lblLeft").textContent = LABELS[currentLang].left;
-  document.getElementById("lblMid").textContent = LABELS[currentLang].mid;
-  document.getElementById("lblRight").textContent = LABELS[currentLang].right;
-  document.getElementById("startBtn").textContent = LABELS[currentLang].start;
+/* ----------------- FUNCTIONS ----------------- */
+function shuffleArray(arr){
+  let a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
 }
-function updateQuestionLabels(){
+
+function updateLabels(){
   qLblLeft.textContent = LABELS[currentLang].left;
   qLblMid.textContent = LABELS[currentLang].mid;
   qLblRight.textContent = LABELS[currentLang].right;
   nextBtn.textContent = LABELS[currentLang].next;
+  document.getElementById("startBtn").textContent = LABELS[currentLang].start;
+  document.getElementById("restartBtn").textContent = LABELS[currentLang].restart;
 }
-langSelect.onchange = ()=>{
-  currentLang = langSelect.value;
-  updateLandingLabels();
-  updateQuestionLabels();
-};
 
-/* ----------------- LANDING -> QUESTION ----------------- */
-document.getElementById("startBtn").onclick = ()=>{
-  currentQ = 0;
-  scores = [0,0,0];
-  landingPane.classList.add("hidden");
-  questionPane.classList.remove("hidden");
-  langSelect.parentElement.classList.add("hidden");
-  showQuestion(currentQ);
-  updateQuestionLabels();
-};
+function updateDirection(){
+  if(currentLang==="fa"){
+    questionText.style.direction="rtl";
+    questionText.style.textAlign="right";
+  }else{
+    questionText.style.direction="ltr";
+    questionText.style.textAlign="center";
+  }
+}
 
-/* ----------------- SHOW QUESTION ----------------- */
 function showQuestion(i){
-  const q = QUESTIONS[i];
+  const q = shuffledQuestions[i];
   questionText.textContent = q[currentLang];
   questionSlider.value = 5;
+  updateDirection();
 }
 
-/* ----------------- NEXT BUTTON ----------------- */
-nextBtn.onclick = ()=>{
-  const val = parseFloat(questionSlider.value);
-  const stageIndex = QUESTIONS[currentQ].stage - 1;
-  scores[stageIndex] += val * stageWeights[stageIndex] / QUESTIONS.filter(q=>q.stage===QUESTIONS[currentQ].stage).length;
-
-  currentQ++;
-  if(currentQ < QUESTIONS.length){
-    showQuestion(currentQ);
-  }else{
-    showResults();
-  }
-};
-
-/* ----------------- RESULTS ----------------- */
 function showResults(){
   questionPane.classList.add("hidden");
   resultPane.classList.remove("hidden");
@@ -348,11 +312,11 @@ function showResults(){
 
   let maxScore = Math.max(...rounded);
   let domIndex = rounded.indexOf(maxScore);
-  let overallState = STAGE_INFO[domIndex].title;
+  let overallState = STAGE_INFO[currentLang][domIndex].title;
 
   const stageDetails = document.getElementById("stageDetails");
   stageDetails.innerHTML="";
-  STAGE_INFO.forEach((stage,i)=>{
+  STAGE_INFO[currentLang].forEach((stage,i)=>{
     const div = document.createElement("div");
     div.className="stage-desc";
     div.id="desc"+i;
@@ -360,26 +324,56 @@ function showResults(){
     stageDetails.appendChild(div);
   });
 
-  document.getElementById("footerNote").textContent = `Overall State of Being: ${overallState} (dominant score: ${maxScore})`;
+  document.getElementById("footerNote").textContent = `${overallState} (dominant score: ${maxScore})`;
 }
 
-/* ----------------- TOGGLE STAGE ----------------- */
 function toggleStage(i){
   const el = document.getElementById("desc"+i);
   el.style.display = (el.style.display==="block")?"none":"block";
 }
-document.getElementById("stageI").onclick=()=>toggleStage(0);
-document.getElementById("stageII").onclick=()=>toggleStage(1);
-document.getElementById("stageIII").onclick=()=>toggleStage(2);
 
-/* ----------------- RESTART ----------------- */
+/* ----------------- EVENT HANDLERS ----------------- */
+langSelect.onchange = ()=>{
+  currentLang = langSelect.value;
+  updateLabels();
+  updateDirection();
+};
+
+document.getElementById("startBtn").onclick = ()=>{
+  currentQ=0;
+  scores=[0,0,0];
+  shuffledQuestions = shuffleArray(QUESTIONS);
+  landingPane.classList.add("hidden");
+  questionPane.classList.remove("hidden");
+  langSelect.parentElement.classList.add("hidden");
+  showQuestion(currentQ);
+  updateLabels();
+};
+
+nextBtn.onclick = ()=>{
+  const val = parseFloat(questionSlider.value);
+  const stageIndex = shuffledQuestions[currentQ].stage - 1;
+  scores[stageIndex] += val / QUESTIONS.filter(q=>q.stage===shuffledQuestions[currentQ].stage).length;
+
+  currentQ++;
+  if(currentQ < shuffledQuestions.length){
+    showQuestion(currentQ);
+  }else{
+    showResults();
+  }
+};
+
 document.getElementById("restartBtn").onclick = ()=>{
   scores=[0,0,0]; currentQ=0;
   resultPane.classList.add("hidden");
   landingPane.classList.remove("hidden");
   langSelect.parentElement.classList.remove("hidden");
-  updateLandingLabels();
+  shuffledQuestions = shuffleArray(QUESTIONS);
+  updateLabels();
 };
+document.getElementById("stageI").onclick=()=>toggleStage(0);
+document.getElementById("stageII").onclick=()=>toggleStage(1);
+document.getElementById("stageIII").onclick=()=>toggleStage(2);
 </script>
 </body>
 </html>
