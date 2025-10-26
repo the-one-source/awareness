@@ -171,15 +171,6 @@
     display:none;
     position:relative;
   }
-  .stage-desc .close-btn{
-    position:absolute;
-    top:6px;
-    right:10px;
-    font-weight:bold;
-    font-size:16px;
-    cursor:pointer;
-    color:var(--accent);
-  }
   :root[dir="rtl"] .panel{
     direction:rtl;
   }
@@ -495,7 +486,7 @@ function showResults(){
     div.style.display = "none";
     const title = `<div style="font-weight:700;">${st.title[currentLang]}</div>`;
     const fullText = `<div style="white-space:pre-wrap;">${st.description[currentLang]}</div>`;
-    div.innerHTML = closeBtn + title + fullText;
+    div.innerHTML = title + fullText; // <-- Removed closeBtn
     detailsEl.appendChild(div);
   });
 
