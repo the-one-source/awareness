@@ -410,15 +410,60 @@ const questionTextEl = document.getElementById("questionText");
 const sliderEl = document.getElementById("questionSlider");
 const nextBtnEl = document.getElementById("nextBtn");
 
+// --------- NEW: randomizedQuestions and randomizer function (added only) ---------
+// Keeps original QUESTIONS array and text intact and uses randomizedQuestions for display & results.
+// Randomization logic: Shuffle within stages then interleave so same-stage doesn't repeat when possible.
+
+let randomizedQuestions = [];
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// Create randomizedQuestions from QUESTIONS while avoiding consecutive same-stage when possible
+function randomizeQuestions() {
+  // create stage buckets (deep copy items)
+  const stageMap = {1: [], 2: [], 3: []};
+  QUESTIONS.forEach(q => stageMap[q.stage].push({...q}));
+
+  // shuffle each stage bucket
+  Object.keys(stageMap).forEach(k => shuffleArray(stageMap[k]));
+
+  randomizedQuestions = [];
+  let lastStage = null;
+
+  while (stageMap[1].length + stageMap[2].length + stageMap[3].length > 0) {
+    // choose available stages that are not the last stage if possible
+    const available = [1,2,3].filter(s => stageMap[s].length > 0 && s !== lastStage);
+    const choice = available.length > 0 ? available[Math.floor(Math.random()*available.length)] : 
+                   ( [1,2,3].find(s => stageMap[s].length>0) );
+    randomizedQuestions.push(stageMap[choice].shift());
+    lastStage = choice;
+  }
+
+  // reset pointers and answers
+  currentQ = 0;
+  answers = [];
+}
+
+// ----------------------------------------------------------------------------------
+
 function showQuestion(){
-  const q = QUESTIONS[currentQ];
+  // use randomizedQuestions (added) if available, else fallback to original QUESTIONS
+  const source = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions : QUESTIONS;
+  const q = source[currentQ];
   questionTextEl.textContent = q[currentLang];
   sliderEl.value = 5;
 }
 nextBtnEl.addEventListener("click", ()=>{
   answers.push(parseFloat(sliderEl.value));
   currentQ++;
-  if(currentQ >= QUESTIONS.length){
+  // use randomizedQuestions length if available
+  const total = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions.length : QUESTIONS.length;
+  if(currentQ >= total){
     showResults();
   } else{
     showQuestion();
@@ -431,7 +476,13 @@ function showResults(){
   document.getElementById("resultPane").classList.remove("hidden");
 
   const stageScores = {1:[],2:[],3:[]};
-  QUESTIONS.forEach((q,i)=>{
+
+  // Important: map answers to stages using the same order used during question display.
+  // If randomizedQuestions exists, iterate that - otherwise fallback to QUESTIONS (unchanged baseline behavior).
+  const source = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions : QUESTIONS;
+
+  source.forEach((q,i)=>{
+    // answers[] was collected in the same order we displayed questions, so this mapping matches.
     stageScores[q.stage].push(answers[i]);
   });
 
@@ -596,7 +647,8 @@ function showResults(){
   document.getElementById("resultPane").classList.remove("hidden");
 
   const stageScores = {1:[],2:[],3:[]};
-  QUESTIONS.forEach((q,i)=>{
+  const source = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions : QUESTIONS;
+  source.forEach((q,i)=>{
     stageScores[q.stage].push(answers[i]);
   });
 
@@ -686,10 +738,14 @@ function average(arr){
 // ----------------- START / RESTART -----------------
 document.getElementById("startBtn").addEventListener("click", ()=>{
   document.getElementById("landingPane").classList.add("hidden");
+  // NEW: randomize before starting (only added, no other changes)
+  randomizeQuestions();
   document.getElementById("questionPane").classList.remove("hidden");
   showQuestion();
 });
 document.getElementById("restartBtn").addEventListener("click", ()=>{
+  // NEW: randomize on restart as well (only added)
+  randomizeQuestions();
   currentQ = 0;
   answers = [];
   document.getElementById("resultPane").classList.add("hidden");
@@ -702,4 +758,3 @@ applyLanguage();
 </script>
 </body>
 </html>
-
