@@ -493,7 +493,6 @@ function showResults(){
     div.className = "stage-desc";
     div.id = "desc" + idx;
     div.style.display = "none";
-    const closeBtn = `<button class="close-btn" onclick="toggleStage(${idx})">&times;</button>`;
     const title = `<div style="font-weight:700;">${st.title[currentLang]}</div>`;
     const fullText = `<div style="white-space:pre-wrap;">${st.description[currentLang]}</div>`;
     div.innerHTML = closeBtn + title + fullText;
