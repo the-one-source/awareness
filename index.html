@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -404,53 +403,22 @@ function applyLanguage(){
   }[currentLang];
 }
   
-// ----------------- RANDOMIZE QUESTIONS -----------------
-let randomizedQuestions = [];
+// ----------------- SLIDER & QUESTIONS -----------------
+let currentQ = 0;
+let answers = [];
+const questionTextEl = document.getElementById("questionText");
+const sliderEl = document.getElementById("questionSlider");
+const nextBtnEl = document.getElementById("nextBtn");
 
-function shuffleArray(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-}
-
-function randomizeQuestions() {
-  const stageMap = {1: [], 2: [], 3: []};
-  QUESTIONS.forEach(q => stageMap[q.stage].push(q));
-
-  // Shuffle questions within each stage
-  Object.keys(stageMap).forEach(stage => shuffleArray(stageMap[stage]));
-
-  randomizedQuestions = [];
-  let lastStage = null;
-
-  while (stageMap[1].length + stageMap[2].length + stageMap[3].length > 0) {
-    const availableStages = [1,2,3].filter(s => stageMap[s].length > 0 && s !== lastStage);
-    const stageChoice = availableStages.length > 0
-      ? availableStages[Math.floor(Math.random() * availableStages.length)]
-      : lastStage; // fallback if only same stage left
-    randomizedQuestions.push(stageMap[stageChoice].shift());
-    lastStage = stageChoice;
-  }
-
-  currentQ = 0;
-  answers = [];
-}
-
-// ----------------- SHOW QUESTION -----------------
 function showQuestion(){
-  if(currentQ < randomizedQuestions.length){
-    const q = randomizedQuestions[currentQ];
-    questionTextEl.textContent = q[currentLang];
-    sliderEl.value = 5;
-  }
+  const q = QUESTIONS[currentQ];
+  questionTextEl.textContent = q[currentLang];
+  sliderEl.value = 5;
 }
-
-// ----------------- NEXT BUTTON -----------------
 nextBtnEl.addEventListener("click", ()=>{
   answers.push(parseFloat(sliderEl.value));
   currentQ++;
-  if(currentQ >= randomizedQuestions.length){
+  if(currentQ >= QUESTIONS.length){
     showResults();
   } else{
     showQuestion();
@@ -718,12 +686,12 @@ function average(arr){
 // ----------------- START / RESTART -----------------
 document.getElementById("startBtn").addEventListener("click", ()=>{
   document.getElementById("landingPane").classList.add("hidden");
-  randomizeQuestions();
   document.getElementById("questionPane").classList.remove("hidden");
   showQuestion();
 });
 document.getElementById("restartBtn").addEventListener("click", ()=>{
-  randomizeQuestions();
+  currentQ = 0;
+  answers = [];
   document.getElementById("resultPane").classList.add("hidden");
   document.getElementById("questionPane").classList.remove("hidden");
   showQuestion();
@@ -734,3 +702,4 @@ applyLanguage();
 </script>
 </body>
 </html>
+
