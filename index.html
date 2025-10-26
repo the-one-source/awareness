@@ -154,20 +154,6 @@
   .result-stage:hover{
     background:#f0f0f0;
   }
-  .stage-circle {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    vertical-align: middle;
-    margin-right: 6px;
-    transition: transform 0.2s, opacity 0.3s;
-    cursor: default;
-  }
-  .stage-circle:hover {
-    transform: scale(1.2);
-  }
   .result-score{
     font-size:18px;
     color:#222;
@@ -275,7 +261,6 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
 // ----------------- QUESTIONS -----------------
 const QUESTIONS = [ 
   {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
@@ -378,130 +363,137 @@ langSelectEl.addEventListener("change", (e) => {
   currentLang = e.target.value;
   applyLanguage();
   if(currentQ<QUESTIONS.length && currentQ>=0) showQuestion();
-  if(document.getElementById("resultPane").classList.contains("hidden")==false) showResult();
+  if(document.getElementById("resultPane").classList.contains("hidden")===false) showResults();
 });
+
 function applyLanguage(){
-  document.getElementById("landingText").innerText={
-    en:"This is a reflection of my inner consciousness called Spectrum of Awareness.",
-    de:"Dies ist eine Reflexion meines inneren Bewusstseins namens Spectrum of Awareness.",
-    fa:"این بازتاب آگاهی درونی من است به نام طیف آگاهی."
+  document.documentElement.setAttribute('dir', currentLang === "fa" ? "rtl" : "ltr");
+  document.getElementById("pageTitle").textContent = {
+    en: "Spectrum of Awareness",
+    de: "Spektrum des Bewusstseins",
+    fa: "طیف آگاهی"
   }[currentLang];
-  document.getElementById("startBtn").innerText={
-    en:"Start",de:"Starten",fa:"شروع"
+  document.getElementById("landingText").textContent = {
+    en: "This is a reflection of my inner consciousness called Spectrum of Awareness.",
+    de: "Dies ist eine Reflexion meines inneren Bewusstseins namens Spektrum des Bewusstseins.",
+    fa: "این بازتابی از آگاهی درونی من به نام طیف آگاهی است."
   }[currentLang];
-  document.getElementById("nextBtn").innerText={
-    en:"Next",de:"Weiter",fa:"بعدی"
+  document.getElementById("startBtn").textContent = {
+    en: "Start", de: "Start", fa: "شروع"
   }[currentLang];
-  document.getElementById("restartBtn").innerText={
-    en:"Restart",de:"Neustart",fa:"شروع مجدد"
+  document.getElementById("nextBtn").textContent = {
+    en: "Next", de: "Weiter", fa: "بعدی"
+  }[currentLang];
+  document.getElementById("restartBtn").textContent = {
+    en: "Restart", de: "Neu starten", fa: "شروع دوباره"
+  }[currentLang];
+  document.getElementById("qLblLeft").textContent = {
+    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
+  }[currentLang];
+  document.getElementById("qLblMid").textContent = {
+    en: "Uncertain", de: "Unsicher", fa: "مطمئن نیستم"
+  }[currentLang];
+  document.getElementById("qLblRight").textContent = {
+    en: "Agree", de: "Zustimmen", fa: "موافقم"
   }[currentLang];
 }
-
-// ----------------- QUESTION CONTROL -----------------
+  
+// ----------------- SLIDER & QUESTIONS -----------------
 let currentQ = 0;
 let answers = [];
 const questionTextEl = document.getElementById("questionText");
 const sliderEl = document.getElementById("questionSlider");
+const nextBtnEl = document.getElementById("nextBtn");
+
+function showQuestion(){
+  const q = QUESTIONS[currentQ];
+  questionTextEl.textContent = q[currentLang];
+  sliderEl.value = 5;
+}
+nextBtnEl.addEventListener("click", ()=>{
+  answers.push(parseFloat(sliderEl.value));
+  currentQ++;
+  if(currentQ >= QUESTIONS.length){
+    showResults();
+  } else{
+    showQuestion();
+  }
+});
+
+// ----------------- RESULTS CALCULATION -----------------
+function showResults(){
+  document.getElementById("questionPane").classList.add("hidden");
+  document.getElementById("resultPane").classList.remove("hidden");
+
+  const stageScores = {1:[],2:[],3:[]};
+  QUESTIONS.forEach((q,i)=>{
+    stageScores[q.stage].push(answers[i]);
+  });
+
+  const stageAvg = {
+    1: average(stageScores[1]),
+    2: average(stageScores[2]),
+    3: average(stageScores[3])
+  };
+
+  document.getElementById("scoreI").textContent = stageAvg[1].toFixed(1);
+  document.getElementById("scoreII").textContent = stageAvg[2].toFixed(1);
+  document.getElementById("scoreIII").textContent = stageAvg[3].toFixed(1);
+
+  let maxStage = 1;
+  if(stageAvg[2]>=stageAvg[maxStage]) maxStage=2;
+  if(stageAvg[3]>=stageAvg[maxStage]) maxStage=3;
+
+  const dominantMessageEl = document.getElementById("dominantMessage");
+  dominantMessageEl.classList.remove("hidden");
+  dominantMessageEl.innerHTML = STAGE_SUMMARY[maxStage][currentLang];
+
+  const detailsEl = document.getElementById("stageDetails");
+  detailsEl.innerHTML = "";
+
+  STAGE_INFO.forEach((stage,i)=>{
+    const score = stageAvg[i+1];
+    const stageDiv = document.createElement("div");
+    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
+      if(j===0) return line + "\n\n";
+      if(line.startsWith("Close to 10:") && score>6) return "<strong>"+line+"</strong>";
+      if(line.startsWith("Around 5:") && score>=4 && score<=6) return "<strong>"+line+"</strong>";
+      if(line.startsWith("Close to 1:") && score<4) return "<strong>"+line+"</strong>";
+      return line;
+    }).join("\n\n")}</p>`;
+    stageDiv.classList.add("stage-desc");
+    detailsEl.appendChild(stageDiv);
+  });
+}
+
+// ----------------- STAGE CLICK TOGGLE -----------------
+document.querySelectorAll('.result-stage').forEach((el, idx)=>{
+  el.addEventListener('click', ()=>{
+    const descs = document.querySelectorAll('.stage-desc');
+    descs[idx].style.display = descs[idx].style.display==='none'?'block':'none';
+  });
+});
+
+function average(arr){
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
+}
+
+// ----------------- START / RESTART -----------------
 document.getElementById("startBtn").addEventListener("click", ()=>{
   document.getElementById("landingPane").classList.add("hidden");
   document.getElementById("questionPane").classList.remove("hidden");
   showQuestion();
 });
-document.getElementById("nextBtn").addEventListener("click", ()=>{
-  answers.push(sliderEl.valueAsNumber);
-  currentQ++;
-  if(currentQ<QUESTIONS.length) showQuestion();
-  else showResult();
-});
-function showQuestion(){
-  const q = QUESTIONS[currentQ];
-  questionTextEl.innerText = q[currentLang];
-  sliderEl.value = 5;
-}
-
-// ----------------- RESULT CONTROL -----------------
-function showResult(){
-  document.getElementById("questionPane").classList.add("hidden");
-  document.getElementById("resultPane").classList.remove("hidden");
-
-  // Stage scores
-  let stageScores = [0,0,0];
-  let stageCounts = [0,0,0];
-  answers.forEach((v,i)=>{
-    const stage = QUESTIONS[i].stage-1;
-    stageScores[stage]+=v;
-    stageCounts[stage]++;
-  });
-  stageScores = stageScores.map((s,i)=>parseFloat((s/stageCounts[i]).toFixed(2)));
-  ["scoreI","scoreII","scoreIII"].forEach((id,i)=>{
-    document.getElementById(id).innerText = stageScores[i];
-  });
-
-  // Determine dominant stage
-  let maxScore = Math.max(...stageScores);
-  let dominantStage = stageScores.indexOf(maxScore)+1;
-  document.getElementById("dominantMessage").classList.remove("hidden");
-  document.getElementById("dominantMessage").innerText = STAGE_SUMMARY[dominantStage][currentLang];
-
-  // Display stage info
-  const detailsEl = document.getElementById("stageDetails");
-  detailsEl.innerHTML = "";
-  STAGE_INFO.forEach((stageObj,idx)=>{
-    stageObj.description[currentLang].forEach(descText=>{
-      const div = document.createElement("div");
-      div.className = "stage-desc";
-      div.innerText = descText;
-      detailsEl.appendChild(div);
-    });
-  });
-
-  // Add circle elements after description (kept duplication intentional)
-  const circles = ["#ff6666","#66cc66","#6699ff"];
-  ["stageI","stageII","stageIII"].forEach((id,idx)=>{
-    const stageEl = document.getElementById(id);
-    for(let i=0;i<3;i++){
-      const c = document.createElement("span");
-      c.className = "stage-circle";
-      c.style.background = circles[idx];
-      stageEl.appendChild(c);
-    }
-  });
-}
-
-// ----------------- TOGGLE STAGE DESCRIPTIONS -----------------
-document.querySelectorAll('.result-stage').forEach((el, idx)=>{
-  el.addEventListener('click', ()=>{
-    const descs = document.querySelectorAll('.stage-desc');
-    const first = descs[idx*2];
-    const second = descs[idx*2 + 1];
-    first.style.display = first.style.display==='none'?'block':'none';
-    second.style.display = second.style.display==='none'?'block':'none';
-  });
-});
-
-// ----------------- RESTART -----------------
 document.getElementById("restartBtn").addEventListener("click", ()=>{
   currentQ = 0;
   answers = [];
   document.getElementById("resultPane").classList.add("hidden");
   document.getElementById("questionPane").classList.remove("hidden");
-
-  const detailsEl = document.getElementById("stageDetails");
-  detailsEl.innerHTML = "";
-
-  ["stageI","stageII","stageIII"].forEach(id=>{
-    document.getElementById(id).style.border = "";
-    const stageEl = document.getElementById(id);
-    stageEl.querySelectorAll('.stage-circle').forEach(c=>c.remove());
-  });
-
-  document.getElementById("dominantMessage").classList.add("hidden");
-
   showQuestion();
 });
 
+// ----------------- INITIAL LANGUAGE -----------------
 applyLanguage();
-});
 </script>
 </body>
 </html>
