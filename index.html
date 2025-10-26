@@ -467,7 +467,7 @@ function showResults(){
 
   const detailsEl = document.getElementById("stageDetails");
   detailsEl.innerHTML = "";
-// <--- PLACE THE STAGE_INFO LOOP HERE
+  // --------- PLACE THE STAGE_INFO LOOP HERE ---------
   STAGE_INFO.forEach((stage,i)=>{
     const score = stageAvg[i+1];
     const stageDiv = document.createElement("div");
@@ -483,20 +483,38 @@ function showResults(){
   });
 }
   STAGE_INFO.forEach((stage,i)=>{
-    const score = stageAvg[i+1];
-    const stageDiv = document.createElement("div");
-    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
-      if(j===0) return line + "\n\n";
-      if(line.startsWith("Close to 10:") && score>6) return "<strong>"+line+"</strong>";
-      if(line.startsWith("Around 5:") && score>=4 && score<=6) return "<strong>"+line+"</strong>";
-      if(line.startsWith("Close to 1:") && score<4) return "<strong>"+line+"</strong>";
-      return line;
-    }).join("\n\n")}</p>`;
-    stageDiv.classList.add("stage-desc");
-    detailsEl.appendChild(stageDiv);
-  });
-}
+  const score = stageAvg[i+1];
+  const stageDiv = document.createElement("div");
 
+  stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
+    if(j===0) return line + "\n\n";
+
+    // Replace text labels with colored circle + tooltip
+    if(line.startsWith("Close to 10:") || line.startsWith("Around 5:") || line.startsWith("Close to 1:")){
+      let color = "#FFCC33"; // default neutral
+      let tooltip = line; // show original text on hover
+
+      if(line.startsWith("Close to 10:")){
+        if(i===0) color="#FF6B6B";   // Stage I danger
+        if(i===1) color="#4CAF50";   // Stage II progress
+        if(i===2) color="#4CAF50";   // Stage III mastery
+      }
+      if(line.startsWith("Around 5:")) color="#FFCC33"; // neutral for all stages
+      if(line.startsWith("Close to 1:")){
+        if(i===0) color="#4CAF50";   // Stage I better potential
+        if(i===1) color="#FF6B6B";   // Stage II closer to Stage I
+        if(i===2) color="#FF6B6B";   // Stage III needs integration
+      }
+
+      return `<span class="score-circle" style="background:${color}" title="${tooltip}"></span>`;
+    }
+
+    return line;
+  }).join("\n\n")}</p>`;
+
+  stageDiv.classList.add("stage-desc");
+  detailsEl.appendChild(stageDiv);
+});
 // ----------------- STAGE CLICK TOGGLE -----------------
 document.querySelectorAll('.result-stage').forEach((el, idx)=>{
   el.addEventListener('click', ()=>{
