@@ -115,9 +115,7 @@
 </div>
 
 <script>
-/* ------------------------------------------------------------------
-   QUESTIONS: same as original code
-   ------------------------------------------------------------------ */
+/* ----------------- QUESTIONS ----------------- */
 const QUESTIONS = [
   {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
   {stage:2,en:"Life happens through me.",de:"Das Leben passiert durch mich.",fa:"زندگی از طریق من اتفاق می‌افتد."},
@@ -240,7 +238,7 @@ const QUESTIONS = [
   {stage:3,en:"I am the pure witness; all distinctions are reflections of my own mind.",de:"Ich bin der reine Zeuge; alle Unterschiede sind Spiegelungen meines eigenen Geistes.",fa:"من شاهد مطلق هستم؛ همه تمایزات بازتاب ذهن خودم هستند."}
 ];
 
-/* Stage descriptions with integrated logic */
+/* ----------------- STAGE INFO ----------------- */
 const STAGE_INFO = [
   {title:"Stage I — Victimhood", scoreRange:"0–10", description:
 `Stage I is the realm of victimhood, where the self feels distant from its origin and lost in the density of forgetfulness. Life is experienced as happening to the self rather than through it.
@@ -248,75 +246,110 @@ const STAGE_INFO = [
 • Score around 5: Partial awareness emerging; glimpses of truth appear, potential to move toward Stage II.
 • Score below 5: Early awakening; self begins noticing patterns and reflections. Shadow work and self-inquiry required.`},
   {title:"Stage II — Awakening", scoreRange:"0–10", description:
-`Stage II is the realm of questioning, exploration, and expansion of awareness. The self observes patterns and recognizes reality as reflection of consciousness.
-• Score close to 10: Strong engagement in self-reflection; balance needed before full authorship emerges. Dominant state may be Stage II.
-• Score around 5: Equilibrium between awakening and stability; preparing for Stage III.
-• Score below 5: Readiness to transcend to Stage III; integrating awareness, opening toward authorship.`},
-  {title:"Stage III — Authorship", scoreRange:"0–10", description:
-`Stage III is full self-authorship and multidimensional awareness. Self recognizes itself as sole creator, transcending linear time and dimensional constraints.
-• Score close to 10: Full authorship dominant; multidimensional awareness and expansion active.
-• Score around 5: Balanced awareness; integration while expanding higher consciousness.
-• Score below 5: Partial expansion; balance and stabilization required before full authorship manifests.`}
+`Stage II is the stage of awakening. The self notices patterns, cycles, and connections. Life happens through the self as awareness grows. Self feels more integrated yet still sees separation. It is the bridge between victimhood and mastery.
+• Score close to 10: High awareness; frequent moments of flow and clarity.
+• Score around 5: Partial integration; awareness fluctuates between old patterns and insights.
+• Score below 5: Awakening just starting; conscious choice and self-observation needed.`},
+  {title:"Stage III — Mastery", scoreRange:"0–10", description:
+`Stage III is mastery. The self recognizes all arises from it. There is no other; life is seamless and fully conscious. Stage III is nondual, beyond victimhood, fully awake.
+• Score close to 10: Complete embodiment; life happens as self; absolute sovereignty.
+• Score around 5: Emerging mastery; occasional shadows of lower stages appear.
+• Score below 5: Foundations of mastery being laid; self-integration in progress.`}
 ];
 
-/* ------------------------------------------------------------------
-   QUESTIONNAIRE & RESULTS LOGIC
-   ------------------------------------------------------------------ */
-let currentQ=0;
-let scores=[0,0,0];
-const stageWeights = [1,1,1]; // adjust if needed
+/* ----------------- LABELS ----------------- */
+const LABELS = {
+  en: { left:"Disagree", mid:"Uncertain", right:"Agree", next:"Next", start:"Start", restart:"Restart" },
+  de: { left:"Stimme nicht zu", mid:"Ungewiss", right:"Stimme zu", next:"Weiter", start:"Start", restart:"Neu starten" },
+  fa: { left:"مخالف", mid:"نامطمئن", right:"موافق", next:"بعدی", start:"شروع", restart:"دوباره" }
+};
 
+/* ----------------- DOM ELEMENTS ----------------- */
 const landingPane = document.getElementById("landingPane");
 const questionPane = document.getElementById("questionPane");
 const resultPane = document.getElementById("resultPane");
 
+const questionText = document.getElementById("questionText");
+const questionSlider = document.getElementById("questionSlider");
+const nextBtn = document.getElementById("nextBtn");
+
+const qLblLeft = document.getElementById("qLblLeft");
+const qLblMid = document.getElementById("qLblMid");
+const qLblRight = document.getElementById("qLblRight");
+
+const langSelect = document.getElementById("langSelect");
+
+/* ----------------- STATE ----------------- */
+let currentLang = "en";
+let currentQ = 0;
+let scores = [0,0,0];
+const stageWeights = [1,1,1];
+
+/* ----------------- INITIAL LABELS ----------------- */
+function updateLandingLabels(){
+  document.getElementById("lblLeft").textContent = LABELS[currentLang].left;
+  document.getElementById("lblMid").textContent = LABELS[currentLang].mid;
+  document.getElementById("lblRight").textContent = LABELS[currentLang].right;
+  document.getElementById("startBtn").textContent = LABELS[currentLang].start;
+}
+function updateQuestionLabels(){
+  qLblLeft.textContent = LABELS[currentLang].left;
+  qLblMid.textContent = LABELS[currentLang].mid;
+  qLblRight.textContent = LABELS[currentLang].right;
+  nextBtn.textContent = LABELS[currentLang].next;
+}
+langSelect.onchange = ()=>{
+  currentLang = langSelect.value;
+  updateLandingLabels();
+  updateQuestionLabels();
+};
+
+/* ----------------- LANDING -> QUESTION ----------------- */
 document.getElementById("startBtn").onclick = ()=>{
+  currentQ = 0;
+  scores = [0,0,0];
   landingPane.classList.add("hidden");
   questionPane.classList.remove("hidden");
+  langSelect.parentElement.classList.add("hidden");
   showQuestion(currentQ);
+  updateQuestionLabels();
+};
+
+/* ----------------- SHOW QUESTION ----------------- */
+function showQuestion(i){
+  const q = QUESTIONS[i];
+  questionText.textContent = q[currentLang];
+  questionSlider.value = 5;
 }
 
-document.getElementById("nextBtn").onclick = ()=>{
-  const val = parseFloat(document.getElementById("questionSlider").value);
-  // Add logic: distribute score to stages (simple: split equally)
-  scores[0]+=val*stageWeights[0]/QUESTIONS.length;
-  scores[1]+=val*stageWeights[1]/QUESTIONS.length;
-  scores[2]+=val*stageWeights[2]/QUESTIONS.length;
+/* ----------------- NEXT BUTTON ----------------- */
+nextBtn.onclick = ()=>{
+  const val = parseFloat(questionSlider.value);
+  const stageIndex = QUESTIONS[currentQ].stage - 1;
+  scores[stageIndex] += val * stageWeights[stageIndex] / QUESTIONS.filter(q=>q.stage===QUESTIONS[currentQ].stage).length;
 
   currentQ++;
-  if(currentQ<QUESTIONS.length){ showQuestion(currentQ);}
-  else{ showResults(); }
-}
+  if(currentQ < QUESTIONS.length){
+    showQuestion(currentQ);
+  }else{
+    showResults();
+  }
+};
 
-document.getElementById("restartBtn").onclick = ()=>{
-  scores=[0,0,0]; currentQ=0;
-  resultPane.classList.add("hidden");
-  landingPane.classList.remove("hidden");
-}
-
-/* show question */
-function showQuestion(i){
-  document.getElementById("questionText").textContent = QUESTIONS[i].text || QUESTIONS[i];
-  document.getElementById("questionSlider").value = 5;
-}
-
-/* compute results & show stage explanations */
+/* ----------------- RESULTS ----------------- */
 function showResults(){
   questionPane.classList.add("hidden");
   resultPane.classList.remove("hidden");
 
-  // Round scores
   const rounded = scores.map(s=>Math.round(s*10)/10);
   document.getElementById("scoreI").textContent = rounded[0];
   document.getElementById("scoreII").textContent = rounded[1];
   document.getElementById("scoreIII").textContent = rounded[2];
 
-  // Determine dominant stage
   let maxScore = Math.max(...rounded);
   let domIndex = rounded.indexOf(maxScore);
   let overallState = STAGE_INFO[domIndex].title;
 
-  // Build stage detail area
   const stageDetails = document.getElementById("stageDetails");
   stageDetails.innerHTML="";
   STAGE_INFO.forEach((stage,i)=>{
@@ -330,23 +363,23 @@ function showResults(){
   document.getElementById("footerNote").textContent = `Overall State of Being: ${overallState} (dominant score: ${maxScore})`;
 }
 
-/* toggle visibility */
+/* ----------------- TOGGLE STAGE ----------------- */
 function toggleStage(i){
-  const el=document.getElementById("desc"+i);
-  if(el.style.display==="block"){ el.style.display="none";}
-  else{ el.style.display="block";}
+  const el = document.getElementById("desc"+i);
+  el.style.display = (el.style.display==="block")?"none":"block";
 }
-
-/* click stage to open */
 document.getElementById("stageI").onclick=()=>toggleStage(0);
 document.getElementById("stageII").onclick=()=>toggleStage(1);
 document.getElementById("stageIII").onclick=()=>toggleStage(2);
 
+/* ----------------- RESTART ----------------- */
+document.getElementById("restartBtn").onclick = ()=>{
+  scores=[0,0,0]; currentQ=0;
+  resultPane.classList.add("hidden");
+  landingPane.classList.remove("hidden");
+  langSelect.parentElement.classList.remove("hidden");
+  updateLandingLabels();
+};
 </script>
 </body>
 </html>
-
-
-
-
-
