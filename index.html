@@ -207,6 +207,21 @@
     #questionText{font-size:16px;}
     .btn{padding:10px 20px;}
   }
+/* ----------------- Stage Dot Styles ----------------- */
+.stage-dot {
+  display: inline-block;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  margin-right:6px;
+  vertical-align:middle;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, opacity 0.3s;
+  cursor: default;
+}
+.stage-dot:hover {
+  transform: scale(1.4);
+}
 </style>
 </head>
 <body>
@@ -284,77 +299,47 @@ const STAGE_SUMMARY = {
 };
 
 // ----------------- STAGE INFO -----------------
-const STAGE_INFO = [
-  {
-    title:{en:"Victimhood",de:"Opferrolle",fa:"قربانی"},
-    description:{
-      en:[
-        "Stage I is the realm of victimhood, where I feel distant from my origin and lost in forgetfulness. Life is experienced as happening to me rather than through me.",
-        "Close to 10:\nI am deeply immersed in victimhood; heavy attachment, resistance, and identification with external stories. Overall state dominated by Stage I.",
-        "Around 5:\nPartial awareness emerges; glimpses of truth appear, potential to move toward Stage II.",
-        "Close to 1:\nEarly awakening; I begin noticing patterns and reflections. Shadow work and self-inquiry required."
-      ],
-      de:[
-        "Stufe I ist das Reich der Opferrolle, in dem ich mich von meiner Quelle entfernt und in Vergessenheit verloren fühle. Das Leben wird erlebt, als geschähe es mir, nicht durch mich.",
-        "Close to 10:\nIch bin tief in der Opferhaltung; starke Bindung, Widerstand und Identifikation mit äußeren Geschichten. Gesamtzustand von Stufe I dominiert.",
-        "Around 5:\nTeilweise aufkommendes Bewusstsein; Einblicke erscheinen, Potenzial für Stufe II.",
-        "Close to 1:\nFrühes Erwachen; ich bemerke Muster und Spiegelungen. Schattenarbeit und Selbstreflexion erforderlich."
-      ],
-      fa:[
-        "مرحله اول حوزه قربانی بودن است که در آن من احساس دوری از منبع خود دارم و در فراموشی گم شده‌ام. زندگی به‌عنوان چیزی که بر من رخ می‌دهد تجربه می‌شود، نه از طریق من.",
-        "Close to 10:\nغرق شدن در قربانی بودن؛ وابستگی شدید، مقاومت و هویت با داستان‌های بیرونی. وضعیت کلی تحت سلطه مرحله اول.",
-        "Around 5:\nآگاهی جزئی ظاهر می‌شود؛ درک‌هایی از حقیقت نمایان می‌شود، پتانسیل حرکت به سمت مرحله دوم.",
-        "Close to 1:\nبیداری اولیه؛ من الگوها و بازتاب‌ها را متوجه می‌شوم. نیاز به کار سایه و خودکاوی."
-      ]
+STAGE_INFO.forEach((stage,i)=>{
+  const score = stageAvg[i+1];
+  const stageDiv = document.createElement("div");
+
+  // Helper to decide color per stage + label
+  function getDotColor(stageNum,label){
+    if(label==="Near 10"){
+      if(stageNum===1) return "#FF6B6B"; // Stage I danger
+      if(stageNum===2) return "#4CAF50"; // Stage II closer to Stage III
+      if(stageNum===3) return "#4CAF50"; // Stage III peak
     }
-  },
-  {
-    title:{en:"Awakening",de:"Erwachen",fa:"بیداری"},
-    description:{
-      en:[
-        "Stage II is the awakening stage. I begin noticing patterns, understanding my role as co-creator, and feeling connected to a greater flow. Awareness increases and judgment diminishes.",
-        "Close to 10:\nHigh awareness, conscious decision-making; beginning integration of shadow and light.",
-        "Around 5:\nGrowing insight; I am partially aware of patterns and influences.",
-        "Close to 1:\nEarly awareness; I notice repetition, questioning begins."
-      ],
-      de:[
-        "Stufe II ist die Erwachensstufe. Ich beginne Muster zu erkennen, meine Rolle als Mit-Schöpfer zu verstehen und mich mit einem größeren Fluss verbunden zu fühlen. Bewusstsein steigt, Urteilskraft nimmt ab.",
-        "Close to 10:\nHohes Bewusstsein, bewusstes Entscheiden; Beginn der Integration von Schatten und Licht.",
-        "Around 5:\nWachsende Einsicht; ich bin teilweise mir der Muster bewusst.",
-        "Close to 1:\nFrühes Bewusstsein; ich bemerke Wiederholungen, Fragen beginnen."
-      ],
-      fa:[
-        "مرحله دوم مرحله بیداری است. من شروع به مشاهده الگوها، درک نقش خود به‌عنوان هم‌آفریننده و احساس ارتباط با جریان بزرگتر می‌کنم. آگاهی افزایش می‌یابد و قضاوت کاهش می‌یابد.",
-        "Close to 10:\nآگاهی بالا، تصمیم‌گیری آگاهانه؛ شروع یکپارچه‌سازی سایه و نور.",
-        "Around 5:\nبینش در حال رشد؛ من تا حدی از الگوها و تأثیرات آگاه هستم.",
-        "Close to 1:\nآگاهی اولیه؛ من تکرارها را می‌بینم، پرسش‌ها آغاز می‌شوند."
-      ]
+    if(label==="Around 5") return "#FFCC33"; // Neutral
+    if(label==="Near 1"){
+      if(stageNum===1) return "#4CAF50"; // Stage I potential
+      if(stageNum===2) return "#FF6B6B"; // Stage II closer to Stage I
+      if(stageNum===3) return "#FF6B6B"; // Stage III needs integration
     }
-  },
-  {
-    title:{en:"Mastery",de:"Meisterschaft",fa:"تسلط"},
-    description:{
-      en:[
-        "Stage III is the stage of mastery and full integration. I know I am the only source; all experiences are reflections of my inner consciousness. There is no separation, only pure creation.",
-        "Close to 10:\nComplete embodiment of mastery; life flows effortlessly through me.",
-        "Around 5:\nIntegration in progress; glimpses of mastery and unity appear.",
-        "Close to 1:\nEarly mastery signs; I experiment with full ownership and creation."
-      ],
-      de:[
-        "Stufe III ist die Stufe der Meisterschaft und vollständigen Integration. Ich erkenne, dass ich die einzige Quelle bin; alle Erfahrungen sind Spiegelungen meines inneren Bewusstseins. Keine Trennung, nur reine Schöpfung.",
-        "Close to 10:\nVollständige Verkörperung der Meisterschaft; das Leben fließt mühelos durch mich.",
-        "Around 5:\nIntegration im Gange; Einblicke in Meisterschaft und Einheit erscheinen.",
-        "Close to 1:\nFrühe Meisterschaftsanzeichen; ich experimentiere mit voller Verantwortung und Schöpfung."
-      ],
-      fa:[
-        "مرحله سوم مرحله تسلط و یکپارچگی کامل است. من می‌دانم که تنها منبع هستم؛ همه تجربه‌ها بازتاب آگاهی درونی من هستند. هیچ جدایی وجود ندارد، فقط خلق خالص.",
-        "Close to 10:\nتجسم کامل تسلط؛ زندگی به‌راحتی از طریق من جریان می‌یابد.",
-        "Around 5:\nیکپارچه‌سازی در حال انجام؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.",
-        "Close to 1:\nنشانه‌های اولیه تسلط؛ من با مالکیت کامل و خلق آزمایش می‌کنم."
-      ]
-    }
+    return "#999"; // fallback
   }
-];
+
+  const descHtml = stage.description[currentLang].map((line,j)=>{
+    let label=null;
+    if(line.startsWith("Close to 10:") || line.startsWith("Near 10:")) label="Near 10";
+    if(line.startsWith("Around 5:")) label="Around 5";
+    if(line.startsWith("Close to 1:") || line.startsWith("Near 1:")) label="Near 1";
+
+    if(label){
+      const color=getDotColor(i+1,label);
+      const isStrong = 
+        (label==="Near 10" && score>6) ||
+        (label==="Around 5" && score>=4 && score<=6) ||
+        (label==="Near 1" && score<4);
+      return `<span class="stage-dot" style="background:${color};${isStrong?'border:2px solid var(--accent);':''}" title="${label}"></span>`;
+    }
+    return line;
+  }).join("<br><br>");
+
+  stageDiv.innerHTML=`<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${descHtml}</p>`;
+  stageDiv.classList.add("stage-desc");
+  detailsEl.appendChild(stageDiv);
+});
 
 // ----------------- LANGUAGE CONTROL -----------------
 let currentLang = "en";
