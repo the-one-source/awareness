@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -202,29 +203,15 @@
   #dominantMessage strong{
     color:var(--accent);
   }
-  #overallResult{
-    margin-top:20px;
-    padding:16px;
-    border-radius:16px;
-    background:#ffffff;
-    box-shadow:0 6px 20px rgba(0,0,0,0.08);
-    font-size:16px;
-    line-height:1.6;
-    text-align:center;
-    display:none;
-  }
-  #overallResult p{
-    margin:8px 0;
-  }
   @media (max-width:520px){
     .panel{padding:20px;}
     #questionText{font-size:16px;}
     .btn{padding:10px 20px;}
   }
   :root[dir="rtl"] .stage-desc {
-    direction: rtl;
-    text-align: right;
-  }
+  direction: rtl;
+  text-align: right;
+}
 </style>
 </head>
 <body>
@@ -241,7 +228,7 @@
           <option value="fa">فارسی</option>
         </select>
       </div>
-      <p class="lead" id="landingText">This is a reflection of my inner consciousness, showing me where my awareness lies in the spectrum of being.</p>
+      <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness.</p>
       <button id="startBtn" class="btn">Start</button>
     </div>
 
@@ -271,10 +258,6 @@
       </div>
       <div id="dominantMessage" class="hidden"></div>
       <div id="stageDetails"></div>
-      
-      <!-- Final Overall Result -->
-      <div id="overallResult"></div>
-
       <button id="restartBtn" class="btn">Restart</button>
       <footer class="note" id="footerNote"></footer>
     </div>
@@ -288,9 +271,11 @@ const QUESTIONS = [
   {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
   {stage:2,en:"Life happens through me.",de:"Das Leben passiert durch mich.",fa:"زندگی از طریق من اتفاق می‌افتد."},
   {stage:3,en:"Life happens as me.",de:"Das Leben passiert als ich.",fa:"زندگی همان من است که رخ می‌دهد."},
+
   {stage:1,en:"I feel life is unfair or against me.",de:"Ich fühle, das Leben ist unfair oder gegen mich.",fa:"من احساس می‌کنم زندگی ناعادلانه است یا علیه من است."},
   {stage:2,en:"I notice patterns repeating and wonder why.",de:"Ich bemerke sich wiederholende Muster und frage mich warum.",fa:"من الگوهای تکراری را مشاهده می‌کنم و می‌پرسم چرا."},
   {stage:3,en:"I see all as one flow of consciousness.",de:"Ich sehe alles als einen Fluss des Bewusstseins.",fa:"من همه چیز را به‌عنوان یک جریان واحد آگاهی می‌بینم."},
+
   {stage:1,en:"I am the victim of life.",de:"Ich bin das Opfer des Lebens.",fa:"من قربانی زندگی هستم."},
   {stage:2,en:"I am connected to a source (higher self, God).",de:"Ich bin mit einer Quelle (höheres Selbst, Gott) verbunden.",fa:"من به یک منبع (خود برتر، خدا) متصل هستم."},
   {stage:3,en:"I am the only source; God is a concept within me.",de:"Ich bin die einzige Quelle; Gott ist ein Konzept in mir.",fa:"من تنها منبع هستم؛ خدا مفهومی درون من است."},
@@ -303,24 +288,78 @@ const STAGE_SUMMARY = {
   3:{en:"I am in Stage III — Mastery: life happens as me.",de:"Ich bin in Stufe III — Meisterschaft: das Leben geschieht als ich.",fa:"من در مرحله سوم هستم — تسلط: زندگی همان من است."}
 };
 
-// ----------------- OVERALL MESSAGES -----------------
-const OVERALL_MESSAGES = {
-  en: {
-    green: "I am fully aware of who I am, moving with grace and expanding my consciousness.",
-    yellow: "I am partially aware, growing and integrating into a version of myself with more possibilities of growth.",
-    red: "I am unaware of my core, and I am in the illusion of forgetfulness and separation."
+// ----------------- STAGE INFO -----------------
+const STAGE_INFO = [
+  {
+    title:{en:"Victimhood",de:"Opferrolle",fa:"قربانی"},
+    description:{
+      en:[
+        "Stage I is the realm of victimhood, where I feel distant from my origin and lost in forgetfulness. Life is experienced as happening to me rather than through me.",
+        "Close to 10:\nI am deeply immersed in victimhood; heavy attachment, resistance, and identification with external stories. Overall state dominated by Stage I.",
+        "Around 5:\nPartial awareness emerges; glimpses of truth appear, potential to move toward Stage II.",
+        "Close to 1:\nEarly awakening; I begin noticing patterns and reflections. Shadow work and self-inquiry required."
+      ],
+      de:[
+        "Stufe I ist das Reich der Opferrolle, in dem ich mich von meiner Quelle entfernt und in Vergessenheit verloren fühle. Das Leben wird erlebt, als geschähe es mir, nicht durch mich.",
+        "Close to 10:\nIch bin tief in der Opferhaltung; starke Bindung, Widerstand und Identifikation mit äußeren Geschichten. Gesamtzustand von Stufe I dominiert.",
+        "Around 5:\nTeilweise aufkommendes Bewusstsein; Einblicke erscheinen, Potenzial für Stufe II.",
+        "Close to 1:\nFrühes Erwachen; ich bemerke Muster und Spiegelungen. Schattenarbeit und Selbstreflexion erforderlich."
+      ],
+      fa:[
+        "مرحله اول حوزه قربانی بودن است که در آن من احساس دوری از منبع خود دارم و در فراموشی گم شده‌ام. زندگی به‌عنوان چیزی که بر من رخ می‌دهد تجربه می‌شود، نه از طریق من.",
+        "Close to 10:\nغرق شدن در قربانی بودن؛ وابستگی شدید، مقاومت و هویت با داستان‌های بیرونی. وضعیت کلی تحت سلطه مرحله اول.",
+        "Around 5:\nآگاهی جزئی ظاهر می‌شود؛ درک‌هایی از حقیقت نمایان می‌شود، پتانسیل حرکت به سمت مرحله دوم.",
+        "Close to 1:\nبیداری اولیه؛ من الگوها و بازتاب‌ها را متوجه می‌شوم. نیاز به کار سایه و خودکاوی."
+      ]
+    }
   },
-  de: {
-    green: "Ich bin mir meiner selbst vollständig bewusst, bewege mich mit Anmut und erweitere mein Bewusstsein.",
-    yellow: "Ich bin teilweise bewusst, wachse und integriere mich in eine Version meiner selbst mit mehr Wachstumsmöglichkeiten.",
-    red: "Ich bin mir meines Kerns nicht bewusst und lebe in der Illusion des Vergessens und der Trennung."
+  {
+    title:{en:"Awakening",de:"Erwachen",fa:"بیداری"},
+    description:{
+      en:[
+        "Stage II is the awakening stage. I begin noticing patterns, understanding my role as co-creator, and feeling connected to a greater flow. Awareness increases and judgment diminishes.",
+        "Close to 10:\nHigh awareness, conscious decision-making; beginning integration of shadow and light.",
+        "Around 5:\nGrowing insight; I am partially aware of patterns and influences.",
+        "Close to 1:\nEarly awareness; I notice repetition, questioning begins."
+      ],
+      de:[
+        "Stufe II ist die Erwachensstufe. Ich beginne Muster zu erkennen, meine Rolle als Mit-Schöpfer zu verstehen und mich mit einem größeren Fluss verbunden zu fühlen. Bewusstsein steigt, Urteilskraft nimmt ab.",
+        "Close to 10:\nHohes Bewusstsein, bewusstes Entscheiden; Beginn der Integration von Schatten und Licht.",
+        "Around 5:\nWachsende Einsicht; ich bin teilweise mir der Muster bewusst.",
+        "Close to 1:\nFrühes Bewusstsein; ich bemerke Wiederholungen, Fragen beginnen."
+      ],
+      fa:[
+        "مرحله دوم مرحله بیداری است. من شروع به مشاهده الگوها، درک نقش خود به‌عنوان هم‌آفریننده و احساس ارتباط با جریان بزرگتر می‌کنم. آگاهی افزایش می‌یابد و قضاوت کاهش می‌یابد.",
+        "Close to 10:\nآگاهی بالا، تصمیم‌گیری آگاهانه؛ شروع یکپارچه‌سازی سایه و نور.",
+        "Around 5:\nبینش در حال رشد؛ من تا حدی از الگوها و تأثیرات آگاه هستم.",
+        "Close to 1:\nآگاهی اولیه؛ من تکرارها را می‌بینم، پرسش‌ها آغاز می‌شوند."
+      ]
+    }
   },
-  fa: {
-    green: "من کاملاً از خودم آگاه هستم، با آرامش حرکت می‌کنم و آگاهی‌ام را گسترش می‌دهم.",
-    yellow: "من تا حدی آگاه هستم، در حال رشد و یکپارچه شدن به نسخه‌ای از خودم با امکانات بیشتر رشد.",
-    red: "من از هسته خود بی‌اطلاعم و در توهم فراموشی و جدایی هستم."
+  {
+    title:{en:"Mastery",de:"Meisterschaft",fa:"تسلط"},
+    description:{
+      en:[
+        "Stage III is the stage of mastery and full integration. I know I am the only source; all experiences are reflections of my inner consciousness. There is no separation, only pure creation.",
+        "Close to 10:\nComplete embodiment of mastery; life flows effortlessly through me.",
+        "Around 5:\nIntegration in progress; glimpses of mastery and unity appear.",
+        "Close to 1:\nEarly mastery signs; I experiment with full ownership and creation."
+      ],
+      de:[
+        "Stufe III ist die Stufe der Meisterschaft und vollständigen Integration. Ich erkenne, dass ich die einzige Quelle bin; alle Erfahrungen sind Spiegelungen meines inneren Bewusstseins. Keine Trennung, nur reine Schöpfung.",
+        "Close to 10:\nVollständige Verkörperung der Meisterschaft; das Leben fließt mühelos durch mich.",
+        "Around 5:\nIntegration im Gange; Einblicke in Meisterschaft und Einheit erscheinen.",
+        "Close to 1:\nFrühe Meisterschaftsanzeichen; ich experimentiere mit voller Verantwortung und Schöpfung."
+      ],
+      fa:[
+        "مرحله سوم مرحله تسلط و یکپارچگی کامل است. من می‌دانم که تنها منبع هستم؛ همه تجربه‌ها بازتاب آگاهی درونی من هستند. هیچ جدایی وجود ندارد، فقط خلق خالص.",
+        "Close to 10:\nتجسم کامل تسلط؛ زندگی به‌راحتی از طریق من جریان می‌یابد.",
+        "Around 5:\nیکپارچه‌سازی در حال انجام؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.",
+        "Close to 1:\nنشانه‌های اولیه تسلط؛ من با مالکیت کامل و خلق آزمایش می‌کنم."
+      ]
+    }
   }
-};
+];
 
 // ----------------- LANGUAGE CONTROL -----------------
 let currentLang = "en";
@@ -329,7 +368,7 @@ langSelectEl.addEventListener("change", (e) => {
   currentLang = e.target.value;
   applyLanguage();
   if(currentQ<QUESTIONS.length && currentQ>=0) showQuestion();
-  if(!document.getElementById("resultPane").classList.contains("hidden")) showResults();
+  if(document.getElementById("resultPane").classList.contains("hidden")===false) showResults();
 });
 
 function applyLanguage(){
@@ -340,18 +379,30 @@ function applyLanguage(){
     fa: "طیف آگاهی"
   }[currentLang];
   document.getElementById("landingText").textContent = {
-    en: "This is a reflection of my inner consciousness, showing me where my awareness lies in the spectrum of being.",
-    de: "Dies ist eine Reflexion meines inneren Bewusstseins, die mir zeigt, wo mein Bewusstsein im Spektrum des Seins liegt.",
-    fa: "این بازتابی از آگاهی درونی من است که نشان می‌دهد آگاهی من در طیف هستی کجا قرار دارد."
+  en: "This is a reflection of my inner consciousness, showing me where my awareness lies in the spectrum of being.",
+  de: "Dies ist eine Reflexion meines inneren Bewusstseins, die mir zeigt, wo mein Bewusstsein im Spektrum des Seins liegt.",
+  fa: "این بازتابی از آگاهی درونی من است که به من نشان می‌دهد آگاهی من در طیف هستی در چه نقطه‌ای قرار دارد."
+}[currentLang];
+  document.getElementById("startBtn").textContent = {
+    en: "Start", de: "Start", fa: "شروع"
   }[currentLang];
-  document.getElementById("startBtn").textContent = { en:"Start", de:"Start", fa:"شروع" }[currentLang];
-  document.getElementById("nextBtn").textContent = { en:"Next", de:"Weiter", fa:"بعدی" }[currentLang];
-  document.getElementById("restartBtn").textContent = { en:"Restart", de:"Neu starten", fa:"شروع دوباره" }[currentLang];
-  document.getElementById("qLblLeft").textContent = { en:"Disagree", de:"Stimme nicht zu", fa:"مخالفم" }[currentLang];
-  document.getElementById("qLblMid").textContent = { en:"Uncertain", de:"Unsicher", fa:"مطمئن نیستم" }[currentLang];
-  document.getElementById("qLblRight").textContent = { en:"Agree", de:"Zustimmen", fa:"موافقم" }[currentLang];
+  document.getElementById("nextBtn").textContent = {
+    en: "Next", de: "Weiter", fa: "بعدی"
+  }[currentLang];
+  document.getElementById("restartBtn").textContent = {
+    en: "Restart", de: "Neu starten", fa: "شروع دوباره"
+  }[currentLang];
+  document.getElementById("qLblLeft").textContent = {
+    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
+  }[currentLang];
+  document.getElementById("qLblMid").textContent = {
+    en: "Uncertain", de: "Unsicher", fa: "مطمئن نیستم"
+  }[currentLang];
+  document.getElementById("qLblRight").textContent = {
+    en: "Agree", de: "Zustimmen", fa: "موافقم"
+  }[currentLang];
 }
-
+  
 // ----------------- SLIDER & QUESTIONS -----------------
 let currentQ = 0;
 let answers = [];
@@ -405,7 +456,7 @@ function showResults(){
   const detailsEl = document.getElementById("stageDetails");
   detailsEl.innerHTML = "";
 
-  // ----------------- STAGE DETAILS WITH CIRCLES -----------------
+    // ----------------- REPLACE THIS BLOCK WITH CIRCLES -----------------
   STAGE_INFO.forEach((stage,i)=>{
     const score = stageAvg[i+1];
     const stageDiv = document.createElement("div");
@@ -415,81 +466,74 @@ function showResults(){
       if(j===0) return line + "\n\n"; // Stage description line
 
       let circleColor = "#FFCC33"; // default neutral
-      let opacity = 0.3; 
+      let opacity = 0.3; // default low opacity
       let bold = false;
 
       if(line.startsWith("Close to 10:")){
-        if(i===0) circleColor = "#FF6B6B";
-        if(i===1) circleColor = "#4CAF50";
-        if(i===2) circleColor = "#4CAF50";
-        if(score>6) { bold=true; opacity=1; }
+        if(i===0) circleColor = "#FF6B6B";      // Stage I danger
+        if(i===1) circleColor = "#4CAF50";      // Stage II progress
+        if(i===2) circleColor = "#4CAF50";      // Stage III peak
+        if(score>6) { bold=true; opacity=1; }   // formula preserved
       } else if(line.startsWith("Around 5:")){
-        circleColor = "#FFCC33"; 
-        if(score>=4 && score<=6) { bold=true; opacity=1; }
+        circleColor = "#FFCC33";                 // neutral all stages
+        if(score>=4 && score<=6){ bold=true; opacity=1; }
       } else if(line.startsWith("Close to 1:")){
-        if(i===0) circleColor = "#4CAF50";
-        if(i===1) circleColor = "#FF6B6B";
-        if(i===2) circleColor = "#FF6B6B";
+        if(i===0) circleColor = "#4CAF50";      // Stage I better
+        if(i===1) circleColor = "#FF6B6B";      // Stage II low
+        if(i===2) circleColor = "#FF6B6B";      // Stage III needs integration
         if(score<4) { bold=true; opacity=1; }
       }
 
-      const circleStyle = `display:inline-block;width:18px;height:18px;border-radius:50%;background:${circleColor};margin-right:6px;vertical-align:middle;opacity:${opacity};`;
-      return `<span style="${circleStyle}"></span> ${line}`;
-    }).join("<br>");
-    stageDiv.innerHTML = descHTML;
+      // Circle HTML with tooltip
+const circleHTML = `<span style="
+    display:inline-block;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:${circleColor};
+    opacity:${opacity};
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s, opacity 0.3s;
+    ${currentLang === 'fa' ? 'margin-left:6px;' : 'margin-right:6px;'}
+    vertical-align:middle;"
+    title="${line.split(':')[0]}"></span>`;
+
+      const text = line.replace(/^(Close to 10:|Around 5:|Close to 1:)/,'').trim();
+      return (bold ? "<strong>"+circleHTML+text+"</strong>" : circleHTML+text);
+    }).join("\n\n");
+
+    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${descHTML}</p>`;
     detailsEl.appendChild(stageDiv);
   });
-
-  // ----------------- FINAL OVERALL RESULT -----------------
-  const finalColor = calculateOverallColor(stageAvg);
-  const overallEl = document.getElementById("overallResult");
-  overallEl.innerHTML = `
-    <div style="display:flex;justify-content:center;gap:10px;margin-bottom:12px;">
-      <span style="width:20px;height:20px;border-radius:50%;background:${finalColor};display:inline-block;"></span>
-    </div>
-    <p>${OVERALL_MESSAGES[currentLang][finalColor==='#4CAF50'?'green':finalColor==='#FFCC33'?'yellow':'red']}</p>
-  `;
-  overallEl.style.display = "block";
 }
+
+// ----------------- STAGE CLICK TOGGLE -----------------
+document.querySelectorAll('.result-stage').forEach((el, idx)=>{
+  el.addEventListener('click', ()=>{
+    const descs = document.querySelectorAll('.stage-desc');
+    descs[idx].style.display = descs[idx].style.display==='none'?'block':'none';
+  });
+});
 
 function average(arr){
   return arr.reduce((a,b)=>a+b,0)/arr.length;
 }
 
-// ----------------- OVERALL COLOR LOGIC -----------------
-function calculateOverallColor(stageAvg){
-  // If majority stages high=green, mixed=yellow, majority low=red
-  let colors = [];
-  [1,2,3].forEach(s=>{
-    const val = stageAvg[s];
-    if(s===1){ colors.push(val>=7?"#FF6B6B":val<=3?"#4CAF50":"#FFCC33"); }
-    if(s===2){ colors.push(val>=7?"#4CAF50":val<=3?"#FF6B6B":"#FFCC33"); }
-    if(s===3){ colors.push(val>=7?"#4CAF50":val<=3?"#FF6B6B":"#FFCC33"); }
-  });
-
-  let green = colors.filter(c=>c==="#4CAF50").length;
-  let red = colors.filter(c=>c==="#FF6B6B").length;
-
-  if(green>=2) return "#4CAF50";
-  if(red>=2) return "#FF6B6B";
-  return "#FFCC33";
-}
-
-// ----------------- RESTART -----------------
-document.getElementById("restartBtn").addEventListener("click",()=>{
-  currentQ=0;
-  answers=[];
-  document.getElementById("resultPane").classList.add("hidden");
-  document.getElementById("landingPane").classList.remove("hidden");
-});
-
-// ----------------- START -----------------
-document.getElementById("startBtn").addEventListener("click",()=>{
+// ----------------- START / RESTART -----------------
+document.getElementById("startBtn").addEventListener("click", ()=>{
   document.getElementById("landingPane").classList.add("hidden");
   document.getElementById("questionPane").classList.remove("hidden");
   showQuestion();
 });
+document.getElementById("restartBtn").addEventListener("click", ()=>{
+  currentQ = 0;
+  answers = [];
+  document.getElementById("resultPane").classList.add("hidden");
+  document.getElementById("questionPane").classList.remove("hidden");
+  showQuestion();
+});
 
+// ----------------- INITIAL LANGUAGE -----------------
 applyLanguage();
 </script>
 </body>
