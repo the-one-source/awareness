@@ -168,7 +168,7 @@
     text-align:left;
     font-size:14px;
     line-height:1.6;
-    display:none;
+    display:none; /* hidden by default */
     white-space:pre-wrap;
   }
   :root[dir="rtl"] .panel{
@@ -382,51 +382,53 @@ function applyLanguage(){
     en: "Next", de: "Weiter", fa: "بعدی"
   }[currentLang];
   document.getElementById("restartBtn").textContent = {
-    en: "Restart", de: "Neu starten", fa: "شروع دوباره"
-  }[currentLang];
-  document.getElementById("qLblLeft").textContent = {
-    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
-  }[currentLang];
-  document.getElementById("qLblMid").textContent = {
-    en: "Uncertain", de: "Unsicher", fa: "مطمئن نیستم"
-  }[currentLang];
-  document.getElementById("qLblRight").textContent = {
-    en: "Agree", de: "Zustimmen", fa: "موافقم"
+    en: "Restart", de: "Neu starten", fa: "شروع مجدد"
   }[currentLang];
 }
 
-// ----------------- SLIDER & QUESTIONS -----------------
-let currentQ = 0;
+// ----------------- QUIZ LOGIC -----------------
+let qIndex = 0;
 let answers = [];
 const questionTextEl = document.getElementById("questionText");
-const sliderEl = document.getElementById("questionSlider");
-const nextBtnEl = document.getElementById("nextBtn");
+const questionSliderEl = document.getElementById("questionSlider");
 
-function showQuestion(){
-  const q = QUESTIONS[currentQ];
-  questionTextEl.textContent = q[currentLang];
-  sliderEl.value = 5;
-}
-nextBtnEl.addEventListener("click", ()=>{
-  answers.push(parseFloat(sliderEl.value));
-  currentQ++;
-  if(currentQ >= QUESTIONS.length){
-    showResults();
-  } else{
+document.getElementById("startBtn").addEventListener("click", ()=>{
+  document.getElementById("landingPane").classList.add("hidden");
+  document.getElementById("questionPane").classList.remove("hidden");
+  qIndex = 0; answers=[];
+  showQuestion();
+});
+
+document.getElementById("nextBtn").addEventListener("click", ()=>{
+  answers.push(+questionSliderEl.value);
+  qIndex++;
+  if(qIndex<QUESTIONS.length){
     showQuestion();
+  } else {
+    showResults();
   }
 });
 
-// ----------------- RESULTS CALCULATION -----------------
+document.getElementById("restartBtn").addEventListener("click", ()=>{
+  document.getElementById("resultPane").classList.add("hidden");
+  document.getElementById("landingPane").classList.remove("hidden");
+});
+
+function showQuestion(){
+  const q = QUESTIONS[qIndex];
+  questionTextEl.textContent = q[currentLang];
+  questionSliderEl.value = 5;
+}
+
+function average(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
+
+// ----------------- RESULTS -----------------
 function showResults(){
   document.getElementById("questionPane").classList.add("hidden");
   document.getElementById("resultPane").classList.remove("hidden");
 
   const stageScores = {1:[],2:[],3:[]};
-  QUESTIONS.forEach((q,i)=>{
-    stageScores[q.stage].push(answers[i]);
-  });
-
+  QUESTIONS.forEach((q,i)=> stageScores[q.stage].push(answers[i]));
   const stageAvg = {
     1: average(stageScores[1]),
     2: average(stageScores[2]),
@@ -445,43 +447,32 @@ function showResults(){
   dominantMessageEl.classList.remove("hidden");
   dominantMessageEl.innerHTML = STAGE_SUMMARY[maxStage][currentLang];
 
-  // show stage info
   const detailsEl = document.getElementById("stageDetails");
   detailsEl.innerHTML = "";
 
   STAGE_INFO.forEach((stage,i)=>{
     const score = stageAvg[i+1];
-    const stageDiv = document.createElement("div");
-    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
+    const descDiv = document.createElement("div");
+    descDiv.classList.add("stage-desc");
+    descDiv.innerHTML = stage.description[currentLang].map((line,j)=>{
       if(j===0) return line + "\n\n";
       if(line.startsWith("Close to 10:") && score>6) return "<strong>"+line+"</strong>";
       if(line.startsWith("Around 5:") && score>=4 && score<=6) return "<strong>"+line+"</strong>";
       if(line.startsWith("Close to 1:") && score<4) return "<strong>"+line+"</strong>";
       return line;
-    }).join("\n\n")}</p>`;
-    detailsEl.appendChild(stageDiv);
+    }).join("\n\n");
+    detailsEl.appendChild(descDiv);
+
+    const stageBox = document.getElementById(["stageI","stageII","stageIII"][i]);
+    stageBox.addEventListener("click", ()=>{
+      const currentlyVisible = descDiv.style.display === "block";
+      document.querySelectorAll(".stage-desc").forEach(d=>d.style.display="none");
+      descDiv.style.display = currentlyVisible ? "none" : "block";
+      if(!currentlyVisible) descDiv.scrollIntoView({behavior:"smooth", block:"start"});
+    });
   });
 }
 
-function average(arr){
-  return arr.reduce((a,b)=>a+b,0)/arr.length;
-}
-
-// ----------------- START / RESTART -----------------
-document.getElementById("startBtn").addEventListener("click", ()=>{
-  document.getElementById("landingPane").classList.add("hidden");
-  document.getElementById("questionPane").classList.remove("hidden");
-  showQuestion();
-});
-document.getElementById("restartBtn").addEventListener("click", ()=>{
-  currentQ = 0;
-  answers = [];
-  document.getElementById("resultPane").classList.add("hidden");
-  document.getElementById("questionPane").classList.remove("hidden");
-  showQuestion();
-});
-
-// ----------------- INITIAL LANGUAGE -----------------
 applyLanguage();
 </script>
 </body>
