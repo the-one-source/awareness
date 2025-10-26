@@ -171,6 +171,20 @@
     display:none;
     white-space:pre-wrap;
   }
+  .stage-dot{
+    display:inline-block;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    margin:0 4px;
+    vertical-align:middle;
+    transition: transform 0.2s, opacity 0.3s;
+  }
+  .stage-dot:hover{
+    transform:scale(1.3);
+    opacity:0.9;
+  }
   :root[dir="rtl"] .panel{
     direction:rtl;
   }
@@ -202,42 +216,6 @@
   #dominantMessage strong{
     color:var(--accent);
   }
-
-  /* ------------------- Stage Dot CSS ------------------- */
-  .stage-dot {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    margin-right: 6px;
-    vertical-align: middle;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: transform 0.2s, opacity 0.3s, background-color 0.3s;
-    cursor: default;
-    position: relative;
-    transform: scale(0.9);
-    opacity: 0;
-    animation: appearDot 0.4s forwards;
-  }
-  @keyframes appearDot {
-    to { transform: scale(1); opacity: 1; }
-  }
-  .stage-dot:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 150%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.75);
-    color: white;
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 1;
-  }
-
   @media (max-width:520px){
     .panel{padding:20px;}
     #questionText{font-size:16px;}
@@ -384,46 +362,141 @@ const STAGE_INFO = [
       ],
       fa:[
         "مرحله سوم مرحله تسلط و یکپارچگی کامل است. من می‌دانم که تنها منبع هستم؛ همه تجربه‌ها بازتاب آگاهی درونی من هستند. هیچ جدایی وجود ندارد، فقط خلق خالص.",
-        "Close to 10:\nتجسم کامل تسلط؛ زندگی بدون زحمت از طریق من جریان دارد.",
-        "Around 5:\nیکپارچه‌سازی در حال انجام است؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.",
-        "Close to 1:\nنشانه‌های اولیه تسلط؛ من با مالکیت و خلق کامل آزمایش می‌کنم."
+        "Close to 10:\nتجسم کامل تسلط؛ زندگی به‌راحتی از طریق من جریان می‌یابد.",
+        "Around 5:\nیکپارچه‌سازی در حال انجام؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.",
+        "Close to 1:\nنشانه‌های اولیه تسلط؛ من با مالکیت کامل و خلق آزمایش می‌کنم."
       ]
     }
   }
 ];
 
-// ----------------- STAGE DOT COLORS -----------------
-const STAGE_DOT_COLORS = {
-  1:{ "Close to 10":"#FF6B6B","Around 5":"#FFCC33","Close to 1":"#4CAF50" },
-  2:{ "Close to 10":"#4CAF50","Around 5":"#FFCC33","Close to 1":"#FF6B6B" },
-  3:{ "Close to 10":"#4CAF50","Around 5":"#FFCC33","Close to 1":"#FF6B6B" }
-};
+// ----------------- LANGUAGE CONTROL -----------------
+let currentLang = "en";
+const langSelectEl = document.getElementById("langSelect");
+langSelectEl.addEventListener("change", (e) => {
+  currentLang = e.target.value;
+  applyLanguage();
+  if(currentQ<QUESTIONS.length && currentQ>=0) showQuestion();
+  if(document.getElementById("resultPane").classList.contains("hidden")===false) showResults();
+});
 
-// ----------------- RENDER STAGE INFO -----------------
-function renderStageInfo(scores, lang="en"){
-  const stageDetails = document.getElementById("stageDetails");
-  stageDetails.innerHTML="";
-  STAGE_INFO.forEach((stage,i)=>{
-    const stageDiv = document.createElement("div");
-    stageDiv.classList.add("stage-desc");
-    const score = scores[i+1] || 0;
-
-    const descriptionHTML = stage.description[lang].map((line)=>{
-      let label=null;
-      if(line.startsWith("Close to 10")) label="Close to 10";
-      if(line.startsWith("Around 5")) label="Around 5";
-      if(line.startsWith("Close to 1")) label="Close to 1";
-
-      if(label){
-        return `<span class="stage-dot" data-tooltip="${label}" style="background-color:${STAGE_DOT_COLORS[i+1][label]}"></span> ${line}`;
-      }
-      return line;
-    }).join("\n\n");
-
-    stageDiv.innerHTML=`<h3 style="font-weight:bold">${stage.title[lang]}</h3><p>${descriptionHTML}</p>`;
-    stageDetails.appendChild(stageDiv);
-  });
+function applyLanguage(){
+  document.documentElement.setAttribute('dir', currentLang === "fa" ? "rtl" : "ltr");
+  document.getElementById("pageTitle").textContent = {
+    en: "Spectrum of Awareness", de:"Spektrum des Bewusstseins", fa:"طیف آگاهی"
+  }[currentLang];
+  document.getElementById("landingText").textContent = {
+    en:"This is a reflection of my inner consciousness called Spectrum of Awareness.",
+    de:"Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Bewusstseins.",
+    fa:"این بازتابی از آگاهی درونی من به نام طیف آگاهی است."
+  }[currentLang];
+  document.getElementById("startBtn").textContent = {
+    en:"Start",de:"Start",fa:"شروع"
+  }[currentLang];
+  document.getElementById("nextBtn").textContent = {
+    en:"Next",de:"Weiter",fa:"بعدی"
+  }[currentLang];
+  document.getElementById("restartBtn").textContent = {
+    en:"Restart",de:"Neu starten",fa:"شروع دوباره"
+  }[currentLang];
+  document.getElementById("footerNote").textContent = {
+    en:"This is a self-reflection tool.",
+    de:"Dies ist ein Selbstreflexionswerkzeug.",
+    fa:"این یک ابزار خوداندیشی است."
+  }[currentLang];
 }
+
+// ----------------- QUIZ LOGIC -----------------
+let currentQ = -1;
+let answers = [];
+
+document.getElementById("startBtn").addEventListener("click",()=>{
+  document.getElementById("landingPane").classList.add("hidden");
+  document.getElementById("questionPane").classList.remove("hidden");
+  currentQ = 0;
+  answers = [];
+  showQuestion();
+});
+
+document.getElementById("nextBtn").addEventListener("click",()=>{
+  const val = parseInt(document.getElementById("questionSlider").value);
+  answers.push(val);
+  currentQ++;
+  if(currentQ<QUESTIONS.length) showQuestion();
+  else showResults();
+});
+
+document.getElementById("restartBtn").addEventListener("click",()=>{
+  document.getElementById("resultPane").classList.add("hidden");
+  document.getElementById("landingPane").classList.remove("hidden");
+  currentQ = -1;
+  answers = [];
+});
+
+// ----------------- SHOW QUESTION -----------------
+function showQuestion(){
+  const q = QUESTIONS[currentQ];
+  document.getElementById("questionText").textContent = q[currentLang];
+  document.getElementById("questionSlider").value = 5;
+}
+
+// ----------------- RESULTS -----------------
+function average(arr){return arr.reduce((a,b)=>a+b,0)/arr.length;}
+
+function showResults(){
+  document.getElementById("questionPane").classList.add("hidden");
+  document.getElementById("resultPane").classList.remove("hidden");
+
+  // compute stage scores
+  let stageScores=[0,0,0];
+  let stageCounts=[0,0,0];
+  for(let i=0;i<answers.length;i++){
+    let s = QUESTIONS[i].stage;
+    stageScores[s-1]+=answers[i];
+    stageCounts[s-1]++;
+  }
+  for(let i=0;i<3;i++){
+    let avg = stageScores[i]/stageCounts[i];
+    document.getElementById("scoreI").textContent = stageScores[0]/stageCounts[0] ? (stageScores[0]/stageCounts[0]).toFixed(1) : "0.0";
+    document.getElementById("scoreII").textContent = stageScores[1]/stageCounts[1] ? (stageScores[1]/stageCounts[1]).toFixed(1) : "0.0";
+    document.getElementById("scoreIII").textContent = stageScores[2]/stageCounts[2] ? (stageScores[2]/stageCounts[2]).toFixed(1) : "0.0";
+  }
+
+  // dominant stage
+  const dominantIndex = stageScores.indexOf(Math.max(...stageScores));
+  document.getElementById("dominantMessage").classList.remove("hidden");
+  document.getElementById("dominantMessage").textContent = STAGE_SUMMARY[dominantIndex+1][currentLang];
+
+  // stage details with colored circles
+  const stageDetailsDiv = document.getElementById("stageDetails");
+  stageDetailsDiv.innerHTML = "";
+  for(let i=0;i<STAGE_INFO.length;i++){
+    let stage = STAGE_INFO[i];
+    let div = document.createElement("div");
+    div.classList.add("stage-desc");
+    let html = "<strong>"+stage.title[currentLang]+"</strong>\n";
+    stage.description[currentLang].forEach(txt=>{
+      // Replace Close to 10 / Around 5 / Close to 1 with colored circles
+      txt = txt.replace(/Close to 10|Around 5|Close to 1/g,match=>{
+        const colorMap = {
+          "Close to 10":["#FF6B6B","#4CAF50","#4CAF50"],
+          "Around 5":["#FFCC33","#FFCC33","#FFCC33"],
+          "Close to 1":["#4CAF50","#FF6B6B","#FF6B6B"]
+        };
+        let color = colorMap[match][i]; // stage index
+        return `<span class="stage-dot" title="${match}" style="background:${color}"></span>`;
+      });
+      html+=txt+"<br>";
+    });
+    div.innerHTML=html;
+    stageDetailsDiv.appendChild(div);
+  }
+
+  // show all stage-desc blocks
+  stageDetailsDiv.querySelectorAll(".stage-desc").forEach(d=>d.style.display="block");
+}
+
+applyLanguage();
 </script>
 </body>
 </html>
