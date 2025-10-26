@@ -484,18 +484,18 @@ function showResults(){
       }
 
       // Circle HTML with tooltip
-      const circleHTML = `<span style="
-        display:inline-block;
-        width:14px;
-        height:14px;
-        border-radius:50%;
-        background:${circleColor};
-        opacity:${opacity};
-        box-shadow:0 2px 6px rgba(0,0,0,0.1);
-        transition: transform 0.2s, opacity 0.3s;
-        margin-right:6px;
-        vertical-align:middle;"
-        title="${line.split(':')[0]}"></span>`;
+const circleHTML = `<span style="
+    display:inline-block;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:${circleColor};
+    opacity:${opacity};
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s, opacity 0.3s;
+    ${currentLang === 'fa' ? 'margin-left:6px;' : 'margin-right:6px;'}
+    vertical-align:middle;"
+    title="${line.split(':')[0]}"></span>`;
 
       const text = line.replace(/^(Close to 10:|Around 5:|Close to 1:)/,'').trim();
       return (bold ? "<strong>"+circleHTML+text+"</strong>" : circleHTML+text);
