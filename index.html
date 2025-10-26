@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,20 +171,6 @@
     line-height:1.6;
     display:none;
     white-space:pre-wrap;
-  }
-  .stage-dot{
-    display:inline-block;
-    width:14px;
-    height:14px;
-    border-radius:50%;
-    box-shadow:0 2px 6px rgba(0,0,0,0.1);
-    margin:0 4px;
-    vertical-align:middle;
-    transition: transform 0.2s, opacity 0.3s;
-  }
-  .stage-dot:hover{
-    transform:scale(1.3);
-    opacity:0.9;
   }
   :root[dir="rtl"] .panel{
     direction:rtl;
@@ -383,119 +370,130 @@ langSelectEl.addEventListener("change", (e) => {
 function applyLanguage(){
   document.documentElement.setAttribute('dir', currentLang === "fa" ? "rtl" : "ltr");
   document.getElementById("pageTitle").textContent = {
-    en: "Spectrum of Awareness", de:"Spektrum des Bewusstseins", fa:"طیف آگاهی"
+    en: "Spectrum of Awareness",
+    de: "Spektrum des Bewusstseins",
+    fa: "طیف آگاهی"
   }[currentLang];
   document.getElementById("landingText").textContent = {
-    en:"This is a reflection of my inner consciousness called Spectrum of Awareness.",
-    de:"Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Bewusstseins.",
-    fa:"این بازتابی از آگاهی درونی من به نام طیف آگاهی است."
+    en: "This is a reflection of my inner consciousness called Spectrum of Awareness.",
+    de: "Dies ist eine Reflexion meines inneren Bewusstseins namens Spektrum des Bewusstseins.",
+    fa: "این بازتابی از آگاهی درونی من به نام طیف آگاهی است."
   }[currentLang];
   document.getElementById("startBtn").textContent = {
-    en:"Start",de:"Start",fa:"شروع"
+    en: "Start", de: "Start", fa: "شروع"
   }[currentLang];
   document.getElementById("nextBtn").textContent = {
-    en:"Next",de:"Weiter",fa:"بعدی"
+    en: "Next", de: "Weiter", fa: "بعدی"
   }[currentLang];
   document.getElementById("restartBtn").textContent = {
-    en:"Restart",de:"Neu starten",fa:"شروع دوباره"
+    en: "Restart", de: "Neu starten", fa: "شروع دوباره"
   }[currentLang];
-  document.getElementById("footerNote").textContent = {
-    en:"This is a self-reflection tool.",
-    de:"Dies ist ein Selbstreflexionswerkzeug.",
-    fa:"این یک ابزار خوداندیشی است."
+  document.getElementById("qLblLeft").textContent = {
+    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
+  }[currentLang];
+  document.getElementById("qLblMid").textContent = {
+    en: "Uncertain", de: "Unsicher", fa: "مطمئن نیستم"
+  }[currentLang];
+  document.getElementById("qLblRight").textContent = {
+    en: "Agree", de: "Zustimmen", fa: "موافقم"
   }[currentLang];
 }
-
-// ----------------- QUIZ LOGIC -----------------
-let currentQ = -1;
+  
+// ----------------- SLIDER & QUESTIONS -----------------
+let currentQ = 0;
 let answers = [];
+const questionTextEl = document.getElementById("questionText");
+const sliderEl = document.getElementById("questionSlider");
+const nextBtnEl = document.getElementById("nextBtn");
 
-document.getElementById("startBtn").addEventListener("click",()=>{
-  document.getElementById("landingPane").classList.add("hidden");
-  document.getElementById("questionPane").classList.remove("hidden");
-  currentQ = 0;
-  answers = [];
-  showQuestion();
-});
-
-document.getElementById("nextBtn").addEventListener("click",()=>{
-  const val = parseInt(document.getElementById("questionSlider").value);
-  answers.push(val);
-  currentQ++;
-  if(currentQ<QUESTIONS.length) showQuestion();
-  else showResults();
-});
-
-document.getElementById("restartBtn").addEventListener("click",()=>{
-  document.getElementById("resultPane").classList.add("hidden");
-  document.getElementById("landingPane").classList.remove("hidden");
-  currentQ = -1;
-  answers = [];
-});
-
-// ----------------- SHOW QUESTION -----------------
 function showQuestion(){
   const q = QUESTIONS[currentQ];
-  document.getElementById("questionText").textContent = q[currentLang];
-  document.getElementById("questionSlider").value = 5;
+  questionTextEl.textContent = q[currentLang];
+  sliderEl.value = 5;
 }
+nextBtnEl.addEventListener("click", ()=>{
+  answers.push(parseFloat(sliderEl.value));
+  currentQ++;
+  if(currentQ >= QUESTIONS.length){
+    showResults();
+  } else{
+    showQuestion();
+  }
+});
 
-// ----------------- RESULTS -----------------
-function average(arr){return arr.reduce((a,b)=>a+b,0)/arr.length;}
-
+// ----------------- RESULTS CALCULATION -----------------
 function showResults(){
   document.getElementById("questionPane").classList.add("hidden");
   document.getElementById("resultPane").classList.remove("hidden");
 
-  // compute stage scores
-  let stageScores=[0,0,0];
-  let stageCounts=[0,0,0];
-  for(let i=0;i<answers.length;i++){
-    let s = QUESTIONS[i].stage;
-    stageScores[s-1]+=answers[i];
-    stageCounts[s-1]++;
-  }
-  for(let i=0;i<3;i++){
-    let avg = stageScores[i]/stageCounts[i];
-    document.getElementById("scoreI").textContent = stageScores[0]/stageCounts[0] ? (stageScores[0]/stageCounts[0]).toFixed(1) : "0.0";
-    document.getElementById("scoreII").textContent = stageScores[1]/stageCounts[1] ? (stageScores[1]/stageCounts[1]).toFixed(1) : "0.0";
-    document.getElementById("scoreIII").textContent = stageScores[2]/stageCounts[2] ? (stageScores[2]/stageCounts[2]).toFixed(1) : "0.0";
-  }
+  const stageScores = {1:[],2:[],3:[]};
+  QUESTIONS.forEach((q,i)=>{
+    stageScores[q.stage].push(answers[i]);
+  });
 
-  // dominant stage
-  const dominantIndex = stageScores.indexOf(Math.max(...stageScores));
-  document.getElementById("dominantMessage").classList.remove("hidden");
-  document.getElementById("dominantMessage").textContent = STAGE_SUMMARY[dominantIndex+1][currentLang];
+  const stageAvg = {
+    1: average(stageScores[1]),
+    2: average(stageScores[2]),
+    3: average(stageScores[3])
+  };
 
-  // stage details with colored circles
-  const stageDetailsDiv = document.getElementById("stageDetails");
-  stageDetailsDiv.innerHTML = "";
-  for(let i=0;i<STAGE_INFO.length;i++){
-    let stage = STAGE_INFO[i];
-    let div = document.createElement("div");
-    div.classList.add("stage-desc");
-    let html = "<strong>"+stage.title[currentLang]+"</strong>\n";
-    stage.description[currentLang].forEach(txt=>{
-      // Replace Close to 10 / Around 5 / Close to 1 with colored circles
-      txt = txt.replace(/Close to 10|Around 5|Close to 1/g,match=>{
-        const colorMap = {
-          "Close to 10":["#FF6B6B","#4CAF50","#4CAF50"],
-          "Around 5":["#FFCC33","#FFCC33","#FFCC33"],
-          "Close to 1":["#4CAF50","#FF6B6B","#FF6B6B"]
-        };
-        let color = colorMap[match][i]; // stage index
-        return `<span class="stage-dot" title="${match}" style="background:${color}"></span>`;
-      });
-      html+=txt+"<br>";
-    });
-    div.innerHTML=html;
-    stageDetailsDiv.appendChild(div);
-  }
+  document.getElementById("scoreI").textContent = stageAvg[1].toFixed(1);
+  document.getElementById("scoreII").textContent = stageAvg[2].toFixed(1);
+  document.getElementById("scoreIII").textContent = stageAvg[3].toFixed(1);
 
-  // show all stage-desc blocks
-  stageDetailsDiv.querySelectorAll(".stage-desc").forEach(d=>d.style.display="block");
+  let maxStage = 1;
+  if(stageAvg[2]>=stageAvg[maxStage]) maxStage=2;
+  if(stageAvg[3]>=stageAvg[maxStage]) maxStage=3;
+
+  const dominantMessageEl = document.getElementById("dominantMessage");
+  dominantMessageEl.classList.remove("hidden");
+  dominantMessageEl.innerHTML = STAGE_SUMMARY[maxStage][currentLang];
+
+  const detailsEl = document.getElementById("stageDetails");
+  detailsEl.innerHTML = "";
+
+  STAGE_INFO.forEach((stage,i)=>{
+    const score = stageAvg[i+1];
+    const stageDiv = document.createElement("div");
+    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
+      if(j===0) return line + "\n\n";
+      if(line.startsWith("Close to 10:") && score>6) return "<strong>"+line+"</strong>";
+      if(line.startsWith("Around 5:") && score>=4 && score<=6) return "<strong>"+line+"</strong>";
+      if(line.startsWith("Close to 1:") && score<4) return "<strong>"+line+"</strong>";
+      return line;
+    }).join("\n\n")}</p>`;
+    stageDiv.classList.add("stage-desc");
+    detailsEl.appendChild(stageDiv);
+  });
 }
 
+// ----------------- STAGE CLICK TOGGLE -----------------
+document.querySelectorAll('.result-stage').forEach((el, idx)=>{
+  el.addEventListener('click', ()=>{
+    const descs = document.querySelectorAll('.stage-desc');
+    descs[idx].style.display = descs[idx].style.display==='none'?'block':'none';
+  });
+});
+
+function average(arr){
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
+}
+
+// ----------------- START / RESTART -----------------
+document.getElementById("startBtn").addEventListener("click", ()=>{
+  document.getElementById("landingPane").classList.add("hidden");
+  document.getElementById("questionPane").classList.remove("hidden");
+  showQuestion();
+});
+document.getElementById("restartBtn").addEventListener("click", ()=>{
+  currentQ = 0;
+  answers = [];
+  document.getElementById("resultPane").classList.add("hidden");
+  document.getElementById("questionPane").classList.remove("hidden");
+  showQuestion();
+});
+
+// ----------------- INITIAL LANGUAGE -----------------
 applyLanguage();
 </script>
 </body>
