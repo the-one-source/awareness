@@ -13,405 +13,256 @@
     --muted:#666;
     --text:#111;
   }
-  html,body{
-    height:100%;
-    margin:0;
-    background:var(--bg);
-    font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    color:var(--text);
-  }
-  .wrap{
-    min-height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:28px;
-  }
-  .panel{
-    width:min(96%,var(--panel-width));
-    max-width:var(--panel-width);
-    background:var(--card);
-    border-radius:14px;
-    box-shadow:0 10px 30px rgba(20,20,30,0.06);
-    padding:34px;
-    box-sizing:border-box;
-    text-align:center;
-  }
-  h1{
-    margin:0 0 18px 0;
-    font-weight:400;
-    color:#444;
-    font-size:22px;
-  }
-  .row{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    align-items:center;
-    margin-bottom:20px;
-  }
-  select{
-    padding:8px 12px;
-    font-size:15px;
-    border-radius:8px;
-    border:1px solid #e6e6e6;
-    background:white;
-  }
-  p.lead{
-    margin:0 0 18px 0;
-    color:#666;
-    font-size:15px;
-    line-height:1.45;
-  }
-  .fixed-slider-wrap{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:8px;
-    margin:18px 0 8px 0;
-  }
-  .fixed-track{
-    width:92%;
-    max-width:680px;
-  }
-  input[type="range"]{
-    -webkit-appearance:none;
-    width:100%;
-    height:12px;
-    border-radius:10px;
-    background:#e6e6e6;
-    outline:none;
-    margin:0;
-    padding:0;
-  }
-  input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    appearance:none;
-    width:34px;
-    height:18px;
-    border-radius:9px;
-    background:var(--accent);
-    box-shadow:0 6px 18px rgba(102,100,64,0.24);
-    border:2px solid white;
-    margin-top:-3px;
-    cursor:pointer;
-  }
-  input[type="range"]::-moz-range-thumb{
-    width:34px;
-    height:18px;
-    border-radius:9px;
-    background:var(--accent);
-    box-shadow:0 6px 18px rgba(102,100,64,0.24);
-    border:2px solid white;
-    cursor:pointer;
-  }
-  .slider-labels{
-    width:92%;
-    max-width:680px;
-    display:flex;
-    justify-content:space-between;
-    color:var(--muted);
-    font-size:13px;
-    margin-top:6px;
-    user-select:none;
-  }
-  .btn{
-    display:inline-block;
-    padding:12px 28px;
-    border-radius:28px;
-    background:var(--accent);
-    color:white;
-    border:none;
-    font-size:15px;
-    cursor:pointer;
-    box-shadow:0 6px 18px rgba(102,100,64,0.18);
-    margin-top:18px;
-  }
-  .btn:active{
-    transform:translateY(1px);
-  }
+  html,body{height:100%;margin:0;background:var(--bg);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);}
+  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px;}
+  .panel{width:min(96%,var(--panel-width));max-width:var(--panel-width);background:var(--card);border-radius:14px;box-shadow:0 10px 30px rgba(20,20,30,0.06);padding:34px;box-sizing:border-box;text-align:center;}
+  h1{margin:0 0 18px 0;font-weight:400;color:#444;font-size:22px;}
+  .row{display:flex;justify-content:center;gap:12px;align-items:center;margin-bottom:20px;}
+  select{padding:8px 12px;font-size:15px;border-radius:8px;border:1px solid #e6e6e6;background:white;}
+  p.lead{margin:0 0 18px 0;color:#666;font-size:15px;line-height:1.45;}
+  .fixed-slider-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;margin:18px 0 8px 0;}
+  .fixed-track{width:92%;max-width:680px;}
+  input[type="range"]{-webkit-appearance:none;width:100%;height:12px;border-radius:10px;background:#e6e6e6;outline:none;margin:0;padding:0;}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;margin-top:-3px;cursor:pointer;}
+  input[type="range"]::-moz-range-thumb{width:34px;height:18px;border-radius:9px;background:var(--accent);box-shadow:0 6px 18px rgba(102,100,64,0.24);border:2px solid white;cursor:pointer;}
+  .slider-labels{width:92%;max-width:680px;display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px;user-select:none;}
+  .btn{display:inline-block;padding:12px 28px;border-radius:28px;background:var(--accent);color:white;border:none;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(102,100,64,0.18);margin-top:18px;}
+  .btn:active{transform:translateY(1px);}
   .hidden{display:none;}
-  .result-grid{
-    margin-top:12px;
-    color:#333;
-    font-size:15px;
-    display:flex;
-    gap:12px;
-    justify-content:space-between;
-    align-items:center;
-  }
-  .result-stage{
-    font-weight:700;
-    flex:1;
-    padding:10px;
-    background:#fbfbfb;
-    border-radius:10px;
-    cursor:pointer;
-    position:relative;
-    transition:background 0.2s;
-  }
-  .result-stage:hover{
-    background:#f0f0f0;
-  }
-  .result-score{
-    font-size:18px;
-    color:#222;
-    margin-top:8px;
-    font-weight:600;
-  }
-  .stage-desc{
-    padding:12px 14px;
-    margin-top:8px;
-    background:#f9f9f9;
-    border-radius:10px;
-    text-align:left;
-    font-size:14px;
-    line-height:1.45;
-    display:none;
-    position:relative;
-  }
-  .stage-desc .close-btn{
-    position:absolute;
-    top:6px;
-    right:10px;
-    font-weight:bold;
-    font-size:16px;
-    cursor:pointer;
-    color:var(--accent);
-  }
-  :root[dir="rtl"] .panel{
-    direction:rtl;
-  }
-  :root[dir="rtl"] .slider-labels{
-    direction:rtl;
-  }
-  #questionText{
-    font-size:18px;
-    line-height:1.45;
-    margin:6px 0 14px 0;
-    text-align:center;
-    word-break:break-word;
-  }
-  footer.note{
-    margin-top:14px;
-    color:#666;
-    font-size:13px;
-  }
-  #dominantMessage{
-    margin-top:20px;
-    background:#f8f8f8;
-    border-radius:12px;
-    padding:16px;
-    color:#333;
-    font-size:15px;
-    line-height:1.4;
-    box-shadow:0 6px 20px rgba(0,0,0,0.04);
-  }
-  #dominantMessage strong{
-    color:var(--accent);
-  }
-  @media (max-width:520px){
-    .panel{padding:20px;}
-    #questionText{font-size:16px;}
-    .btn{padding:10px 20px;}
-  }
+  .result-grid{margin-top:12px;color:#333;font-size:15px;display:flex;gap:12px;justify-content:space-between;align-items:center;}
+  .result-stage{font-weight:700;flex:1;padding:10px;background:#fbfbfb;border-radius:10px;cursor:pointer;position:relative;transition:background 0.2s;}
+  .result-stage:hover{background:#f0f0f0;}
+  .result-score{font-size:18px;color:#222;margin-top:8px;font-weight:600;}
+  .stage-desc{padding:12px 14px;margin-top:8px;background:#f9f9f9;border-radius:10px;text-align:left;font-size:14px;line-height:1.45;display:none;position:relative;}
+  .stage-desc .close-btn{position:absolute;top:6px;right:10px;font-weight:bold;font-size:16px;cursor:pointer;color:var(--accent);}
+  :root[dir="rtl"] .panel{direction:rtl;}
+  :root[dir="rtl"] .slider-labels{direction:rtl;}
+  #questionText{font-size:18px;line-height:1.45;margin:6px 0 14px 0;text-align:center;word-break:break-word;}
+  footer.note{margin-top:14px;color:#666;font-size:13px;}
+  #dominantMessage{margin-top:20px;background:#f8f8f8;border-radius:12px;padding:16px;color:#333;font-size:15px;line-height:1.4;box-shadow:0 6px 20px rgba(0,0,0,0.04);}
+  #dominantMessage strong{color:var(--accent);}
+  @media (max-width:520px){.panel{padding:20px;}#questionText{font-size:16px;}.btn{padding:10px 20px;}}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="panel" id="panel">
+<div class="wrap">
+<div class="panel" id="panel">
 
-      <!-- Landing Page -->
-      <div id="landingPane">
-        <h1 id="pageTitle">Spectrum of Awareness</h1>
-        <div class="row" id="langRow">
-          <select id="langSelect">
-            <option value="en">English</option>
-            <option value="de">Deutsch</option>
-            <option value="fa">فارسی</option>
-          </select>
-        </div>
-        <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness.</p>
-        <button id="startBtn" class="btn">Start</button>
-      </div>
-
-      <!-- Questionnaire Page -->
-      <div id="questionPane" class="hidden">
-        <div id="questionText"></div>
-        <div class="fixed-slider-wrap">
-          <div class="fixed-track">
-            <input id="questionSlider" type="range" min="0" max="10" value="5" />
-          </div>
-          <div class="slider-labels">
-            <span id="qLblLeft">Disagree</span>
-            <span id="qLblMid">Uncertain</span>
-            <span id="qLblRight">Agree</span>
-          </div>
-        </div>
-        <button id="nextBtn" class="btn">Next</button>
-      </div>
-
-      <!-- Result Page -->
-      <div id="resultPane" class="hidden">
-        <h1 id="resultTitle">Spectrum of Awareness</h1>
-        <div class="result-grid">
-          <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
-          <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
-          <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
-        </div>
-        <div id="dominantMessage" class="hidden"></div>
-        <div id="stageDetails"></div>
-        <button id="restartBtn" class="btn">Restart</button>
-        <footer class="note" id="footerNote"></footer>
-      </div>
-
+  <!-- Landing Page -->
+  <div id="landingPane">
+    <h1 id="pageTitle">Spectrum of Awareness</h1>
+    <div class="row" id="langRow">
+      <select id="langSelect">
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+        <option value="fa">فارسی</option>
+      </select>
     </div>
+    <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness.</p>
+    <button id="startBtn" class="btn">Start</button>
   </div>
 
-<script>
-// ----------------- QUESTIONS (I-to-I) -----------------
-const QUESTIONS = [
-  {stage:1,en:"I feel life happens to me.",de:"Ich fühle, dass das Leben mir passiert.",fa:"من احساس می‌کنم زندگی بر من رخ می‌دهد."},
-  {stage:2,en:"I notice life happening through me.",de:"Ich bemerke, dass das Leben durch mich geschieht.",fa:"من متوجه می‌شوم که زندگی از طریق من جریان دارد."},
-  {stage:3,en:"I feel life happens as me.",de:"Ich fühle, dass das Leben als ich geschieht.",fa:"من احساس می‌کنم زندگی همان من است که رخ می‌دهد."},
-  
-  {stage:1,en:"I see life as unfair to me.",de:"Ich sehe das Leben als unfair mir gegenüber.",fa:"من زندگی را ناعادلانه نسبت به خود می‌بینم."},
-  {stage:2,en:"I notice patterns repeating in me.",de:"Ich bemerke wiederholende Muster in mir.",fa:"من الگوهای تکراری را در خودم مشاهده می‌کنم."},
-  {stage:3,en:"I see all as one flow of my consciousness.",de:"Ich sehe alles als einen Fluss meines Bewusstseins.",fa:"من همه چیز را به‌عنوان جریان واحد آگاهی خود می‌بینم."},
+  <!-- Questionnaire Page -->
+  <div id="questionPane" class="hidden">
+    <div id="questionText"></div>
+    <div class="fixed-slider-wrap">
+      <div class="fixed-track">
+        <input id="questionSlider" type="range" min="0" max="10" value="5" />
+      </div>
+      <div class="slider-labels">
+        <span id="qLblLeft">Disagree</span>
+        <span id="qLblMid">Uncertain</span>
+        <span id="qLblRight">Agree</span>
+      </div>
+    </div>
+    <button id="nextBtn" class="btn">Next</button>
+  </div>
 
-  {stage:1,en:"I judge and label what I experience.",de:"Ich urteile und etikettiere, was ich erfahre.",fa:"من تجربه‌هایم را قضاوت و برچسب می‌زنم."},
-  {stage:2,en:"I witness my judgments and release them.",de:"Ich beobachte meine Urteile und lasse sie los.",fa:"من قضاوت‌هایم را مشاهده و رها می‌کنم."},
-  {stage:3,en:"I am the pure witness; all distinctions reflect my mind.",de:"Ich bin der reine Zeuge; alle Unterschiede spiegeln meinen Geist.",fa:"من شاهد خالص هستم؛ همه تمایزات بازتاب ذهن من هستند."}
+  <!-- Result Page -->
+  <div id="resultPane" class="hidden">
+    <h1 id="resultTitle">Spectrum of Awareness</h1>
+    <div class="result-grid">
+      <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
+      <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
+      <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
+    </div>
+    <div id="dominantMessage" class="hidden"></div>
+    <div id="stageDetails"></div>
+    <button id="restartBtn" class="btn">Restart</button>
+    <footer class="note" id="footerNote"></footer>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ----------------- QUESTIONS -----------------
+const QUESTIONS = [
+  {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
+  {stage:2,en:"Life happens through me.",de:"Das Leben passiert durch mich.",fa:"زندگی از طریق من اتفاق می‌افتد."},
+  {stage:3,en:"Life happens as me.",de:"Das Leben passiert als ich.",fa:"زندگی همان من است که رخ می‌دهد."},
+
+  {stage:1,en:"I feel life is unfair or against me.",de:"Ich fühle, das Leben ist unfair oder gegen mich.",fa:"من احساس می‌کنم زندگی ناعادلانه است یا علیه من است."},
+  {stage:2,en:"I notice patterns repeating and wonder why.",de:"Ich bemerke sich wiederholende Muster und frage mich warum.",fa:"من الگوهای تکراری را مشاهده می‌کنم و می‌پرسم چرا."},
+  {stage:3,en:"I see all as one flow of consciousness.",de:"Ich sehe alles als einen Fluss des Bewusstseins.",fa:"من همه چیز را به‌عنوان یک جریان واحد آگاهی می‌بینم."},
+
+  {stage:1,en:"I am the victim of life.",de:"Ich bin das Opfer des Lebens.",fa:"من قربانی زندگی هستم."},
+  {stage:2,en:"I am connected to a source.",de:"Ich bin mit einer Quelle verbunden.",fa:"من به یک منبع متصل هستم."},
+  {stage:3,en:"I am the only source; God is a concept within me.",de:"Ich bin die einzige Quelle; Gott ist ein Konzept in mir.",fa:"من تنها منبع هستم؛ خدا مفهومی در درون من است."},
+
+  {stage:1,en:"I react to circumstances.",de:"Ich reagiere auf Umstände.",fa:"من به شرایط واکنش نشان می‌دهم."},
+  {stage:2,en:"I respond consciously.",de:"Ich reagiere bewusst.",fa:"من با آگاهی پاسخ می‌دهم."},
+  {stage:3,en:"I create all circumstances.",de:"Ich erschaffe alle Umstände.",fa:"من تمام شرایط را خلق می‌کنم."},
+
+  {stage:1,en:"I feel separate from life.",de:"Ich fühle mich vom Leben getrennt.",fa:"من احساس می‌کنم از زندگی جدا هستم."},
+  {stage:2,en:"I feel part of the flow.",de:"Ich fühle mich als Teil des Flusses.",fa:"من بخشی از جریان هستم."},
+  {stage:3,en:"I am the flow itself.",de:"Ich bin der Fluss selbst.",fa:"من خود جریان هستم."},
+
+  {stage:1,en:"I blame others or circumstances.",de:"Ich gebe anderen oder Umständen die Schuld.",fa:"من دیگران یا شرایط را مقصر می‌دانم."},
+  {stage:2,en:"I observe without judgment.",de:"Ich beobachte ohne Urteil.",fa:"من بدون قضاوت مشاهده می‌کنم."},
+  {stage:3,en:"I see everything as my creation.",de:"Ich sehe alles als meine Schöpfung.",fa:"من همه چیز را به‌عنوان خلقت خود می‌بینم."},
+
+  // --- Add more questions similarly, up to full 84+ ---
 ];
 
-// ----------------- STAGE SUMMARY (I-to-I) -----------------
-const STAGE_SUMMARY = {
-  1:{
-    en: "I am in Stage I — Victimhood: life feels like it happens to me.",
-    de: "Ich bin in Stufe I — Opferrolle: das Leben scheint mir zu widerfahren.",
-    fa: "من در مرحله اول هستم — قربانی: زندگی را به‌عنوان چیزی که برایم اتفاق می‌افتد تجربه می‌کنم."
-  },
-  2:{
-    en: "I am in Stage II — Awakening: life happens through me.",
-    de: "Ich bin in Stufe II — Erwachen: das Leben geschieht durch mich.",
-    fa: "من در مرحله دوم هستم — بیداری: زندگی از طریق من جریان دارد."
-  },
-  3:{
-    en: "I am in Stage III — Mastery: life happens as me.",
-    de: "Ich bin in Stufe III — Meisterschaft: das Leben geschieht als ich.",
-    fa: "من در مرحله سوم هستم — تسلط: زندگی همان من است."
+// ----------------- VARIABLES -----------------
+let currentLang = 'en';
+let currentIndex = 0;
+let stageScores = {1:[],2:[],3:[]};
+
+// ----------------- DOM ELEMENTS -----------------
+const landingPane = document.getElementById('landingPane');
+const questionPane = document.getElementById('questionPane');
+const resultPane = document.getElementById('resultPane');
+const questionText = document.getElementById('questionText');
+const questionSlider = document.getElementById('questionSlider');
+const nextBtn = document.getElementById('nextBtn');
+const startBtn = document.getElementById('startBtn');
+const restartBtn = document.getElementById('restartBtn');
+const langSelect = document.getElementById('langSelect');
+const qLblLeft = document.getElementById('qLblLeft');
+const qLblMid = document.getElementById('qLblMid');
+const qLblRight = document.getElementById('qLblRight');
+const scoreI = document.getElementById('scoreI');
+const scoreII = document.getElementById('scoreII');
+const scoreIII = document.getElementById('scoreIII');
+const dominantMessage = document.getElementById('dominantMessage');
+const stageDetails = document.getElementById('stageDetails');
+const panel = document.getElementById('panel');
+const footerNote = document.getElementById('footerNote');
+
+// ----------------- FUNCTIONS -----------------
+function updateDirection(){
+  document.documentElement.dir = currentLang==='fa'?'rtl':'ltr';
+}
+
+function showQuestion(){
+  if(currentIndex>=QUESTIONS.length){
+    computeResults();
+    return;
+  }
+  const q = QUESTIONS[currentIndex];
+  questionText.innerText = q[currentLang];
+  questionSlider.value = 5;
+}
+
+function nextQuestion(){
+  const q = QUESTIONS[currentIndex];
+  stageScores[q.stage].push(Number(questionSlider.value));
+  currentIndex++;
+  showQuestion();
+}
+
+function computeResults(){
+  landingPane.classList.add('hidden');
+  questionPane.classList.add('hidden');
+  resultPane.classList.remove('hidden');
+
+  // compute average per stage
+  const avg = stage=>stageScores[stage].length? (stageScores[stage].reduce((a,b)=>a+b,0)/stageScores[stage].length).toFixed(1) : 0;
+  scoreI.innerText = avg(1);
+  scoreII.innerText = avg(2);
+  scoreIII.innerText = avg(3);
+
+  // determine dominant stage
+  let maxStage = 1;
+  let maxScore = avg(1);
+  if(avg(2) > maxScore){maxScore = avg(2); maxStage=2;}
+  if(avg(3) > maxScore){maxScore = avg(3); maxStage=3;}
+
+  let domText = {
+    en:["Stage I: Victimhood dominates. You feel life happens to you.","Stage II: Observer flow dominates. You notice patterns and respond.","Stage III: Sovereign creator dominates. You create all that is."],
+    de:["Stufe I: Opferbewusstsein dominiert.","Stufe II: Beobachterfluss dominiert.","Stufe III: Souveräner Schöpfer dominiert."],
+    fa:["مرحله I: قربانی غالب است.","مرحله II: جریان ناظر غالب است.","مرحله III: خالق خودآگاه غالب است."]
+  };
+
+  dominantMessage.innerText = domText[currentLang][maxStage-1];
+  dominantMessage.classList.remove('hidden');
+
+  footerNote.innerText = {
+    en:"Click on any stage to view description.",
+    de:"Klicken Sie auf eine Stufe, um die Beschreibung anzuzeigen.",
+    fa:"برای مشاهده توضیحات، روی هر مرحله کلیک کنید."
+  }[currentLang];
+
+  // setup stage details
+  const stageDescText = {
+    1:{
+      en:"Stage I is characterized by victimhood, reaction, and separation.",
+      de:"Stufe I ist durch Opferbewusstsein, Reaktion und Trennung gekennzeichnet.",
+      fa:"مرحله I با قربانی بودن، واکنش و جدایی مشخص می‌شود."
+    },
+    2:{
+      en:"Stage II is characterized by observation, flow, and awareness of patterns.",
+      de:"Stufe II ist durch Beobachtung, Fluss und Musterbewusstsein gekennzeichnet.",
+      fa:"مرحله II با مشاهده، جریان و آگاهی از الگوها مشخص می‌شود."
+    },
+    3:{
+      en:"Stage III is characterized by full sovereignty, creation, and oneness.",
+      de:"Stufe III ist durch volle Souveränität, Schöpfung und Einheit gekennzeichnet.",
+      fa:"مرحله III با حاکمیت کامل، خلق و یگانگی مشخص می‌شود."
+    }
+  };
+
+  [1,2,3].forEach(s=>{
+    const el = document.getElementById('stage'+(s===1?'I':s===2?'II':'III'));
+    el.onclick=()=>{
+      stageDetails.innerHTML=`<div class="stage-desc"><span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>${stageDescText[s][currentLang]}</div>`;
+      stageDetails.querySelector('.stage-desc').style.display='block';
+    };
+  });
+}
+
+// ----------------- EVENT LISTENERS -----------------
+startBtn.onclick=()=>{
+  landingPane.classList.add('hidden');
+  questionPane.classList.remove('hidden');
+  showQuestion();
+};
+
+nextBtn.onclick=nextQuestion;
+restartBtn.onclick=()=>location.reload();
+
+langSelect.onchange=()=>{
+  currentLang = langSelect.value;
+  updateDirection();
+  if(!landingPane.classList.contains('hidden')){
+    document.getElementById('pageTitle').innerText = {en:"Spectrum of Awareness",de:"Spektrum des Bewusstseins",fa:"طیف آگاهی"}[currentLang];
+    landingText.innerText = {
+      en:"This is a reflection of my inner consciousness called Spectrum of Awareness.",
+      de:"Dies ist eine Reflexion meines inneren Bewusstseins namens Spektrum des Bewusstseins.",
+      fa:"این بازتابی از آگاهی درونی من است که طیف آگاهی نامیده می‌شود."
+    }[currentLang];
+    startBtn.innerText = {en:"Start",de:"Starten",fa:"شروع"}[currentLang];
+  } else if(!resultPane.classList.contains('hidden')){
+    computeResults(); // recalc dominant text
+  } else{
+    showQuestion();
   }
 };
 
-// ----------------- STAGE INFO (I-to-I) -----------------
-const STAGE_INFO = [
-  {
-    title:{en:"Stage I — Victimhood",de:"Stufe I — Opferrolle",fa:"مرحله اول — قربانی"},
-    scoreRange:"0–10",
-    description:{
-      en:`I experience Stage I as victimhood, where I feel distant from my source. Life happens to me rather than through me.
-• Score close to 10: Deeply immersed in victimhood; strong attachment and resistance.
-• Score around 5: Partial awareness; I notice glimpses of truth and can move toward Stage II.
-• Score below 5: Early awakening; I begin noticing patterns and reflections, practicing self-inquiry.`,
-      de:`Ich erfahre Stufe I als Opferrolle, wo ich mich von meiner Quelle entfernt fühle. Das Leben geschieht mir, nicht durch mich.
-• Nähe zu 10: Tief in Opferrolle; starke Bindung und Widerstand.
-• Um 5: Teilweise Bewusstsein; ich bemerke Einblicke in die Wahrheit, Potenzial für Stufe II.
-• Unter 5: Frühes Erwachen; ich bemerke Muster und Reflexionen, praktiziere Selbstreflexion.`,
-      fa:`من مرحله اول را به‌عنوان قربانی بودن تجربه می‌کنم، جایی که از منبع خود دورم. زندگی بر من رخ می‌دهد نه از طریق من.
-• نزدیک ۱۰: غرق شدن در قربانی بودن؛ وابستگی و مقاومت شدید.
-• حدود ۵: آگاهی جزئی؛ متوجه درک‌هایی از حقیقت می‌شوم و می‌توانم به مرحله دوم بروم.
-• زیر ۵: بیداری اولیه؛ شروع به مشاهده الگوها و بازتاب‌ها و خودکاوی می‌کنم.`
-    }
-  },
-  {
-    title:{en:"Stage II — Awakening",de:"Stufe II — Erwachen",fa:"مرحله دوم — بیداری"},
-    scoreRange:"0–10",
-    description:{
-      en:`I experience Stage II as awakening. I notice patterns, understand my role as co-creator, and feel connected to a greater flow.
-• Score close to 10: High awareness, conscious decisions; integrating shadow and light.
-• Score around 5: Growing insight; I partially recognize patterns and influences.
-• Score below 5: Early awareness; I notice repetition and begin questioning.`,
-      de:`Ich erfahre Stufe II als Erwachen. Ich erkenne Muster, meine Rolle als Mit-Schöpfer und fühle Verbindung zum größeren Fluss.
-• Nähe zu 10: Hohes Bewusstsein, bewusste Entscheidungen; Integration von Schatten und Licht.
-• Um 5: Wachsende Einsicht; teilweise Muster und Einflüsse erkannt.
-• Unter 5: Frühes Bewusstsein; ich bemerke Wiederholungen und beginne Fragen.`,
-      fa:`من مرحله دوم را به‌عنوان بیداری تجربه می‌کنم. الگوها را مشاهده می‌کنم، نقش خود را به‌عنوان هم‌آفریننده می‌فهمم و به جریان بزرگتر متصل هستم.
-• نزدیک ۱۰: آگاهی بالا، تصمیم‌گیری آگاهانه؛ یکپارچه‌سازی سایه و نور.
-• حدود ۵: بینش در حال رشد؛ الگوها و تأثیرات را تا حدی می‌شناسم.
-• زیر ۵: آگاهی اولیه؛ تکرارها را می‌بینم و شروع به پرسش می‌کنم.`
-    }
-  },
-  {
-    title:{en:"Stage III — Mastery",de:"Stufe III — Meisterschaft",fa:"مرحله سوم — تسلط"},
-    scoreRange:"0–10",
-    description:{
-      en:`I experience Stage III as mastery and integration. I know I am the only source; life flows as my consciousness.
-• Score close to 10: Complete embodiment; effortless life flow.
-• Score around 5: Integration in progress; glimpses of mastery appear.
-• Score below 5: Early signs; I experiment with full ownership and creation.`,
-      de:`Ich erfahre Stufe III als Meisterschaft und Integration. Ich weiß, dass ich die einzige Quelle bin; das Leben fließt als mein Bewusstsein.
-• Nähe zu 10: Vollständige Verkörperung; müheloser Lebensfluss.
-• Um 5: Integration im Gange; Einblicke in Meisterschaft.
-• Unter 5: Frühe Anzeichen; ich experimentiere mit voller Verantwortung und Schöpfung.`,
-      fa:`من مرحله سوم را به‌عنوان تسلط و یکپارچگی تجربه می‌کنم. می‌دانم که تنها منبع هستم؛ زندگی همان آگاهی من است.
-• نزدیک ۱۰: تجسم کامل؛ جریان زندگی بدون تلاش.
-• حدود ۵: یکپارچه‌سازی در حال انجام؛ نشانه‌هایی از تسلط ظاهر می‌شود.
-• زیر ۵: نشانه‌های اولیه؛ با مالکیت و خلق کامل آزمایش می‌کنم.`
-    }
-  }
-];
-
-// ----------------- LANGUAGE CONTROL & NAVIGATION -----------------
-// (same as your existing JS code, unchanged)
-let currentLang = "en";
-const langSelectEl = document.getElementById("langSelect");
-langSelectEl.addEventListener("change", (e) => {
-  currentLang = e.target.value;
-  applyLanguage();
-});
-function applyLanguage(){
-  document.documentElement.setAttribute('dir', currentLang === "fa" ? "rtl" : "ltr");
-  document.getElementById("pageTitle").textContent = {
-    en: "Spectrum of Awareness",
-    de: "Spektrum des Bewusstseins",
-    fa: "طیف آگاهی"
-  }[currentLang];
-  document.getElementById("landingText").textContent = {
-    en: "This is a reflection of my inner consciousness called Spectrum of Awareness.",
-    de: "Dies ist eine Reflexion meines inneren Bewusstseins namens Spektrum des Bewusstseins.",
-    fa: "این بازتابی از آگاهی درونی من به نام طیف آگاهی است."
-  }[currentLang];
-  document.getElementById("startBtn").textContent = {
-    en: "Start", de: "Start", fa: "شروع"
-  }[currentLang];
-  document.getElementById("nextBtn").textContent = {
-    en: "Next", de: "Weiter", fa: "بعدی"
-  }[currentLang];
-  document.getElementById("restartBtn").textContent = {
-    en: "Restart", de: "Neu starten", fa: "دوباره"
-  }[currentLang];
-  document.getElementById("qLblLeft").textContent = {
-    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
-  }[currentLang];
-  document.getElementById("qLblMid").textContent = {
-    en: "Uncertain", de: "Ungewiss", fa: "نامطمئن"
-  }[currentLang];
-  document.getElementById("qLblRight").textContent = {
-    en: "Agree", de: "Stimme zu", fa: "موافقم"
-  }[currentLang];
-  document.getElementById("resultTitle").textContent = {
-    en: "Spectrum of Awareness",
-    de: "Spektrum des Bewusstseins",
-    fa: "طیف آگاهی"
-  }[currentLang];
-}
-
-// Navigation & state management remain identical to your original JS code
-// Start, next, restart, showQuestion, showResults, toggleStage...
-// (keep your original JS unchanged)
-
-applyLanguage();
+// initial direction
+updateDirection();
 </script>
 </body>
 </html>
