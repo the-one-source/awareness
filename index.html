@@ -149,7 +149,7 @@
     border-radius:10px;
     cursor:pointer;
     position:relative;
-    transition:background 0.2s, border 0.2s;
+    transition:background 0.2s;
   }
   .result-stage:hover{
     background:#f0f0f0;
@@ -170,6 +170,10 @@
     line-height:1.6;
     display:none;
     white-space:pre-wrap;
+  }
+  /* HIGHLIGHT FOR DOMINANT STAGE */
+  .result-stage.highlight {
+    border: 2px solid var(--accent);
   }
   :root[dir="rtl"] .panel{
     direction:rtl;
@@ -375,7 +379,7 @@ function applyLanguage(){
   }[currentLang];
   document.getElementById("landingText").textContent = {
     en: "This is a reflection of my inner consciousness called Spectrum of Awareness.",
-    de: "Dies ist eine Reflexion meines inneren Bewusstseins namens Spektrum des Bewusstseins.",
+    de: "Dies ist eine Reflexion meines inneren Bewusstseins, genannt Spektrum des Bewusstseins.",
     fa: "این بازتابی از آگاهی درونی من است که طیف آگاهی نامیده می‌شود."
   }[currentLang];
   document.getElementById("startBtn").textContent = {
@@ -385,99 +389,79 @@ function applyLanguage(){
     en:"Next",de:"Weiter",fa:"بعدی"
   }[currentLang];
   document.getElementById("restartBtn").textContent = {
-    en:"Restart",de:"Neustart",fa:"شروع دوباره"
+    en:"Restart",de:"Neu starten",fa:"شروع مجدد"
   }[currentLang];
-  document.getElementById("qLblLeft").textContent = {
-    en:"Disagree",de:"Stimme nicht zu",fa:"مخالفم"
+  const labels = {
+    en:["Disagree","Uncertain","Agree"],
+    de:["Nicht einverstanden","Unsicher","Einverstanden"],
+    fa:["مخالف","نامطمئن","موافق"]
   }[currentLang];
-  document.getElementById("qLblMid").textContent = {
-    en:"Uncertain",de:"Unsicher",fa:"نامطمئن"
-  }[currentLang];
-  document.getElementById("qLblRight").textContent = {
-    en:"Agree",de:"Zustimmen",fa:"موافقم"
-  }[currentLang];
+  document.getElementById("qLblLeft").textContent=labels[0];
+  document.getElementById("qLblMid").textContent=labels[1];
+  document.getElementById("qLblRight").textContent=labels[2];
 }
 
-// ----------------- QUIZ FLOW -----------------
-const startBtn = document.getElementById("startBtn");
-const nextBtn = document.getElementById("nextBtn");
-const restartBtn = document.getElementById("restartBtn");
-
+// ----------------- QUESTION FLOW -----------------
 let currentQ = -1;
-let scores = [0,0,0];
+const scores = [0,0,0];
 
-startBtn.addEventListener("click", () => {
+document.getElementById("startBtn").addEventListener("click", ()=>{
   document.getElementById("landingPane").classList.add("hidden");
   document.getElementById("questionPane").classList.remove("hidden");
   currentQ = 0;
   showQuestion();
 });
 
-nextBtn.addEventListener("click", () => {
-  const val = parseInt(document.getElementById("questionSlider").value);
-  const stage = QUESTIONS[currentQ].stage;
-  scores[stage-1] += val;
-  currentQ++;
-  if(currentQ<QUESTIONS.length) showQuestion();
-  else showResults();
-});
-
-restartBtn.addEventListener("click", restartQuiz);
-
-function restartQuiz(){
-  currentQ = -1;
-  scores = [0,0,0];
-  document.getElementById("questionPane").classList.add("hidden");
-  document.getElementById("resultPane").classList.add("hidden");
-  document.getElementById("landingPane").classList.remove("hidden");
-  document.querySelectorAll('.result-stage').forEach(el => el.style.border = 'none');
-}
-
-// ----------------- SHOW QUESTION -----------------
 function showQuestion(){
-  const qObj = QUESTIONS[currentQ];
-  document.getElementById("questionText").textContent = qObj[currentLang];
+  const q = QUESTIONS[currentQ];
+  document.getElementById("questionText").textContent = q[currentLang];
   document.getElementById("questionSlider").value = 5;
 }
 
-// ----------------- SHOW RESULTS -----------------
+// ----------------- NEXT BUTTON -----------------
+document.getElementById("nextBtn").addEventListener("click", ()=>{
+  const val = parseInt(document.getElementById("questionSlider").value);
+  const stageIdx = QUESTIONS[currentQ].stage - 1;
+  scores[stageIdx] += val;
+  currentQ++;
+  if(currentQ<QUESTIONS.length){
+    showQuestion();
+  } else {
+    showResults();
+  }
+});
+
+// ----------------- RESULTS -----------------
 function showResults(){
   document.getElementById("questionPane").classList.add("hidden");
   document.getElementById("resultPane").classList.remove("hidden");
+  
+  const maxVal = Math.max(...scores);
+  const maxStage = scores.indexOf(maxVal)+1;
 
-  // calculate max stage
-  const maxScore = Math.max(...scores);
-  let maxStage = scores.indexOf(maxScore)+1;
+  // ONLY stroke highlighting of the dominant stage
+  document.querySelectorAll('.result-stage').forEach(el => el.classList.remove('highlight'));
+  const stageMap = {1:'stageI', 2:'stageII', 3:'stageIII'};
+  document.getElementById(stageMap[maxStage]).classList.add('highlight');
 
-  // remove previous stroke
-  document.querySelectorAll('.result-stage').forEach(el => el.style.border = 'none');
-
-  // add stroke to dominant stage
-  const stageId = maxStage === 1 ? 'stageI' : maxStage === 2 ? 'stageII' : 'stageIII';
-  document.getElementById(stageId).style.border = '2px solid var(--accent)';
-
-  // set stage scores
   document.getElementById("scoreI").textContent = scores[0].toFixed(1);
   document.getElementById("scoreII").textContent = scores[1].toFixed(1);
   document.getElementById("scoreIII").textContent = scores[2].toFixed(1);
 
-  // show dominant message
-  const domMsgEl = document.getElementById("dominantMessage");
-  domMsgEl.textContent = STAGE_SUMMARY[maxStage][currentLang];
-  domMsgEl.classList.remove("hidden");
-
-  // stage info click
-  const stageEls = document.querySelectorAll('.result-stage');
-  stageEls.forEach((el, idx)=>{
-    el.onclick = ()=>{
-      const info = STAGE_INFO[idx].description[currentLang].join('\n\n');
-      const detailsEl = document.getElementById("stageDetails");
-      detailsEl.textContent = info;
-    };
-  });
+  const msgEl = document.getElementById("dominantMessage");
+  msgEl.textContent = STAGE_SUMMARY[maxStage][currentLang];
+  msgEl.classList.remove("hidden");
 }
 
-// ----------------- INIT -----------------
+// ----------------- RESTART -----------------
+document.getElementById("restartBtn").addEventListener("click", ()=>{
+  scores.fill(0);
+  currentQ=-1;
+  document.querySelectorAll('.result-stage').forEach(el => el.classList.remove('highlight'));
+  document.getElementById("resultPane").classList.add("hidden");
+  document.getElementById("landingPane").classList.remove("hidden");
+});
+
 applyLanguage();
 </script>
 </body>
