@@ -451,17 +451,53 @@ function showResults(){
   const detailsEl = document.getElementById("stageDetails");
   detailsEl.innerHTML = "";
 
+    // ----------------- REPLACE THIS BLOCK WITH CIRCLES -----------------
   STAGE_INFO.forEach((stage,i)=>{
     const score = stageAvg[i+1];
     const stageDiv = document.createElement("div");
-    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
-      if(j===0) return line + "\n\n";
-      if(line.startsWith("Close to 10:") && score>6) return "<strong>"+line+"</strong>";
-      if(line.startsWith("Around 5:") && score>=4 && score<=6) return "<strong>"+line+"</strong>";
-      if(line.startsWith("Close to 1:") && score<4) return "<strong>"+line+"</strong>";
-      return line;
-    }).join("\n\n")}</p>`;
     stageDiv.classList.add("stage-desc");
+
+    const descHTML = stage.description[currentLang].map((line,j)=>{
+      if(j===0) return line + "\n\n"; // Stage description line
+
+      let circleColor = "#FFCC33"; // default neutral
+      let opacity = 0.3; // default low opacity
+      let bold = false;
+
+      if(line.startsWith("Close to 10:")){
+        if(i===0) circleColor = "#FF6B6B";      // Stage I danger
+        if(i===1) circleColor = "#4CAF50";      // Stage II progress
+        if(i===2) circleColor = "#4CAF50";      // Stage III peak
+        if(score>6) { bold=true; opacity=1; }   // formula preserved
+      } else if(line.startsWith("Around 5:")){
+        circleColor = "#FFCC33";                 // neutral all stages
+        if(score>=4 && score<=6){ bold=true; opacity=1; }
+      } else if(line.startsWith("Close to 1:")){
+        if(i===0) circleColor = "#4CAF50";      // Stage I better
+        if(i===1) circleColor = "#FF6B6B";      // Stage II low
+        if(i===2) circleColor = "#FF6B6B";      // Stage III needs integration
+        if(score<4) { bold=true; opacity=1; }
+      }
+
+      // Circle HTML with tooltip
+      const circleHTML = `<span style="
+        display:inline-block;
+        width:14px;
+        height:14px;
+        border-radius:50%;
+        background:${circleColor};
+        opacity:${opacity};
+        box-shadow:0 2px 6px rgba(0,0,0,0.1);
+        transition: transform 0.2s, opacity 0.3s;
+        margin-right:6px;
+        vertical-align:middle;"
+        title="${line.split(':')[0]}"></span>`;
+
+      const text = line.replace(/^(Close to 10:|Around 5:|Close to 1:)/,'').trim();
+      return (bold ? "<strong>"+circleHTML+text+"</strong>" : circleHTML+text);
+    }).join("\n\n");
+
+    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${descHTML}</p>`;
     detailsEl.appendChild(stageDiv);
   });
 }
