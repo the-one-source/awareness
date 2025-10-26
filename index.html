@@ -168,7 +168,7 @@
     text-align:left;
     font-size:14px;
     line-height:1.6;
-    display:none; /* hidden by default */
+    display:none;
     white-space:pre-wrap;
   }
   :root[dir="rtl"] .panel{
@@ -362,7 +362,10 @@ const langSelectEl = document.getElementById("langSelect");
 langSelectEl.addEventListener("change", (e) => {
   currentLang = e.target.value;
   applyLanguage();
+  if(currentQ<QUESTIONS.length && currentQ>=0) showQuestion();
+  if(document.getElementById("resultPane").classList.contains("hidden")===false) showResults();
 });
+
 function applyLanguage(){
   document.documentElement.setAttribute('dir', currentLang === "fa" ? "rtl" : "ltr");
   document.getElementById("pageTitle").textContent = {
@@ -382,53 +385,51 @@ function applyLanguage(){
     en: "Next", de: "Weiter", fa: "بعدی"
   }[currentLang];
   document.getElementById("restartBtn").textContent = {
-    en: "Restart", de: "Neu starten", fa: "شروع مجدد"
+    en: "Restart", de: "Neu starten", fa: "شروع دوباره"
+  }[currentLang];
+  document.getElementById("qLblLeft").textContent = {
+    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
+  }[currentLang];
+  document.getElementById("qLblMid").textContent = {
+    en: "Uncertain", de: "Unsicher", fa: "مطمئن نیستم"
+  }[currentLang];
+  document.getElementById("qLblRight").textContent = {
+    en: "Agree", de: "Zustimmen", fa: "موافقم"
   }[currentLang];
 }
-
-// ----------------- QUIZ LOGIC -----------------
-let qIndex = 0;
+  
+// ----------------- SLIDER & QUESTIONS -----------------
+let currentQ = 0;
 let answers = [];
 const questionTextEl = document.getElementById("questionText");
-const questionSliderEl = document.getElementById("questionSlider");
+const sliderEl = document.getElementById("questionSlider");
+const nextBtnEl = document.getElementById("nextBtn");
 
-document.getElementById("startBtn").addEventListener("click", ()=>{
-  document.getElementById("landingPane").classList.add("hidden");
-  document.getElementById("questionPane").classList.remove("hidden");
-  qIndex = 0; answers=[];
-  showQuestion();
-});
-
-document.getElementById("nextBtn").addEventListener("click", ()=>{
-  answers.push(+questionSliderEl.value);
-  qIndex++;
-  if(qIndex<QUESTIONS.length){
-    showQuestion();
-  } else {
+function showQuestion(){
+  const q = QUESTIONS[currentQ];
+  questionTextEl.textContent = q[currentLang];
+  sliderEl.value = 5;
+}
+nextBtnEl.addEventListener("click", ()=>{
+  answers.push(parseFloat(sliderEl.value));
+  currentQ++;
+  if(currentQ >= QUESTIONS.length){
     showResults();
+  } else{
+    showQuestion();
   }
 });
 
-document.getElementById("restartBtn").addEventListener("click", ()=>{
-  document.getElementById("resultPane").classList.add("hidden");
-  document.getElementById("landingPane").classList.remove("hidden");
-});
-
-function showQuestion(){
-  const q = QUESTIONS[qIndex];
-  questionTextEl.textContent = q[currentLang];
-  questionSliderEl.value = 5;
-}
-
-function average(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
-
-// ----------------- RESULTS -----------------
+// ----------------- RESULTS CALCULATION -----------------
 function showResults(){
   document.getElementById("questionPane").classList.add("hidden");
   document.getElementById("resultPane").classList.remove("hidden");
 
   const stageScores = {1:[],2:[],3:[]};
-  QUESTIONS.forEach((q,i)=> stageScores[q.stage].push(answers[i]));
+  QUESTIONS.forEach((q,i)=>{
+    stageScores[q.stage].push(answers[i]);
+  });
+
   const stageAvg = {
     1: average(stageScores[1]),
     2: average(stageScores[2]),
@@ -452,27 +453,46 @@ function showResults(){
 
   STAGE_INFO.forEach((stage,i)=>{
     const score = stageAvg[i+1];
-    const descDiv = document.createElement("div");
-    descDiv.classList.add("stage-desc");
-    descDiv.innerHTML = stage.description[currentLang].map((line,j)=>{
+    const stageDiv = document.createElement("div");
+    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
       if(j===0) return line + "\n\n";
       if(line.startsWith("Close to 10:") && score>6) return "<strong>"+line+"</strong>";
       if(line.startsWith("Around 5:") && score>=4 && score<=6) return "<strong>"+line+"</strong>";
       if(line.startsWith("Close to 1:") && score<4) return "<strong>"+line+"</strong>";
       return line;
-    }).join("\n\n");
-    detailsEl.appendChild(descDiv);
-
-    const stageBox = document.getElementById(["stageI","stageII","stageIII"][i]);
-    stageBox.addEventListener("click", ()=>{
-      const currentlyVisible = descDiv.style.display === "block";
-      document.querySelectorAll(".stage-desc").forEach(d=>d.style.display="none");
-      descDiv.style.display = currentlyVisible ? "none" : "block";
-      if(!currentlyVisible) descDiv.scrollIntoView({behavior:"smooth", block:"start"});
-    });
+    }).join("\n\n")}</p>`;
+    stageDiv.classList.add("stage-desc");
+    detailsEl.appendChild(stageDiv);
   });
 }
 
+// ----------------- STAGE CLICK TOGGLE -----------------
+document.querySelectorAll('.result-stage').forEach((el, idx)=>{
+  el.addEventListener('click', ()=>{
+    const descs = document.querySelectorAll('.stage-desc');
+    descs[idx].style.display = descs[idx].style.display==='none'?'block':'none';
+  });
+});
+
+function average(arr){
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
+}
+
+// ----------------- START / RESTART -----------------
+document.getElementById("startBtn").addEventListener("click", ()=>{
+  document.getElementById("landingPane").classList.add("hidden");
+  document.getElementById("questionPane").classList.remove("hidden");
+  showQuestion();
+});
+document.getElementById("restartBtn").addEventListener("click", ()=>{
+  currentQ = 0;
+  answers = [];
+  document.getElementById("resultPane").classList.add("hidden");
+  document.getElementById("questionPane").classList.remove("hidden");
+  showQuestion();
+});
+
+// ----------------- INITIAL LANGUAGE -----------------
 applyLanguage();
 </script>
 </body>
