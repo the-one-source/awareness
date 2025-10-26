@@ -169,8 +169,8 @@
     font-size:14px;
     line-height:1.6;
     display:none;
-    white-space:pre-wrap;
   }
+  .stage-desc div.bold{font-weight:700;}
   :root[dir="rtl"] .panel{
     direction:rtl;
   }
@@ -210,55 +210,51 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="panel" id="panel">
-
-    <!-- Landing Page -->
-    <div id="landingPane">
-      <h1 id="pageTitle">Spectrum of Awareness</h1>
-      <div class="row" id="langRow">
-        <select id="langSelect">
-          <option value="en">English</option>
-          <option value="de">Deutsch</option>
-          <option value="fa">فارسی</option>
-        </select>
-      </div>
-      <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness.</p>
-      <button id="startBtn" class="btn">Start</button>
-    </div>
-
-    <!-- Questionnaire Page -->
-    <div id="questionPane" class="hidden">
-      <div id="questionText"></div>
-      <div class="fixed-slider-wrap">
-        <div class="fixed-track">
-          <input id="questionSlider" type="range" min="0" max="10" value="5" />
+  <div class="wrap">
+    <div class="panel" id="panel">
+      <div id="landingPane">
+        <h1 id="pageTitle">Spectrum of Awareness</h1>
+        <div class="row" id="langRow">
+          <select id="langSelect">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fa">فارسی</option>
+          </select>
         </div>
-        <div class="slider-labels">
-          <span id="qLblLeft">Disagree</span>
-          <span id="qLblMid">Uncertain</span>
-          <span id="qLblRight">Agree</span>
+        <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness.</p>
+        <button id="startBtn" class="btn">Start</button>
+      </div>
+
+      <div id="questionPane" class="hidden">
+        <div id="questionText"></div>
+        <div class="fixed-slider-wrap">
+          <div class="fixed-track">
+            <input id="questionSlider" type="range" min="0" max="10" value="5" />
+          </div>
+          <div class="slider-labels">
+            <span id="qLblLeft">Disagree</span>
+            <span id="qLblMid">Uncertain</span>
+            <span id="qLblRight">Agree</span>
+          </div>
         </div>
+        <button id="nextBtn" class="btn">Next</button>
       </div>
-      <button id="nextBtn" class="btn">Next</button>
-    </div>
 
-    <!-- Result Page -->
-    <div id="resultPane" class="hidden">
-      <h1 id="resultTitle">Spectrum of Awareness</h1>
-      <div class="result-grid">
-        <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
-        <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
-        <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
+      <div id="resultPane" class="hidden">
+        <h1 id="resultTitle">Spectrum of Awareness</h1>
+        <div class="result-grid">
+          <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
+          <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
+          <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
+        </div>
+        <div id="dominantMessage" class="hidden"></div>
+        <div id="stageDetails"></div>
+        <button id="restartBtn" class="btn">Restart</button>
+        <footer class="note" id="footerNote"></footer>
       </div>
-      <div id="dominantMessage" class="hidden"></div>
-      <div id="stageDetails"></div>
-      <button id="restartBtn" class="btn">Restart</button>
-      <footer class="note" id="footerNote"></footer>
-    </div>
 
+    </div>
   </div>
-</div>
 
 <script>
 // ----------------- QUESTIONS -----------------
@@ -276,82 +272,124 @@ const QUESTIONS = [
   {stage:3,en:"I am the only source; God is a concept within me.",de:"Ich bin die einzige Quelle; Gott ist ein Konzept in mir.",fa:"من تنها منبع هستم؛ خدا مفهومی درون من است."},
 ];
 
-// ----------------- STAGE SUMMARY -----------------
+// STAGE_SUMMARY for dominant message
 const STAGE_SUMMARY = {
-  1:{en:"I am in Stage I — Victimhood: life feels like it happens to me.",de:"Ich bin in Stufe I — Opferrolle: das Leben scheint mir zu widerfahren.",fa:"من در مرحله اول هستم — قربانی: زندگی را به‌عنوان چیزی که برایم اتفاق می‌افتد تجربه می‌کنم."},
-  2:{en:"I am in Stage II — Awakening: life happens through me.",de:"Ich bin in Stufe II — Erwachen: das Leben geschieht durch mich.",fa:"من در مرحله دوم هستم — بیداری: زندگی از طریق من جریان دارد."},
-  3:{en:"I am in Stage III — Mastery: life happens as me.",de:"Ich bin in Stufe III — Meisterschaft: das Leben geschieht als ich.",fa:"من در مرحله سوم هستم — تسلط: زندگی همان من است."}
+  1:{en:"I am in Stage I — Victimhood: life feels like it happens to me.",
+     de:"Ich bin in Stufe I — Opferrolle: das Leben scheint mir zu widerfahren.",
+     fa:"من در مرحله اول هستم — قربانی: زندگی را به‌عنوان چیزی که برایم اتفاق می‌افتد تجربه می‌کنم."},
+  2:{en:"I am in Stage II — Awakening: life happens through me.",
+     de:"Ich bin in Stufe II — Erwachen: das Leben geschieht durch mich.",
+     fa:"من در مرحله دوم هستم — بیداری: زندگی از طریق من جریان دارد."},
+  3:{en:"I am in Stage III — Mastery: life happens as me.",
+     de:"Ich bin in Stufe III — Meisterschaft: das Leben geschieht als ich.",
+     fa:"من در مرحله سوم هستم — تسلط: زندگی همان من است."}
 };
 
-// ----------------- STAGE INFO -----------------
+// STAGE_INFO for full explanations
 const STAGE_INFO = [
   {
     title:{en:"Victimhood",de:"Opferrolle",fa:"قربانی"},
     description:{
-      en:[
-        "Stage I is the realm of victimhood, where I feel distant from my origin and lost in forgetfulness. Life is experienced as happening to me rather than through me.",
-        "Close to 10:\nI am deeply immersed in victimhood; heavy attachment, resistance, and identification with external stories. Overall state dominated by Stage I.",
-        "Around 5:\nPartial awareness emerges; glimpses of truth appear, potential to move toward Stage II.",
-        "Close to 1:\nEarly awakening; I begin noticing patterns and reflections. Shadow work and self-inquiry required."
-      ],
-      de:[
-        "Stufe I ist das Reich der Opferrolle, in dem ich mich von meiner Quelle entfernt und in Vergessenheit verloren fühle. Das Leben wird erlebt, als geschähe es mir, nicht durch mich.",
-        "Close to 10:\nIch bin tief in der Opferhaltung; starke Bindung, Widerstand und Identifikation mit äußeren Geschichten. Gesamtzustand von Stufe I dominiert.",
-        "Around 5:\nTeilweise aufkommendes Bewusstsein; Einblicke erscheinen, Potenzial für Stufe II.",
-        "Close to 1:\nFrühes Erwachen; ich bemerke Muster und Spiegelungen. Schattenarbeit und Selbstreflexion erforderlich."
-      ],
-      fa:[
-        "مرحله اول حوزه قربانی بودن است که در آن من احساس دوری از منبع خود دارم و در فراموشی گم شده‌ام. زندگی به‌عنوان چیزی که بر من رخ می‌دهد تجربه می‌شود، نه از طریق من.",
-        "Close to 10:\nغرق شدن در قربانی بودن؛ وابستگی شدید، مقاومت و هویت با داستان‌های بیرونی. وضعیت کلی تحت سلطه مرحله اول.",
-        "Around 5:\nآگاهی جزئی ظاهر می‌شود؛ درک‌هایی از حقیقت نمایان می‌شود، پتانسیل حرکت به سمت مرحله دوم.",
-        "Close to 1:\nبیداری اولیه؛ من الگوها و بازتاب‌ها را متوجه می‌شوم. نیاز به کار سایه و خودکاوی."
-      ]
+      en:`Stage I is the realm of victimhood, where I feel distant from my origin and lost in forgetfulness. Life is experienced as happening to me rather than through me.
+
+• Score close to 10:
+I am deeply immersed in victimhood; heavy attachment, resistance, and identification with external stories. Overall state dominated by Stage I.
+
+• Score around 5:
+Partial awareness emerges; glimpses of truth appear, potential to move toward Stage II.
+
+• Score below 5:
+Early awakening; I begin noticing patterns and reflections. Shadow work and self-inquiry required.`,
+      de:`Stufe I ist das Reich der Opferrolle, in dem ich mich von meiner Quelle entfernt und in Vergessenheit verloren fühle. Das Leben wird erlebt, als geschähe es mir, nicht durch mich.
+
+• Nähe zu 10:
+Ich bin tief in der Opferhaltung; starke Bindung, Widerstand und Identifikation mit äußeren Geschichten. Gesamtzustand von Stufe I dominiert.
+
+• Um 5:
+Teilweise aufkommendes Bewusstsein; Einblicke erscheinen, Potenzial für Stufe II.
+
+• Unter 5:
+Frühes Erwachen; ich bemerke Muster und Spiegelungen. Schattenarbeit und Selbstreflexion erforderlich.`,
+      fa:`مرحله اول حوزه قربانی بودن است که در آن من احساس دوری از منبع خود دارم و در فراموشی گم شده‌ام. زندگی به‌عنوان چیزی که بر من رخ می‌دهد تجربه می‌شود، نه از طریق من.
+
+• نزدیک ۱۰:
+غرق شدن در قربانی بودن؛ وابستگی شدید، مقاومت و هویت با داستان‌های بیرونی.
+
+• حدود ۵:
+آگاهی جزئی ظاهر می‌شود؛ درک‌هایی از حقیقت نمایان می‌شود، پتانسیل حرکت به سمت مرحله دوم.
+
+• زیر ۵:
+بیداری اولیه؛ من الگوها و بازتاب‌ها را متوجه می‌شوم. نیاز به کار سایه و خودکاوی.`
     }
   },
   {
     title:{en:"Awakening",de:"Erwachen",fa:"بیداری"},
     description:{
-      en:[
-        "Stage II is the awakening stage. I begin noticing patterns, understanding my role as co-creator, and feeling connected to a greater flow. Awareness increases and judgment diminishes.",
-        "Close to 10:\nHigh awareness, conscious decision-making; beginning integration of shadow and light.",
-        "Around 5:\nGrowing insight; I am partially aware of patterns and influences.",
-        "Close to 1:\nEarly awareness; I notice repetition, questioning begins."
-      ],
-      de:[
-        "Stufe II ist die Erwachensstufe. Ich beginne Muster zu erkennen, meine Rolle als Mit-Schöpfer zu verstehen und mich mit einem größeren Fluss verbunden zu fühlen. Bewusstsein steigt, Urteilskraft nimmt ab.",
-        "Close to 10:\nHohes Bewusstsein, bewusstes Entscheiden; Beginn der Integration von Schatten und Licht.",
-        "Around 5:\nWachsende Einsicht; ich bin teilweise mir der Muster bewusst.",
-        "Close to 1:\nFrühes Bewusstsein; ich bemerke Wiederholungen, Fragen beginnen."
-      ],
-      fa:[
-        "مرحله دوم مرحله بیداری است. من شروع به مشاهده الگوها، درک نقش خود به‌عنوان هم‌آفریننده و احساس ارتباط با جریان بزرگتر می‌کنم. آگاهی افزایش می‌یابد و قضاوت کاهش می‌یابد.",
-        "Close to 10:\nآگاهی بالا، تصمیم‌گیری آگاهانه؛ شروع یکپارچه‌سازی سایه و نور.",
-        "Around 5:\nبینش در حال رشد؛ من تا حدی از الگوها و تأثیرات آگاه هستم.",
-        "Close to 1:\nآگاهی اولیه؛ من تکرارها را می‌بینم، پرسش‌ها آغاز می‌شوند."
-      ]
+      en:`Stage II is the awakening stage. I begin noticing patterns, understanding my role as co-creator, and feeling connected to a greater flow. Awareness increases and judgment diminishes.
+
+• Close to 10:
+High awareness, conscious decision-making; beginning integration of shadow and light.
+
+• Around 5:
+Growing insight; I am partially aware of patterns and influences.
+
+• Close to 1:
+Early awareness; I notice repetition, questioning begins.`,
+      de:`Stufe II ist die Erwachensstufe. Ich beginne Muster zu erkennen, meine Rolle als Mit-Schöpfer zu verstehen und mich mit einem größeren Fluss verbunden zu fühlen. Bewusstsein steigt, Urteilskraft nimmt ab.
+
+• Nähe zu 10:
+Hohes Bewusstsein, bewusstes Entscheiden; Beginn der Integration von Schatten und Licht.
+
+• Um 5:
+Wachsende Einsicht; ich bin teilweise mir der Muster bewusst.
+
+• Nähe zu 1:
+Frühes Bewusstsein; ich bemerke Wiederholungen, Fragen beginnen.`,
+      fa:`مرحله دوم مرحله بیداری است. من شروع به مشاهده الگوها، درک نقش خود به‌عنوان هم‌آفریننده و احساس ارتباط با جریان بزرگتر می‌کنم. آگاهی افزایش می‌یابد و قضاوت کاهش می‌یابد.
+
+• نزدیک ۱۰:
+آگاهی بالا، تصمیم‌گیری آگاهانه؛ شروع یکپارچه‌سازی سایه و نور.
+
+• حدود ۵:
+بینش در حال رشد؛ من تا حدی از الگوها و تأثیرات آگاه هستم.
+
+• نزدیک ۱:
+آگاهی اولیه؛ من تکرارها را می‌بینم، پرسش‌ها آغاز می‌شوند.`
     }
   },
   {
     title:{en:"Mastery",de:"Meisterschaft",fa:"تسلط"},
     description:{
-      en:[
-        "Stage III is the stage of mastery and full integration. I know I am the only source; all experiences are reflections of my inner consciousness. There is no separation, only pure creation.",
-        "Close to 10:\nComplete embodiment of mastery; life flows effortlessly through me.",
-        "Around 5:\nIntegration in progress; glimpses of mastery and unity appear.",
-        "Close to 1:\nEarly mastery signs; I experiment with full ownership and creation."
-      ],
-      de:[
-        "Stufe III ist die Stufe der Meisterschaft und vollständigen Integration. Ich erkenne, dass ich die einzige Quelle bin; alle Erfahrungen sind Spiegelungen meines inneren Bewusstseins. Keine Trennung, nur reine Schöpfung.",
-        "Close to 10:\nVollständige Verkörperung der Meisterschaft; das Leben fließt mühelos durch mich.",
-        "Around 5:\nIntegration im Gange; Einblicke in Meisterschaft und Einheit erscheinen.",
-        "Close to 1:\nFrühe Meisterschaftsanzeichen; ich experimentiere mit voller Verantwortung und Schöpfung."
-      ],
-      fa:[
-        "مرحله سوم مرحله تسلط و یکپارچگی کامل است. من می‌دانم که تنها منبع هستم؛ همه تجربه‌ها بازتاب آگاهی درونی من هستند. هیچ جدایی وجود ندارد، فقط خلق خالص.",
-        "Close to 10:\nتجسم کامل تسلط؛ زندگی به‌راحتی از طریق من جریان می‌یابد.",
-        "Around 5:\nیکپارچه‌سازی در حال انجام؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.",
-        "Close to 1:\nنشانه‌های اولیه تسلط؛ من با مالکیت کامل و خلق آزمایش می‌کنم."
-      ]
+      en:`Stage III is the stage of mastery and full integration. I know I am the only source; all experiences are reflections of my inner consciousness. There is no separation, only pure creation.
+
+• Close to 10:
+Complete embodiment of mastery; life flows effortlessly through me.
+
+• Around 5:
+Integration in progress; glimpses of mastery and unity appear.
+
+• Close to 1:
+Early mastery signs; I experiment with full ownership and creation.`,
+      de:`Stufe III ist die Stufe der Meisterschaft und vollständigen Integration. Ich erkenne, dass ich die einzige Quelle bin; alle Erfahrungen sind Spiegelungen meines inneren Bewusstseins. Keine Trennung, nur reine Schöpfung.
+
+• Nähe zu 10:
+Vollständige Verkörperung der Meisterschaft; das Leben fließt mühelos durch mich.
+
+• Um 5:
+Integration im Gange; Einblicke in Meisterschaft und Einheit erscheinen.
+
+• Nähe zu 1:
+Frühe Meisterschaftsanzeichen; ich experimentiere mit voller Verantwortung und Schöpfung.`,
+      fa:`مرحله سوم مرحله تسلط و یکپارچگی کامل است. من می‌دانم که تنها منبع هستم؛ همه تجربه‌ها بازتاب آگاهی درونی من هستند. هیچ جدایی وجود ندارد، فقط خلق خالص.
+
+• نزدیک ۱۰:
+تجسم کامل تسلط؛ زندگی به‌راحتی از طریق من جریان می‌یابد.
+
+• حدود ۵:
+یکپارچه‌سازی در حال انجام؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.
+
+• نزدیک ۱:
+نشانه‌های اولیه تسلط؛ من با مالکیت کامل و خلق آزمایش می‌کنم.`
     }
   }
 ];
@@ -378,111 +416,4 @@ function applyLanguage(){
   document.getElementById("startBtn").textContent = {
     en: "Start", de: "Start", fa: "شروع"
   }[currentLang];
-  document.getElementById("nextBtn").textContent = {
-    en: "Next", de: "Weiter", fa: "بعدی"
-  }[currentLang];
-  document.getElementById("restartBtn").textContent = {
-    en: "Restart", de: "Neu starten", fa: "شروع دوباره"
-  }[currentLang];
-  document.getElementById("qLblLeft").textContent = {
-    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
-  }[currentLang];
-  document.getElementById("qLblMid").textContent = {
-    en: "Uncertain", de: "Unsicher", fa: "مطمئن نیستم"
-  }[currentLang];
-  document.getElementById("qLblRight").textContent = {
-    en: "Agree", de: "Zustimmen", fa: "موافقم"
-  }[currentLang];
-}
-
-// ----------------- SLIDER & QUESTIONS -----------------
-let currentQ = 0;
-let answers = [];
-const questionTextEl = document.getElementById("questionText");
-const sliderEl = document.getElementById("questionSlider");
-const nextBtnEl = document.getElementById("nextBtn");
-
-function showQuestion(){
-  const q = QUESTIONS[currentQ];
-  questionTextEl.textContent = q[currentLang];
-  sliderEl.value = 5;
-}
-nextBtnEl.addEventListener("click", ()=>{
-  answers.push(parseFloat(sliderEl.value));
-  currentQ++;
-  if(currentQ >= QUESTIONS.length){
-    showResults();
-  } else{
-    showQuestion();
-  }
-});
-
-// ----------------- RESULTS CALCULATION -----------------
-function showResults(){
-  document.getElementById("questionPane").classList.add("hidden");
-  document.getElementById("resultPane").classList.remove("hidden");
-
-  const stageScores = {1:[],2:[],3:[]};
-  QUESTIONS.forEach((q,i)=>{
-    stageScores[q.stage].push(answers[i]);
-  });
-
-  const stageAvg = {
-    1: average(stageScores[1]),
-    2: average(stageScores[2]),
-    3: average(stageScores[3])
-  };
-
-  document.getElementById("scoreI").textContent = stageAvg[1].toFixed(1);
-  document.getElementById("scoreII").textContent = stageAvg[2].toFixed(1);
-  document.getElementById("scoreIII").textContent = stageAvg[3].toFixed(1);
-
-  let maxStage = 1;
-  if(stageAvg[2]>=stageAvg[maxStage]) maxStage=2;
-  if(stageAvg[3]>=stageAvg[maxStage]) maxStage=3;
-
-  const dominantMessageEl = document.getElementById("dominantMessage");
-  dominantMessageEl.classList.remove("hidden");
-  dominantMessageEl.innerHTML = STAGE_SUMMARY[maxStage][currentLang];
-
-  // show stage info
-  const detailsEl = document.getElementById("stageDetails");
-  detailsEl.innerHTML = "";
-
-  STAGE_INFO.forEach((stage,i)=>{
-    const stageDiv = document.createElement("div");
-    stageDiv.innerHTML = `<h3 style="font-weight:bold">${stage.title[currentLang]}</h3><p>${stage.description[currentLang].map((line,j)=>{
-      if(j===0) return line + "\n\n";
-      const score = stageAvg[i+1];
-      if(line.startsWith("Close to 10:") && score>6) return "<strong>"+line+"</strong>";
-      if(line.startsWith("Around 5:") && score>=4 && score<=6) return "<strong>"+line+"</strong>";
-      if(line.startsWith("Close to 1:") && score<4) return "<strong>"+line+"</strong>";
-      return line;
-    }).join("\n\n")}</p>`;
-    detailsEl.appendChild(stageDiv);
-  });
-}
-
-function average(arr){
-  return arr.reduce((a,b)=>a+b,0)/arr.length;
-}
-
-// ----------------- START / RESTART -----------------
-document.getElementById("startBtn").addEventListener("click", ()=>{
-  document.getElementById("landingPane").classList.add("hidden");
-  document.getElementById("questionPane").classList.remove("hidden");
-  showQuestion();
-});
-document.getElementById("restartBtn").addEventListener("click", ()=>{
-  currentQ = 0;
-  answers = [];
-  document.getElementById("resultPane").classList.add("hidden");
-  document.getElementById("questionPane").classList.remove("hidden");
-  showQuestion();
-});
-
-// ----------------- INITIAL LANGUAGE -----------------
-applyLanguage();
-</script>
-</body>
-</html>
+  document.getElementById("nextBtn").text
