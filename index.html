@@ -167,10 +167,10 @@
     border-radius:10px;
     text-align:left;
     font-size:14px;
-    line-height:1.6;
+    line-height:1.45;
     display:none;
+    position:relative;
   }
-  .stage-desc div.bold{font-weight:700;}
   :root[dir="rtl"] .panel{
     direction:rtl;
   }
@@ -212,6 +212,8 @@
 <body>
   <div class="wrap">
     <div class="panel" id="panel">
+
+      <!-- Landing Page -->
       <div id="landingPane">
         <h1 id="pageTitle">Spectrum of Awareness</h1>
         <div class="row" id="langRow">
@@ -225,6 +227,7 @@
         <button id="startBtn" class="btn">Start</button>
       </div>
 
+      <!-- Questionnaire Page -->
       <div id="questionPane" class="hidden">
         <div id="questionText"></div>
         <div class="fixed-slider-wrap">
@@ -240,6 +243,7 @@
         <button id="nextBtn" class="btn">Next</button>
       </div>
 
+      <!-- Result Page -->
       <div id="resultPane" class="hidden">
         <h1 id="resultTitle">Spectrum of Awareness</h1>
         <div class="result-grid">
@@ -262,32 +266,18 @@ const QUESTIONS = [
   {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
   {stage:2,en:"Life happens through me.",de:"Das Leben passiert durch mich.",fa:"زندگی از طریق من اتفاق می‌افتد."},
   {stage:3,en:"Life happens as me.",de:"Das Leben passiert als ich.",fa:"زندگی همان من است که رخ می‌دهد."},
-
   {stage:1,en:"I feel life is unfair or against me.",de:"Ich fühle, das Leben ist unfair oder gegen mich.",fa:"من احساس می‌کنم زندگی ناعادلانه است یا علیه من است."},
   {stage:2,en:"I notice patterns repeating and wonder why.",de:"Ich bemerke sich wiederholende Muster und frage mich warum.",fa:"من الگوهای تکراری را مشاهده می‌کنم و می‌پرسم چرا."},
   {stage:3,en:"I see all as one flow of consciousness.",de:"Ich sehe alles als einen Fluss des Bewusstseins.",fa:"من همه چیز را به‌عنوان یک جریان واحد آگاهی می‌بینم."},
-
   {stage:1,en:"I am the victim of life.",de:"Ich bin das Opfer des Lebens.",fa:"من قربانی زندگی هستم."},
   {stage:2,en:"I am connected to a source (higher self, God).",de:"Ich bin mit einer Quelle (höheres Selbst, Gott) verbunden.",fa:"من به یک منبع (خود برتر، خدا) متصل هستم."},
   {stage:3,en:"I am the only source; God is a concept within me.",de:"Ich bin die einzige Quelle; Gott ist ein Konzept in mir.",fa:"من تنها منبع هستم؛ خدا مفهومی درون من است."},
 ];
 
-// STAGE_SUMMARY for dominant message
-const STAGE_SUMMARY = {
-  1:{en:"I am in Stage I — Victimhood: life feels like it happens to me.",
-     de:"Ich bin in Stufe I — Opferrolle: das Leben scheint mir zu widerfahren.",
-     fa:"من در مرحله اول هستم — قربانی: زندگی را به‌عنوان چیزی که برایم اتفاق می‌افتد تجربه می‌کنم."},
-  2:{en:"I am in Stage II — Awakening: life happens through me.",
-     de:"Ich bin in Stufe II — Erwachen: das Leben geschieht durch mich.",
-     fa:"من در مرحله دوم هستم — بیداری: زندگی از طریق من جریان دارد."},
-  3:{en:"I am in Stage III — Mastery: life happens as me.",
-     de:"Ich bin in Stufe III — Meisterschaft: das Leben geschieht als ich.",
-     fa:"من در مرحله سوم هستم — تسلط: زندگی همان من است."}
-};
-
-// STAGE_INFO for full explanations
+// ----------------- STAGE INFO -----------------
 const STAGE_INFO = [
   {
+    stage:1,
     title:{en:"Victimhood",de:"Opferrolle",fa:"قربانی"},
     description:{
       en:`Stage I is the realm of victimhood, where I feel distant from my origin and lost in forgetfulness. Life is experienced as happening to me rather than through me.
@@ -323,9 +313,10 @@ Frühes Erwachen; ich bemerke Muster und Spiegelungen. Schattenarbeit und Selbst
     }
   },
   {
+    stage:2,
     title:{en:"Awakening",de:"Erwachen",fa:"بیداری"},
     description:{
-      en:`Stage II is the awakening stage. I begin noticing patterns, understanding my role as co-creator, and feeling connected to a greater flow. Awareness increases and judgment diminishes.
+      en:`Stage II is the awakening stage. I begin noticing patterns, understanding my role as co-creator, and feeling connected to a greater flow. Awareness increases and judgment diminish.
 
 • Close to 10:
 High awareness, conscious decision-making; beginning integration of shadow and light.
@@ -358,6 +349,7 @@ Frühes Bewusstsein; ich bemerke Wiederholungen, Fragen beginnen.`,
     }
   },
   {
+    stage:3,
     title:{en:"Mastery",de:"Meisterschaft",fa:"تسلط"},
     description:{
       en:`Stage III is the stage of mastery and full integration. I know I am the only source; all experiences are reflections of my inner consciousness. There is no separation, only pure creation.
@@ -416,4 +408,138 @@ function applyLanguage(){
   document.getElementById("startBtn").textContent = {
     en: "Start", de: "Start", fa: "شروع"
   }[currentLang];
-  document.getElementById("nextBtn").text
+  document.getElementById("nextBtn").textContent = {
+    en: "Next", de: "Weiter", fa: "بعدی"
+  }[currentLang];
+  document.getElementById("restartBtn").textContent = {
+    en: "Restart", de: "Neu starten", fa: "دوباره"
+  }[currentLang];
+  document.getElementById("qLblLeft").textContent = {
+    en: "Disagree", de: "Stimme nicht zu", fa: "مخالفم"
+  }[currentLang];
+  document.getElementById("qLblMid").textContent = {
+    en: "Uncertain", de: "Ungewiss", fa: "نامطمئن"
+  }[currentLang];
+  document.getElementById("qLblRight").textContent = {
+    en: "Agree", de: "Stimme zu", fa: "موافقم"
+  }[currentLang];
+  document.getElementById("footerNote").textContent = {
+    en:"Your results are personal reflections, not medical advice.",
+    de:"Ihre Ergebnisse sind persönliche Reflexionen, keine medizinische Beratung.",
+    fa:"نتایج شما بازتاب‌های شخصی هستند، نه مشاوره پزشکی."
+  }[currentLang];
+}
+
+// ----------------- QUESTION FLOW -----------------
+let currentQ=0;
+let scores=[];
+
+const questionPane = document.getElementById("questionPane");
+const landingPane = document.getElementById("landingPane");
+const resultPane = document.getElementById("resultPane");
+const questionText = document.getElementById("questionText");
+const slider = document.getElementById("questionSlider");
+
+document.getElementById("startBtn").addEventListener("click",()=>{
+  landingPane.classList.add("hidden");
+  questionPane.classList.remove("hidden");
+  showQuestion();
+});
+
+document.getElementById("nextBtn").addEventListener("click",()=>{
+  scores.push({stage:QUESTIONS[currentQ].stage,value:parseFloat(slider.value)});
+  currentQ++;
+  if(currentQ<QUESTIONS.length){
+    showQuestion();
+  } else {
+    questionPane.classList.add("hidden");
+    showResults();
+    resultPane.classList.remove("hidden");
+  }
+});
+
+document.getElementById("restartBtn").addEventListener("click",()=>{
+  scores=[];
+  currentQ=0;
+  resultPane.classList.add("hidden");
+  landingPane.classList.remove("hidden");
+});
+
+function showQuestion(){
+  questionText.textContent = QUESTIONS[currentQ][currentLang];
+  slider.value = 5;
+}
+
+// ----------------- RESULTS & BOLD LOGIC -----------------
+function showResults(){
+  // Average per stage
+  let stageSums = {1:0,2:0,3:0};
+  let stageCounts = {1:0,2:0,3:0};
+  scores.forEach(q=>{
+    stageSums[q.stage]+=q.value;
+    stageCounts[q.stage]++;
+  });
+  let stageAvgs = {
+    1: stageSums[1]/stageCounts[1],
+    2: stageSums[2]/stageCounts[2],
+    3: stageSums[3]/stageCounts[3]
+  };
+  document.getElementById("scoreI").textContent = stageAvgs[1].toFixed(1);
+  document.getElementById("scoreII").textContent = stageAvgs[2].toFixed(1);
+  document.getElementById("scoreIII").textContent = stageAvgs[3].toFixed(1);
+
+  // Determine dominant stage
+  let maxStage = 1;
+  if(stageAvgs[2]>=stageAvgs[1] && stageAvgs[2]>=stageAvgs[3]) maxStage=2;
+  if(stageAvgs[3]>=stageAvgs[1] && stageAvgs[3]>=stageAvgs[2]) maxStage=3;
+
+  // Show stage description with bold logic
+  let descHTML = STAGE_INFO.find(s=>s.stage===maxStage).description[currentLang];
+
+  // Apply dynamic bolding for the scores
+  if(maxStage===1){
+    if(stageAvgs[1]>=4.5 && stageAvgs[1]<=5.5){
+      descHTML = descHTML.replace("• Score around 5:","<strong>• Score around 5:</strong>");
+    } else if(stageAvgs[1]<4.5){
+      descHTML = descHTML.replace("• Score below 5:","<strong>• Score below 5:</strong>");
+    } else{
+      descHTML = descHTML.replace("• Score close to 10:","<strong>• Score close to 10:</strong>");
+    }
+  } else if(maxStage===2){
+    if(stageAvgs[2]<4){
+      descHTML = descHTML.replace("• Close to 1:","<strong>• Close to 1:</strong>");
+    } else if(stageAvgs[2]>=4 && stageAvgs[2]<=6){
+      descHTML = descHTML.replace("• Around 5:","<strong>• Around 5:</strong>");
+    } else{
+      descHTML = descHTML.replace("• Close to 10:","<strong>• Close to 10:</strong>");
+    }
+  } else if(maxStage===3){
+    if(stageAvgs[3]<4){
+      descHTML = descHTML.replace("• Close to 1:","<strong>• Close to 1:</strong>");
+    } else if(stageAvgs[3]>=4 && stageAvgs[3]<=6){
+      descHTML = descHTML.replace("• Around 5:","<strong>• Around 5:</strong>");
+    } else{
+      descHTML = descHTML.replace("• Close to 10:","<strong>• Close to 10:</strong>");
+    }
+  }
+
+  document.getElementById("dominantMessage").classList.remove("hidden");
+  document.getElementById("dominantMessage").innerHTML = "<strong>"+STAGE_INFO.find(s=>s.stage===maxStage).title[currentLang]+"</strong>";
+  const stageDetails = document.getElementById("stageDetails");
+  stageDetails.innerHTML = `<div class="stage-desc">${descHTML}</div>`;
+
+  // Show/hide when clicked
+  document.querySelectorAll(".result-stage").forEach(el=>{
+    el.onclick=()=>{
+      const desc = document.querySelector(".stage-desc");
+      if(desc.style.display==="none") desc.style.display="block";
+      else desc.style.display="none";
+    };
+  });
+}
+
+// Initialize language
+applyLanguage();
+</script>
+</body>
+</html>
