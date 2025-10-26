@@ -154,18 +154,6 @@
   .result-stage:hover{
     background:#f0f0f0;
   }
-  .stage-dot{
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    background:#ccc;
-    position:absolute;
-    top:8px;
-    right:8px;
-  }
-  .stage-dot.active{
-    background:var(--accent);
-  }
   .result-score{
     font-size:18px;
     color:#222;
@@ -214,6 +202,42 @@
   #dominantMessage strong{
     color:var(--accent);
   }
+
+  /* ------------------- Stage Dot CSS ------------------- */
+  .stage-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s, opacity 0.3s, background-color 0.3s;
+    cursor: default;
+    position: relative;
+    transform: scale(0.9);
+    opacity: 0;
+    animation: appearDot 0.4s forwards;
+  }
+  @keyframes appearDot {
+    to { transform: scale(1); opacity: 1; }
+  }
+  .stage-dot:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.75);
+    color: white;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 1;
+  }
+
   @media (max-width:520px){
     .panel{padding:20px;}
     #questionText{font-size:16px;}
@@ -259,21 +283,9 @@
     <div id="resultPane" class="hidden">
       <h1 id="resultTitle">Spectrum of Awareness</h1>
       <div class="result-grid">
-        <div class="result-stage" id="stageI">
-          <div>Stage I</div>
-          <div class="result-score" id="scoreI">0.0</div>
-          <div class="stage-dot" id="dotI"></div>
-        </div>
-        <div class="result-stage" id="stageII">
-          <div>Stage II</div>
-          <div class="result-score" id="scoreII">0.0</div>
-          <div class="stage-dot" id="dotII"></div>
-        </div>
-        <div class="result-stage" id="stageIII">
-          <div>Stage III</div>
-          <div class="result-score" id="scoreIII">0.0</div>
-          <div class="stage-dot" id="dotIII"></div>
-        </div>
+        <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
+        <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
+        <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
       </div>
       <div id="dominantMessage" class="hidden"></div>
       <div id="stageDetails"></div>
@@ -372,121 +384,44 @@ const STAGE_INFO = [
       ],
       fa:[
         "مرحله سوم مرحله تسلط و یکپارچگی کامل است. من می‌دانم که تنها منبع هستم؛ همه تجربه‌ها بازتاب آگاهی درونی من هستند. هیچ جدایی وجود ندارد، فقط خلق خالص.",
-        "Close to 10:\nتجسم کامل تسلط؛ زندگی به‌راحتی از طریق من جریان می‌یابد.",
-        "Around 5:\nیکپارچه‌سازی در حال انجام؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.",
-        "Close to 1:\nنشانه‌های اولیه تسلط؛ من با مالکیت کامل و خلق آزمایش می‌کنم."
+        "Close to 10:\nتجسم کامل تسلط؛ زندگی بدون زحمت از طریق من جریان دارد.",
+        "Around 5:\nیکپارچه‌سازی در حال انجام است؛ درک‌هایی از تسلط و وحدت ظاهر می‌شود.",
+        "Close to 1:\nنشانه‌های اولیه تسلط؛ من با مالکیت و خلق کامل آزمایش می‌کنم."
       ]
     }
   }
 ];
 
-// ----------------- LANGUAGE CONTROL -----------------
-let currentLang = "en";
-const langSelectEl = document.getElementById("langSelect");
-langSelectEl.addEventListener("change", (e) => {
-  currentLang = e.target.value;
-  applyLanguage();
-  if(currentQ<QUESTIONS.length && currentQ>=0) showQuestion();
-  if(document.getElementById("resultPane").classList.contains("hidden")===false) showResults();
-});
-function applyLanguage(){
-  document.getElementById("landingText").textContent = {
-    en:"This is a reflection of my inner consciousness called Spectrum of Awareness.",
-    de:"Dies ist eine Reflexion meines inneren Bewusstseins namens Spektrum des Bewusstseins.",
-    fa:"این بازتابی از آگاهی درونی من است که به نام طیف آگاهی شناخته می‌شود."
-  }[currentLang];
-  document.getElementById("startBtn").textContent = {
-    en:"Start",de:"Start",fa:"شروع"
-  }[currentLang];
-  document.getElementById("nextBtn").textContent = {
-    en:"Next",de:"Weiter",fa:"بعدی"
-  }[currentLang];
-  document.getElementById("restartBtn").textContent = {
-    en:"Restart",de:"Neustart",fa:"شروع مجدد"
-  }[currentLang];
-}
+// ----------------- STAGE DOT COLORS -----------------
+const STAGE_DOT_COLORS = {
+  1:{ "Close to 10":"#FF6B6B","Around 5":"#FFCC33","Close to 1":"#4CAF50" },
+  2:{ "Close to 10":"#4CAF50","Around 5":"#FFCC33","Close to 1":"#FF6B6B" },
+  3:{ "Close to 10":"#4CAF50","Around 5":"#FFCC33","Close to 1":"#FF6B6B" }
+};
 
-// ----------------- QUESTION FLOW -----------------
-let currentQ=-1;
-const questionSlider = document.getElementById("questionSlider");
-const questionText = document.getElementById("questionText");
-
-document.getElementById("startBtn").addEventListener("click",()=>{
-  document.getElementById("landingPane").classList.add("hidden");
-  document.getElementById("questionPane").classList.remove("hidden");
-  currentQ=0;
-  showQuestion();
-});
-document.getElementById("nextBtn").addEventListener("click",()=>{
-  saveAnswer();
-  currentQ++;
-  if(currentQ>=QUESTIONS.length){
-    document.getElementById("questionPane").classList.add("hidden");
-    document.getElementById("resultPane").classList.remove("hidden");
-    showResults();
-  }else showQuestion();
-});
-document.getElementById("restartBtn").addEventListener("click",()=>{
-  currentQ=0;
-  stageScores = [0,0,0];
-  answers = [];
-  document.getElementById("resultPane").classList.add("hidden");
-  document.getElementById("landingPane").classList.remove("hidden");
-});
-
-let answers=[];
-let stageScores = [0,0,0];
-function showQuestion(){
-  const q = QUESTIONS[currentQ];
-  questionText.textContent = q[currentLang];
-  questionSlider.value = 5;
-}
-function saveAnswer(){
-  const val = parseInt(questionSlider.value);
-  const stageIndex = QUESTIONS[currentQ].stage-1;
-  stageScores[stageIndex]+=val;
-  answers.push(val);
-}
-
-// ----------------- RESULTS -----------------
-function showResults(){
-  const totalPerStage = stageScores.map(s=>s/QUESTIONS.filter(q=>q.stage===stageScores.indexOf(s)+1).length);
-  const stageIEl = document.getElementById("scoreI");
-  const stageIIEl = document.getElementById("scoreII");
-  const stageIIIEl = document.getElementById("scoreIII");
-  stageIEl.textContent = stageScores[0].toFixed(1);
-  stageIIEl.textContent = stageScores[1].toFixed(1);
-  stageIIIEl.textContent = stageScores[2].toFixed(1);
-
-  // --- Determine dominant stage ---
-  let maxScore = Math.max(stageScores[0],stageScores[1],stageScores[2]);
-  let dominantStage = stageScores.indexOf(maxScore)+1;
-  const dominantMessageEl = document.getElementById("dominantMessage");
-  dominantMessageEl.classList.remove("hidden");
-  dominantMessageEl.textContent = STAGE_SUMMARY[dominantStage][currentLang];
-
-  // --- Highlight dominant dot ---
-  document.getElementById("dotI").classList.toggle("active",dominantStage===1);
-  document.getElementById("dotII").classList.toggle("active",dominantStage===2);
-  document.getElementById("dotIII").classList.toggle("active",dominantStage===3);
-
-  // --- Stage Details ---
-  const stageDetailsEl = document.getElementById("stageDetails");
-  stageDetailsEl.innerHTML="";
-  STAGE_INFO.forEach((stageObj,i)=>{
+// ----------------- RENDER STAGE INFO -----------------
+function renderStageInfo(scores, lang="en"){
+  const stageDetails = document.getElementById("stageDetails");
+  stageDetails.innerHTML="";
+  STAGE_INFO.forEach((stage,i)=>{
     const stageDiv = document.createElement("div");
-    stageDiv.className="stage-desc";
-    stageDiv.id = "stageDesc"+(i+1);
-    stageDiv.innerHTML = `<strong>${stageObj.title[currentLang]}</strong>\n\n${stageObj.description[currentLang].join("\n\n")}`;
-    stageDetailsEl.appendChild(stageDiv);
-  });
+    stageDiv.classList.add("stage-desc");
+    const score = scores[i+1] || 0;
 
-  // --- Toggle description on stage click ---
-  document.querySelectorAll(".result-stage").forEach((el,i)=>{
-    el.onclick=()=>{
-      const desc = document.getElementById("stageDesc"+(i+1));
-      desc.style.display = desc.style.display==="none"?"block":"none";
-    }
+    const descriptionHTML = stage.description[lang].map((line)=>{
+      let label=null;
+      if(line.startsWith("Close to 10")) label="Close to 10";
+      if(line.startsWith("Around 5")) label="Around 5";
+      if(line.startsWith("Close to 1")) label="Close to 1";
+
+      if(label){
+        return `<span class="stage-dot" data-tooltip="${label}" style="background-color:${STAGE_DOT_COLORS[i+1][label]}"></span> ${line}`;
+      }
+      return line;
+    }).join("\n\n");
+
+    stageDiv.innerHTML=`<h3 style="font-weight:bold">${stage.title[lang]}</h3><p>${descriptionHTML}</p>`;
+    stageDetails.appendChild(stageDiv);
   });
 }
 </script>
