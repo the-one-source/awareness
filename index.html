@@ -629,7 +629,9 @@ function restartTest(){
   questionPane.classList.add("hidden");
   resultPane.classList.add("hidden");
 }
-
+document.getElementById("stageI").addEventListener("click", () => toggleStage(0));
+document.getElementById("stageII").addEventListener("click", () => toggleStage(1));
+document.getElementById("stageIII").addEventListener("click", () => toggleStage(2));
 // Initialize
 applyLanguage();
 </script>
