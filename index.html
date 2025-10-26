@@ -40,6 +40,8 @@
   :root[dir="rtl"] .slider-labels{direction:rtl;}
   #questionText{font-size:18px;line-height:1.45;margin:6px 0 14px 0;text-align:center;word-break:break-word;}
   footer.note{margin-top:14px;color:#666;font-size:13px;}
+  #dominantMessage{margin-top:20px;background:#f8f8f8;border-radius:12px;padding:16px;color:#333;font-size:15px;line-height:1.4;box-shadow:0 6px 20px rgba(0,0,0,0.04);}
+  #dominantMessage strong{color:var(--accent);}
   @media (max-width:520px){ .panel{padding:20px;} #questionText{font-size:16px;} .btn{padding:10px 20px;} }
 </style>
 </head>
@@ -51,24 +53,24 @@
     <div id="landingPane">
       <h1 id="pageTitle">Spectrum of Awareness</h1>
       <div class="row" id="langRow">
-        <select id="langSelect" aria-label="Language">
+        <select id="langSelect">
           <option value="en">English</option>
           <option value="de">Deutsch</option>
           <option value="fa">فارسی</option>
         </select>
       </div>
-      <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness. I am answering a series of statements using the slider to indicate my agreement.</p>
+      <p class="lead" id="landingText">This is a reflection of my inner consciousness called Spectrum of Awareness.</p>
       <button id="startBtn" class="btn">Start</button>
     </div>
 
     <!-- Questionnaire Page -->
-    <div id="questionPane" class="hidden" aria-live="polite">
-      <div id="questionText" role="heading" aria-level="2"></div>
+    <div id="questionPane" class="hidden">
+      <div id="questionText"></div>
       <div class="fixed-slider-wrap">
         <div class="fixed-track">
           <input id="questionSlider" type="range" min="0" max="10" value="5" />
         </div>
-        <div class="slider-labels" id="questionLabels">
+        <div class="slider-labels">
           <span id="qLblLeft">Disagree</span>
           <span id="qLblMid">Uncertain</span>
           <span id="qLblRight">Agree</span>
@@ -80,22 +82,21 @@
     <!-- Result Page -->
     <div id="resultPane" class="hidden">
       <h1 id="resultTitle">Spectrum of Awareness</h1>
-      <div class="result-grid" aria-hidden="false">
+      <div class="result-grid">
         <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
         <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
         <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
       </div>
+      <div id="dominantMessage" class="hidden"></div>
       <div id="stageDetails"></div>
-      <div style="margin-top:18px;">
-        <button id="restartBtn" class="btn">Restart</button>
-      </div>
-      <footer class="note" id="footerNote" aria-hidden="true"></footer>
+      <button id="restartBtn" class="btn">Restart</button>
     </div>
 
   </div>
 </div>
 
 <script>
+  
 /* ----------------- QUESTIONS ----------------- */
 
 const QUESTIONS = [ 
@@ -219,7 +220,36 @@ const QUESTIONS = [
   {stage:2,en:"I witness my judgments and release them.",de:"Ich beobachte meine Urteile und lasse sie los.",fa:"من قضاوت‌های خود را مشاهده می‌کنم و رها می‌کنم."},
   {stage:3,en:"I am the pure witness; all distinctions are reflections of my own mind.",de:"Ich bin der reine Zeuge; alle Unterschiede sind Spiegelungen meines eigenen Geistes.",fa:"من شاهد مطلق هستم؛ همه تمایزات بازتاب ذهن خودم هستند."}
 ];
-
+const STAGE_SUMMARY = {
+  1:{en:"Stage I — Victimhood: experiencing life as happening to you.",de:"Stufe I — Opferrolle: das Leben geschieht dir.",fa:"مرحله I — قربانی: زندگی را به‌عنوان چیزی که بر تو رخ می‌دهد تجربه می‌کنی."},
+  2:{en:"Stage II — Awareness: awakening to patterns and flow.",de:"Stufe II — Bewusstsein: Erwachen zu Mustern und Fluss.",fa:"مرحله II — آگاهی: بیداری نسبت به الگوها و جریان."},
+  3:{en:"Stage III — Mastery: life flows as you, effortlessly.",de:"Stufe III — Meisterschaft: das Leben fließt mühelos als du.",fa:"مرحله III — تسلط: زندگی بی‌تلاش به‌عنوان تو جریان دارد."}
+};
+let currentLang="en",scores={1:0,2:0,3:0},currentQuestionIndex=0,shuffledQuestions=[];
+const landingPane=document.getElementById("landingPane"),questionPane=document.getElementById("questionPane"),resultPane=document.getElementById("resultPane");
+const questionText=document.getElementById("questionText"),slider=document.getElementById("questionSlider");
+const scoreI=document.getElementById("scoreI"),scoreII=document.getElementById("scoreII"),scoreIII=document.getElementById("scoreIII");
+const domMsg=document.getElementById("dominantMessage");
+document.getElementById("langSelect").onchange=e=>{currentLang=e.target.value;document.documentElement.setAttribute('dir',currentLang==="fa"?"rtl":"ltr");};
+document.getElementById("startBtn").onclick=()=>{landingPane.classList.add("hidden");questionPane.classList.remove("hidden");shuffledQuestions=QUESTIONS.sort(()=>Math.random()-0.5);scores={1:0,2:0,3:0};currentQuestionIndex=0;renderQuestion();};
+document.getElementById("nextBtn").onclick=()=>{scores[shuffledQuestions[currentQuestionIndex].stage]+=+slider.value;if(++currentQuestionIndex>=shuffledQuestions.length)showResults();else renderQuestion();};
+document.getElementById("restartBtn").onclick=()=>{resultPane.classList.add("hidden");landingPane.classList.remove("hidden");domMsg.classList.add("hidden");domMsg.textContent="";};
+function renderQuestion(){const q=shuffledQuestions[currentQuestionIndex];questionText.textContent=q[currentLang];slider.value=5;}
+function showResults(){
+  questionPane.classList.add("hidden");resultPane.classList.remove("hidden");
+  const counts={1:0,2:0,3:0};for(const q of QUESTIONS)counts[q.stage]++;
+  scoreI.textContent=(scores[1]/counts[1]).toFixed(1);
+  scoreII.textContent=(scores[2]/counts[2]).toFixed(1);
+  scoreIII.textContent=(scores[3]/counts[3]).toFixed(1);
+  showDominant();
+}
+function showDominant(){
+  const avg1=+scoreI.textContent,avg2=+scoreII.textContent,avg3=+scoreIII.textContent;
+  let dom=1;if(avg2>=avg1&&avg2>=avg3)dom=2;if(avg3>=avg1&&avg3>=avg2)dom=3;
+  domMsg.textContent=STAGE_SUMMARY[dom][currentLang];
+  domMsg.classList.remove("hidden");
+}
+  
 /* ----------------- STAGE INFO ----------------- */
 const STAGE_INFO = [
   {title:{en:"Stage I — Victimhood",de:"Stufe I — Opferrolle",fa:"مرحله I — قربانی"}, 
