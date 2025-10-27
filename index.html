@@ -605,49 +605,34 @@ const nextBtnEl = document.getElementById("nextBtn");
 
 // ----------------- MINIMALISTIC DOTS -----------------
 function initQuestionDots() {
-  document.getElementById("questionDots").style.display = "flex";
-  const container = document.getElementById("questionDots");
-  container.innerHTML = ""; // clear existing dots
-  const total = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions.length : QUESTIONS.length;
-  for(let i=0;i<total;i++){
+  const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
+  questionDotsEl.innerHTML = ""; // clear previous dots
+  source.forEach((_, idx) => {
     const dot = document.createElement("span");
-    dot.style.display = "inline-block";
-    dot.style.width = "10px";
-    dot.style.height = "10px";
+    dot.classList.add("dot");
+    dot.style.width = "12px";
+    dot.style.height = "12px";
     dot.style.borderRadius = "50%";
-    dot.style.background = "#e6e6e6"; // inactive color (matches slider track)
-    dot.style.transition = "background 0.3s, transform 0.2s";
-    container.appendChild(dot);
-  }
+    dot.style.background = "#ccc";
+    dot.style.display = "inline-block";
+    dot.style.marginRight = "6px";
+    questionDotsEl.appendChild(dot);
+  });
   updateQuestionDots();
 }
 
 function updateQuestionDots() {
-  const container = document.getElementById("questionDots");
-  const total = container.children.length;
-  for(let i=0;i<total;i++){
-    const dot = container.children[i];
-    if(i < currentQ){
-      dot.style.background = "var(--accent)";
+  const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
+  const dots = questionDotsEl.querySelectorAll("span.dot");
+  dots.forEach((dot, idx) => {
+    if (idx === currentQ) {
+      dot.style.background = "#4CAF50"; // current question
       dot.style.transform = "scale(1.2)";
     } else {
-      dot.style.background = "#e6e6e6";
+      dot.style.background = "#ccc";
       dot.style.transform = "scale(1)";
     }
-  }
-}
-
-// --------- NEW: randomizedQuestions and randomizer function (added only) ---------
-// Keeps original QUESTIONS array and text intact and uses randomizedQuestions for display & results.
-// Randomization logic: Shuffle within stages then interleave so same-stage doesn't repeat when possible.
-
-let randomizedQuestions = [];
-
-function shuffleArray(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
+  });
 }
 
 // Create randomizedQuestions from QUESTIONS while avoiding consecutive same-stage when possible
