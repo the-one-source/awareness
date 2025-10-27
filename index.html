@@ -247,9 +247,11 @@
   </div>
 
   <button id="nextBtn" class="btn">Next</button>
-  <div id="questionDots" style="display:flex;justify-content:center;gap:6px;margin-top:18px;"></div>
+  <div id="questionProgressBar" style="width:90%;max-width:680px;height:2px;background:#e6e6e6;border-radius:3px;margin:14px auto 8px auto;overflow:hidden;">
+    <div id="questionProgressFill" style="width:0%;height:100%;background:var(--accent);transition:width 0.3s;"></div>
+  </div>
 
-</div>
+</div> <!-- closes questionPane -->
 
 <!-- Result Page -->
 <div id="resultPane" class="hidden">
@@ -270,7 +272,6 @@
 </div>
 
 <script>
-
 // ----------------- QUESTIONS -----------------
 const QUESTIONS = [ 
   {stage:1,en:"Life happens to me.",de:"Das Leben passiert mir.",fa:"زندگی برای من اتفاق می‌افتد."},
@@ -604,35 +605,38 @@ const sliderEl = document.getElementById("questionSlider");
 const nextBtnEl = document.getElementById("nextBtn");
 
 // ----------------- MINIMALISTIC DOTS -----------------
-function initQuestionDots() {
-  const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
-  questionDotsEl.innerHTML = ""; // clear previous dots
-  source.forEach((_, idx) => {
-    const dot = document.createElement("span");
-    dot.classList.add("dot");
-    dot.style.width = "12px";
-    dot.style.height = "12px";
-    dot.style.borderRadius = "50%";
-    dot.style.background = "#ccc";
-    dot.style.display = "inline-block";
-    dot.style.marginRight = "6px";
-    questionDotsEl.appendChild(dot);
-  });
-  updateQuestionDots();
+function updateProgressBar() {
+  const total = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions.length : QUESTIONS.length;
+  const percent = ((currentQ) / total) * 100;
+  document.getElementById("questionProgressFill").style.width = percent + "%";
 }
 
 function updateQuestionDots() {
-  const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
-  const dots = questionDotsEl.querySelectorAll("span.dot");
-  dots.forEach((dot, idx) => {
-    if (idx === currentQ) {
-      dot.style.background = "#4CAF50"; // current question
+  const container = document.getElementById("questionDots");
+  const total = container.children.length;
+  for(let i=0;i<total;i++){
+    const dot = container.children[i];
+    if(i < currentQ){
+      dot.style.background = "var(--accent)";
       dot.style.transform = "scale(1.2)";
     } else {
-      dot.style.background = "#ccc";
+      dot.style.background = "#e6e6e6";
       dot.style.transform = "scale(1)";
     }
-  });
+  }
+}
+
+// --------- NEW: randomizedQuestions and randomizer function (added only) ---------
+// Keeps original QUESTIONS array and text intact and uses randomizedQuestions for display & results.
+// Randomization logic: Shuffle within stages then interleave so same-stage doesn't repeat when possible.
+
+let randomizedQuestions = [];
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
 }
 
 // Create randomizedQuestions from QUESTIONS while avoiding consecutive same-stage when possible
@@ -673,7 +677,7 @@ function showQuestion(){
 nextBtnEl.addEventListener("click", ()=>{
   answers.push(parseFloat(sliderEl.value));
   currentQ++;
-  updateQuestionDots();
+  updateProgressBar();
   // use randomizedQuestions length if available
   const total = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions.length : QUESTIONS.length;
   if(currentQ >= total){
@@ -955,7 +959,7 @@ document.getElementById("startBtn").addEventListener("click", ()=>{
   // NEW: randomize before starting (only added, no other changes)
   randomizeQuestions();
   document.getElementById("questionPane").classList.remove("hidden");
-  initQuestionDots();
+  updateProgressBar();
   showQuestion();
 });
 document.getElementById("restartBtn").addEventListener("click", ()=>{
@@ -965,9 +969,8 @@ document.getElementById("restartBtn").addEventListener("click", ()=>{
   answers = [];
   document.getElementById("resultPane").classList.add("hidden");
   document.getElementById("questionPane").classList.remove("hidden");
-  initQuestionDots(); 
+  updateProgressBar(); 
   showQuestion();
-  document.getElementById("questionDots").style.display = "flex";
 });
 
 // ----------------- INITIAL LANGUAGE -----------------
