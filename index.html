@@ -231,40 +231,42 @@
       <button id="startBtn" class="btn">Start</button>
     </div>
 
-    <!-- Questionnaire Page -->
-    <div id="questionPane" class="hidden">
-      <!-- Minimalistic Dot Progress -->
-      <div id="questionDots" style="display:flex;justify-content:center;gap:6px;margin-bottom:18px;"></div>
-      <div id="questionText"></div>
-      <div class="fixed-slider-wrap">
-        <div class="fixed-track">
-          <input id="questionSlider" type="range" min="0" max="10" value="5" />
-        </div>
-        <div class="slider-labels">
-          <span id="qLblLeft">Disagree</span>
-          <span id="qLblMid">Uncertain</span>
-          <span id="qLblRight">Agree</span>
-        </div>
-      </div>
-      <button id="nextBtn" class="btn">Next</button>
-    </div>
+<!-- Questionnaire Page -->
+<div id="questionPane" class="hidden">
 
-    <!-- Result Page -->
-    <div id="resultPane" class="hidden">
-      <h1 id="resultTitle">Spectrum of Awareness</h1>
-      <div class="result-grid">
-        <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
-        <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
-        <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
-      </div>
-      <div id="dominantMessage" class="hidden"></div>
-      <div id="stageDetails"></div>
-      <div id="overallResult" class="hidden" style="margin:24px 0; padding:20px; border-radius:16px; background:#f0f0f0; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.05); font-size:15px; line-height:1.5;"></div>
-      <button id="restartBtn" class="btn">Restart</button>
-      <footer class="note" id="footerNote"></footer>
+  <div id="questionText"></div>
+  <div class="fixed-slider-wrap">
+    <div class="fixed-track">
+      <input id="questionSlider" type="range" min="0" max="10" value="5" />
     </div>
-
+    <div class="slider-labels">
+      <span id="qLblLeft">Disagree</span>
+      <span id="qLblMid">Uncertain</span>
+      <span id="qLblRight">Agree</span>
+    </div>
   </div>
+
+  <button id="nextBtn" class="btn">Next</button>
+  <div id="questionDots" style="display:flex;justify-content:center;gap:6px;margin-top:18px;"></div>
+
+</div>
+
+<!-- Result Page -->
+<div id="resultPane" class="hidden">
+  <h1 id="resultTitle">Spectrum of Awareness</h1>
+  <div class="result-grid">
+    <div class="result-stage" id="stageI"><div>Stage I</div><div class="result-score" id="scoreI">0.0</div></div>
+    <div class="result-stage" id="stageII"><div>Stage II</div><div class="result-score" id="scoreII">0.0</div></div>
+    <div class="result-stage" id="stageIII"><div>Stage III</div><div class="result-score" id="scoreIII">0.0</div></div>
+  </div>
+  <div id="dominantMessage" class="hidden"></div>
+  <div id="stageDetails"></div>
+  <div id="overallResult" class="hidden" style="margin:24px 0; padding:20px; border-radius:16px; background:#f0f0f0; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.05); font-size:15px; line-height:1.5;"></div>
+  <button id="restartBtn" class="btn">Restart</button>
+  <footer class="note" id="footerNote"></footer>
+</div>
+
+</div>
 </div>
 
 <script>
@@ -414,6 +416,7 @@ const nextBtnEl = document.getElementById("nextBtn");
 
 // ----------------- MINIMALISTIC DOTS -----------------
 function initQuestionDots() {
+  document.getElementById("questionDots").style.display = "flex";
   const container = document.getElementById("questionDots");
   container.innerHTML = ""; // clear existing dots
   const total = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions.length : QUESTIONS.length;
@@ -510,6 +513,7 @@ nextBtnEl.addEventListener("click", ()=>{
 function showResults(){
   document.getElementById("questionPane").classList.add("hidden");
   document.getElementById("resultPane").classList.remove("hidden");
+  document.getElementById("questionDots").style.display = "none";
 
   const stageScores = {1:[],2:[],3:[]};
 
@@ -788,7 +792,8 @@ document.getElementById("restartBtn").addEventListener("click", ()=>{
   document.getElementById("resultPane").classList.add("hidden");
   document.getElementById("questionPane").classList.remove("hidden");
   initQuestionDots(); 
-showQuestion();
+  showQuestion();
+  document.getElementById("questionDots").style.display = "flex";
 });
 
 // ----------------- INITIAL LANGUAGE -----------------
